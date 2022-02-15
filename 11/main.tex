@@ -4,11 +4,13 @@
 \usepackage{tikz}
 \usetikzlibrary{arrows,shapes,snakes,automata,calc,matrix,backgrounds,petri, positioning}
 
-\makeatletter
-\def\input@path{{../support/beamer-template/}}
-\makeatother
+\usetheme{metropolis}
 
-\usepackage{../support/beamer-template/beamerthememetropolis}
+% Not working in Overleaf
+% \makeatletter
+% \def\input@path{{../support/beamer-template/}}
+% \makeatother
+% \usepackage{../support/beamer-template/beamerthememetropolis}
 
 \usepackage[utf8]{inputenc}
 \usepackage[czech]{babel}
@@ -26,7 +28,7 @@
 \usepackage{amssymb}
 \usepackage{qrcode}
 
-\input{../common/tutorial/commands.tex}
+\input{../commands.tex}
 
 % \newcommand{\download}[1]{\hfill\faDownload\hspace{5pt}\href{https://cw.fel.cvut.cz/wiki/_media/courses/be4m36mas/#1}{\tt #1}\\[1.3em]}
 % \newcommand{\see}[1]{\faEye\hspace{5pt}#1}
