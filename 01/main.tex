@@ -225,12 +225,14 @@
   \frametitle{Kompilace programů v C/C++ s pomocí Cmake}
   \download{tutorial\_01.zip}
   \begin{block}{Vygenerování build scriptů}
-    \texttt{cmake <dir>} \hspace{50pt} (\texttt{<dir>} je složka se souborem \texttt{CMakeLists.txt})
+    \texttt{cmake <src dir>}
   \end{block}
+  Zde \texttt{<src dir>} je složka se souborem \texttt{CMakeLists.txt}.
   \vspace{1em}
   \begin{block}{Kompilace}
-    \texttt{cmake --build}
+    \texttt{cmake --build <build dir>}
   \end{block}
+  Zde \texttt{<build dir>} je složka s vygenerovanými soubory pro sestavení programu.
 
   Nebo použijte IDE s dobrou podporou C++, například CLion (multiplatformní) nebo Visual Studio (Windows)
 \end{frame}
