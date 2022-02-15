@@ -2,10 +2,10 @@
 \documentclass[usenames,dvipsnames,9pt]{beamer}
 
 \makeatletter
-\def\input@path{{support/beamer-template/}}
+\def\input@path{{../support/beamer-template/}}
 \makeatother
 
-\usepackage{support/beamer-template/beamerthememetropolis}
+\usepackage{../support/beamer-template/beamerthememetropolis}
 
 \usepackage[utf8]{inputenc}
 \usepackage[czech]{babel}
@@ -20,7 +20,7 @@
 \usepackage{amssymb}
 \usepackage{qrcode}
 
-\input{commands.tex}
+\input{../commands.tex}
 
 \title{Vlákna a přístup ke sdílené paměti}
 %\subtitle{Organizace předmětu a seznámení se s paralelizací}
@@ -73,7 +73,7 @@
 %  \hfill
 %  \begin{minipage}{0.5\linewidth}
 %    \vspace{4em}
-%    \centering\includegraphics[width=\linewidth]{02/02/figs/qr_feedback.pdf}
+%    \centering\includegraphics[width=\linewidth]{figs/qr_feedback.pdf}
 %  \end{minipage}
 %\end{frame}
 
@@ -99,7 +99,7 @@
   \frametitle{Šifra \texttt{PDVCrypt}}
   Vzpomeňte si na šifru z minulého cvičení
   \begin{center}
-    \includegraphics[scale=0.8]{02/02/figs/pdvcrypt.pdf}
+    \includegraphics[scale=0.8]{figs/pdvcrypt.pdf}
   \end{center}
 
   {\small
@@ -713,7 +713,7 @@ void decrypt_openmp(const PDVCrypt &crypt,
   
   \vspace{1em}
 
-  \centering\includegraphics[width=.6\linewidth]{02/02/figs/producer-consumer.png}
+  \centering\includegraphics[width=.6\linewidth]{figs/producer-consumer.png}
 
   \vspace{1em}
 
