@@ -1,0 +1,4 @@
+[alias]
+    make      = !./support/scripts/build.sh
+    brutalize = !./support/scripts/brutalize.sh
+    package   = !./support/scripts/package.sh

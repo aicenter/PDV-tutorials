@@ -1,0 +1,75 @@
+% Commands shared between most of the tutorial slides
+
+% Homework deadlines
+\newcommand{\hwVIIdeadline}{10. 5. 2020}
+
+
+
+% Download icon and text with link relative to the root of the courseware site
+\newcommand{\download}[1]{\hfill\faDownload\hspace{5pt}\href{https://cw.fel.cvut.cz/wiki/_media/courses/be4m36mas/#1}{\tt #1}\\[1.3em]}
+
+% Draw eye icon
+\newcommand{\see}[1]{\faEye\hspace{5pt}#1}
+
+\newcommand{\sep}{\hspace{10pt}/\hspace{10pt}}
+
+\def\Ipe#1{\def\IPEfile{#1}\input{#1}}
+
+% Draw pacman icon
+\newcommand{\pacman}[1]{\tikz[baseline=.1em,scale=.6]{
+    \useasboundingbox (.02,0) rectangle (.6,.6);
+  \draw [fill=#1] (.3,.3) -- ++(25:.3) arc (+25:+335:.3) -- cycle;
+
+}}
+
+% Draw ghost icon
+\newcommand{\ghost}[1]{\tikz[baseline=.1em,scale=.5]{
+  \draw [fill=#1] (0,0) -- (0,.5) arc (+180:0:.3) -- (.6,0) --
+  (.5,.15) -- (.4,0) -- (.3,.15) -- (.2,0) -- (.1,.15) -- cycle;
+    \coordinate (eye) at (360*rand:.03);
+    \foreach \x in {.17,.43}{
+      \fill[white] (\x,.5) circle[radius=.1];
+      \fill[black] (\x,.5) ++(eye) circle[radius=.05];
+    }
+}}
+
+\newcommand{\desc}[2]{
+  #1
+
+  \vspace{-0.6em}
+  \hfill\begin{minipage}{0.9\linewidth}
+    #2
+  \end{minipage}
+
+  \vspace{0.2em}
+}
+
+\newcommand{\redc}{\tikz\draw[red,fill=red] (0,0) circle (.5ex);}
+
+\newcommand{\greenc}{\tikz\draw[green,fill=green] (0,0) circle (.5ex);}
+
+
+% Default url for generating QR code with feedback form.
+\newcommand{\defaultfeedbackurl}{https://forms.gle/vwbWazEu14w1Kf487}
+
+% Generate frame with QR code to a feedback form.
+\newcommand{\framefeedback}[1][\defaultfeedbackurl]{
+  \begin{frame}[standout]
+    \begin{minipage}{0.4\linewidth}
+      \begin{center}
+        \textbf{\LARGE Díky za pozornost!}
+      \end{center}
+
+      \vspace{3em}
+
+      \raggedleft\small Budeme rádi za Vaši\\zpětnou vazbu! $\rightarrow$
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.5\linewidth}
+      \vspace{4em}
+      \centering\qrcode[height=\linewidth]{#1}\\
+      \vspace{0.8em}
+      \url{#1}
+    \end{minipage}
+  \end{frame}
+}
