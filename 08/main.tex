@@ -1,12 +1,11 @@
 % !TEX options=--shell-escape
 \documentclass[usenames,dvipsnames,9pt]{beamer}
-\usetheme{metropolis}
 
-% Not working in Overleaf
-% \makeatletter
-% \def\input@path{{../support/beamer-template/}}
-% \makeatother
-% \usepackage{../support/beamer-template/beamerthememetropolis}
+\makeatletter
+\def\input@path{{../support/beamer-template/}}
+\makeatother
+
+\usepackage{../support/beamer-template/beamerthememetropolis}
 
 \usepackage[utf8]{inputenc}
 \usepackage[czech]{babel}
@@ -23,7 +22,7 @@
 \usepackage{amssymb}
 \usepackage{qrcode}
 
-\input{../commands.tex}
+\input{../common/tutorial/commands.tex}
 
 \title{Paralelní maticové operace}
 \date{\today}
