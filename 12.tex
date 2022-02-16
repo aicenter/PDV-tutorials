@@ -5,10 +5,10 @@
 \usetikzlibrary{arrows,shapes,snakes,automata,calc,matrix,backgrounds,petri, positioning}
 
 \makeatletter
-\def\input@path{{../support/beamer-template/}}
+\def\input@path{{support/beamer-template/}}
 \makeatother
 
-\usepackage{../support/beamer-template/beamerthememetropolis}
+\usepackage{support/beamer-template/beamerthememetropolis}
 
 \usepackage[utf8]{inputenc}
 \usepackage[czech]{babel}
@@ -25,7 +25,7 @@
 \usepackage{amssymb}
 \usepackage{qrcode}
 
-\input{../common/tutorial/commands.tex}
+\input{commands.tex}
 
 % \newcommand{\download}[1]{\hfill\faDownload\hspace{5pt}\href{https://cw.fel.cvut.cz/wiki/_media/courses/be4m36mas/#1}{\tt #1}\\[1.3em]}
 % \newcommand{\see}[1]{\faEye\hspace{5pt}#1}
@@ -92,7 +92,7 @@
 
 %\begin{frame}
 %\frametitle{DSand framework}
-%\centering\includegraphics[width=0.8\linewidth]{figs/dsand.pdf}
+%\centering\includegraphics[width=0.8\linewidth]{12/figs/dsand.pdf}
 %\end{frame}
 
 {\setbeamertemplate{frame footer}{\see{\url{http://goo.gl/a6BEMb}}}
@@ -130,7 +130,7 @@
   {\large Uvažujme upravený protokol, kdy klient čeká na potvrzení zápisu...}
 
   \begin{center}
-    \includegraphics[width=0.8\linewidth]{figs/pdv_cloud.png}
+    \includegraphics[width=0.8\linewidth]{12/figs/pdv_cloud.png}
   \end{center}
 
   \pause
@@ -202,7 +202,7 @@
   \frametitle{Jak řešit konkurentní požadavky?}
 
   \begin{center}
-    \includegraphics[width=0.8\linewidth]{figs/pdv_cloud.png}
+    \includegraphics[width=0.8\linewidth]{12/figs/pdv_cloud.png}
 
     \vspace{2em}
 
@@ -292,7 +292,7 @@
   \begin{itemize}
     \item Požadavek kandidáta musí být aktuální podle ,,logického času``
           \begin{center}
-            \includegraphics[width=0.5\linewidth]{figs/terms.pdf}
+            \includegraphics[width=0.5\linewidth]{12/figs/terms.pdf}
 
             Aktuální \texttt{term} posíláme v každé zprávě.\\
             \texttt{currTerm = max(currTerm, msg.term)}
@@ -318,7 +318,7 @@
   \end{minipage}
 
   \begin{center}
-	  \colorbox{white}{\includegraphics[width=0.7\linewidth]{figs/log.png}}
+	  \colorbox{white}{\includegraphics[width=0.7\linewidth]{12/figs/log.png}}
   \end{center}
 
   \pause\vspace{1em}

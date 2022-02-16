@@ -2,10 +2,10 @@
 \documentclass[usenames,dvipsnames,9pt]{beamer}
 
 \makeatletter
-\def\input@path{{../support/beamer-template/}}
+\def\input@path{{support/beamer-template/}}
 \makeatother
 
-\usepackage{../support/beamer-template/beamerthememetropolis}
+\usepackage{support/beamer-template/beamerthememetropolis}
 
 \usepackage[utf8]{inputenc}
 \usepackage[czech]{babel}
@@ -20,7 +20,7 @@
 \usepackage{amssymb}
 \usepackage{qrcode}
 
-\input{../commands.tex}
+\input{commands.tex}
 
 \title{Paralení programování pro vícejádrové stroje s použitím OpenMP}
 %\subtitle{Organizace předmětu a seznámení se s paralelizací}
@@ -110,9 +110,9 @@
 \begin{frame}[fragile]
   \frametitle{Numerická integrace}
   
-  \begin{figure}
-    \centering\includegraphics{figs/integral.pdf}
-  \end{figure}
+  \begin{03/figure}
+    \centering\includegraphics{03/figs/integral.pdf}
+  \end{03/figure}
 
   \begin{minted}{c}
     double integrate(

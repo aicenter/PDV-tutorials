@@ -5,10 +5,10 @@
 \usetikzlibrary{arrows,shapes,snakes,automata,calc,matrix,backgrounds,petri, positioning}
 
 \makeatletter
-\def\input@path{{../support/beamer-template/}}
+\def\input@path{{support/beamer-template/}}
 \makeatother
 
-\usepackage{../support/beamer-template/beamerthememetropolis}
+\usepackage{support/beamer-template/beamerthememetropolis}
 
 \usepackage[utf8]{inputenc}
 \usepackage[czech]{babel}
@@ -25,7 +25,7 @@
 \usepackage{amssymb}
 \usepackage{qrcode}
 
-\input{../common/tutorial/commands.tex}
+\input{commands.tex}
 
 %
 % \newcommand{\download}[1]{\hfill\faDownload\hspace{5pt}\href{https://cw.fel.cvut.cz/wiki/_media/courses/be4m36mas/#1}{\tt #1}\\[1.3em]}
@@ -100,7 +100,7 @@
   \hfill
   \begin{minipage}{0.5\linewidth}
     \vspace{.3em}
-    \centering\includegraphics[width=\linewidth]{figs/hanoi.pdf}
+    \centering\includegraphics[width=\linewidth]{10/figs/hanoi.pdf}
 
     %\raggedleft\url{https://goo.gl/forms/CQGculehxhM8TwVq2}
   \end{minipage}
@@ -121,7 +121,7 @@
 
 \begin{frame}
 \frametitle{DSand framework}
-\centering\includegraphics[width=0.8\linewidth]{figs/dsand.pdf}
+\centering\includegraphics[width=0.8\linewidth]{10/figs/dsand.pdf}
 \end{frame}
 
 {\setbeamertemplate{frame footer}{\see{\url{http://goo.gl/a6BEMb}}}
@@ -221,13 +221,13 @@
 
   	\vspace{1.5em}
 
-  	\only<1>{\includegraphics{figs/reqres.pdf}}%
-  	\only<2>{\includegraphics{figs/reqres2.pdf}}%
-  	\only<3>{\includegraphics{figs/reqres3.pdf}}%
-  	\only<4>{\includegraphics{figs/reqres4.pdf}}%
-  	\only<5>{\includegraphics{figs/reqres5.pdf}}%
-  	\only<6>{\includegraphics{figs/reqres6.pdf}}%
-  	\only<7>{\includegraphics{figs/reqres7.pdf}}%
+  	\only<1>{\includegraphics{10/figs/reqres.pdf}}%
+  	\only<2>{\includegraphics{10/figs/reqres2.pdf}}%
+  	\only<3>{\includegraphics{10/figs/reqres3.pdf}}%
+  	\only<4>{\includegraphics{10/figs/reqres4.pdf}}%
+  	\only<5>{\includegraphics{10/figs/reqres5.pdf}}%
+  	\only<6>{\includegraphics{10/figs/reqres6.pdf}}%
+  	\only<7>{\includegraphics{10/figs/reqres7.pdf}}%
   \end{center}
 \end{frame}
 
@@ -290,7 +290,7 @@
 % \begin{frame}
 % \frametitle{Příklad: Lamportův logický čas}
 % \begin{center}
-% \includegraphics[width=.55\linewidth]{figs/lamporttime.jpg}
+% \includegraphics[width=.55\linewidth]{10/figs/lamporttime.jpg}
 % \end{center}
 % \end{frame}
 
@@ -298,11 +298,11 @@
 \frametitle{PDV Cloud}
 \vspace{2.5em}
 \begin{center}
-\only<1,6->{\includegraphics[scale=0.35]{figs/pdv_cloud.png}}%
-\only<2>{\hspace{-6.4pt}\includegraphics[scale=0.35]{figs/pdv_cloud_1.png}}%
-\only<3>{\includegraphics[scale=0.35]{figs/pdv_cloud_2.png}}%
-\only<4>{\hspace{6.1pt}\includegraphics[scale=0.35]{figs/pdv_cloud_3.png}}%
-\only<5>{\hspace{6.1pt}\includegraphics[scale=0.35]{figs/pdv_cloud_4.png}}%
+\only<1,6->{\includegraphics[scale=0.35]{10/figs/pdv_cloud.png}}%
+\only<2>{\hspace{-6.4pt}\includegraphics[scale=0.35]{10/figs/pdv_cloud_1.png}}%
+\only<3>{\includegraphics[scale=0.35]{10/figs/pdv_cloud_2.png}}%
+\only<4>{\hspace{6.1pt}\includegraphics[scale=0.35]{10/figs/pdv_cloud_3.png}}%
+\only<5>{\hspace{6.1pt}\includegraphics[scale=0.35]{10/figs/pdv_cloud_4.png}}%
 \only<6>{\vspace{1em}\hrule\vspace{1em}
 \Large K čemu bychom zde mohli chtít používat logické hodiny?}
 \end{center}
@@ -357,15 +357,15 @@
 \begin{frame}[t]
   \frametitle{Jak to provést v distribuovaném systému?}
   \begin{center}
-  	\only<1>{\includegraphics{figs/bank1.pdf}}%
-  	\only<2>{\includegraphics{figs/bank2.pdf}}%
-  	\only<3>{\includegraphics{figs/bank3.pdf}}%
-  	\only<4>{\includegraphics{figs/bank4.pdf}}%
-  	\only<5>{\includegraphics{figs/bank5.pdf}}%
-  	\only<6>{\includegraphics{figs/bank6.pdf}}%
-  	\only<7>{\includegraphics{figs/bank7.pdf}}%
-  	\only<8>{\includegraphics{figs/bank8.pdf}}%
-  	\only<9->{\includegraphics{figs/bank9.pdf}}%
+  	\only<1>{\includegraphics{10/figs/bank1.pdf}}%
+  	\only<2>{\includegraphics{10/figs/bank2.pdf}}%
+  	\only<3>{\includegraphics{10/figs/bank3.pdf}}%
+  	\only<4>{\includegraphics{10/figs/bank4.pdf}}%
+  	\only<5>{\includegraphics{10/figs/bank5.pdf}}%
+  	\only<6>{\includegraphics{10/figs/bank6.pdf}}%
+  	\only<7>{\includegraphics{10/figs/bank7.pdf}}%
+  	\only<8>{\includegraphics{10/figs/bank8.pdf}}%
+  	\only<9->{\includegraphics{10/figs/bank9.pdf}}%
   \end{center}
 
   \only<10>{
@@ -453,7 +453,7 @@
 
 \begin{frame}
   \begin{minipage}{0.65\linewidth}
-  \includegraphics[width=.95\linewidth]{figs/hydra.png}
+  \includegraphics[width=.95\linewidth]{10/figs/hydra.png}
   \end{minipage}
   \pause
   \begin{minipage}{0.33\linewidth}
@@ -530,7 +530,7 @@
 \begin{frame}
   \frametitle{SWIM detektor}
   \begin{center}
-  \includegraphics[width=\linewidth]{figs/swim.png}
+  \includegraphics[width=\linewidth]{10/figs/swim.png}
   \end{center}
 \end{frame}
 
@@ -539,7 +539,7 @@
 \begin{frame}
   \frametitle{Distribuovaná databáze na komoditních serverech}
   \begin{center}
-  \includegraphics[width=.95\linewidth]{figs/dist_db.png}
+  \includegraphics[width=.95\linewidth]{10/figs/dist_db.png}
   \end{center}
 \end{frame}
 

@@ -2,10 +2,10 @@
 \documentclass[usenames,dvipsnames,9pt]{beamer}
 
 \makeatletter
-\def\input@path{{../support/beamer-template/}}
+\def\input@path{{support/beamer-template/}}
 \makeatother
 
-\usepackage{../support/beamer-template/beamerthememetropolis}
+\usepackage{support/beamer-template/beamerthememetropolis}
 
 \usepackage[utf8]{inputenc}
 \usepackage[czech]{babel}
@@ -20,7 +20,7 @@
 \usepackage{amssymb}
 \usepackage{qrcode}
 
-\input{../commands.tex}
+\input{commands.tex}
 
 \title{Konkurentní datové struktury}
 \date{}
@@ -54,10 +54,10 @@
   
  % \pause
 
-\begin{figure}
-  \only<2>{\includegraphics[scale=0.4]{figs/theory.pdf}}%
-  \only<3->{\includegraphics[scale=.4]{figs/practice.pdf}}%
-\end{figure}
+\begin{04/figure}
+  \only<2>{\includegraphics[scale=0.4]{04/figs/theory.pdf}}%
+  \only<3->{\includegraphics[scale=.4]{04/figs/practice.pdf}}%
+\end{04/figure}
 
 %\pause
 
@@ -271,9 +271,9 @@ Aby jednu strukturu používalo více vláken {\bf současně}.
   
   \vspace{1em}
 
-  \begin{figure}
-    \centering\includegraphics{figs/linkedList.pdf}
-  \end{figure}
+  \begin{04/figure}
+    \centering\includegraphics{04/figs/linkedList.pdf}
+  \end{04/figure}
   
     \pause
 
@@ -400,7 +400,7 @@ Aby jednu strukturu používalo více vláken {\bf současně}.
   \end{minipage}
   \hfill
   \begin{minipage}{0.3\linewidth}
-    \includegraphics[width=1.3\linewidth]{figs/bst.pdf}
+    \includegraphics[width=1.3\linewidth]{04/figs/bst.pdf}
   \end{minipage}
 \end{frame}
 

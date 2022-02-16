@@ -5,10 +5,10 @@
 \usetikzlibrary{arrows,shapes,snakes,automata,calc,matrix,backgrounds,petri, positioning}
 
 \makeatletter
-\def\input@path{{../support/beamer-template/}}
+\def\input@path{{support/beamer-template/}}
 \makeatother
 
-\usepackage{../support/beamer-template/beamerthememetropolis}
+\usepackage{support/beamer-template/beamerthememetropolis}
 
 \usepackage[utf8]{inputenc}
 \usepackage[czech]{babel}
@@ -26,7 +26,7 @@
 \usepackage{amssymb}
 \usepackage{qrcode}
 
-\input{../common/tutorial/commands.tex}
+\input{commands.tex}
 
 % \newcommand{\download}[1]{\hfill\faDownload\hspace{5pt}\href{https://cw.fel.cvut.cz/wiki/_media/courses/be4m36mas/#1}{\tt #1}\\[1.3em]}
 % \newcommand{\see}[1]{\faEye\hspace{5pt}#1}
@@ -95,7 +95,7 @@
 
 \begin{frame}
 \frametitle{DSand framework}
-\centering\includegraphics[width=0.8\linewidth]{figs/dsand.pdf}
+\centering\includegraphics[width=0.8\linewidth]{11/figs/dsand.pdf}
 \end{frame}
 
 {\setbeamertemplate{frame footer}{\see{\url{http://goo.gl/a6BEMb}}}
@@ -238,7 +238,7 @@ U procesů máme podobné požadavky jako u vláken
 Jeden z procesů je určený jako správce požadavků
 
 \begin{center}
-\includegraphics[width=.5\linewidth]{figs/central.png}
+\includegraphics[width=.5\linewidth]{11/figs/central.png}
 \end{center}
 
 Udržuje si frontu doručených požadavků
@@ -260,7 +260,7 @@ Přiznává přístup ke zdroji v pořadí daném frontou
 Procesy jsou uspořádané v kruhu
 
 \begin{center}
-\includegraphics[width=.35\linewidth]{figs/circle.png}
+\includegraphics[width=.35\linewidth]{11/figs/circle.png}
 \end{center}
 
 Posílají si povolení k přístupu ke zdroji
@@ -301,7 +301,7 @@ Serializaci jsme v DS již využívali$\dots $
 %\begin{frame}
 %\frametitle{Ricart-Agrawalovo vyloučení}
 % \begin{center}
-%\includegraphics[width=.7\linewidth]{figs/ra.pdf}
+%\includegraphics[width=.7\linewidth]{11/figs/ra.pdf}
 %\end{center}
 %\end{frame}
 
@@ -423,8 +423,8 @@ Serializaci jsme v DS již využívali$\dots $
 	\frametitle{Žádost o vstup do kritické sekce}
 	\vspace{1.8em}
 	\begin{center}
-		\only<1>{\includegraphics[width=0.95\linewidth]{figs/mutex_base.pdf}}%
-		\only<2>{\includegraphics[width=0.95\linewidth]{figs/mutex_req.pdf}}%
+		\only<1>{\includegraphics[width=0.95\linewidth]{11/figs/mutex_base.pdf}}%
+		\only<2>{\includegraphics[width=0.95\linewidth]{11/figs/mutex_req.pdf}}%
 	\end{center}
 
 	\only<2>{
@@ -439,10 +439,10 @@ Serializaci jsme v DS již využívali$\dots $
 	\frametitle{Žádost o vstup do kritické sekce}
 	\vspace{1.8em}
 	\begin{center}
-		\only<1>{\includegraphics[width=0.95\linewidth]{figs/mutex_ok_1.pdf}}%
-		\only<2>{\includegraphics[width=0.95\linewidth]{figs/mutex_ok_2.pdf}}%
-		\only<3>{\includegraphics[width=0.95\linewidth]{figs/mutex_ok_3.pdf}}%
-		\only<4>{\includegraphics[width=0.95\linewidth]{figs/mutex_ok_4.pdf}}%
+		\only<1>{\includegraphics[width=0.95\linewidth]{11/figs/mutex_ok_1.pdf}}%
+		\only<2>{\includegraphics[width=0.95\linewidth]{11/figs/mutex_ok_2.pdf}}%
+		\only<3>{\includegraphics[width=0.95\linewidth]{11/figs/mutex_ok_3.pdf}}%
+		\only<4>{\includegraphics[width=0.95\linewidth]{11/figs/mutex_ok_4.pdf}}%
 	\end{center}
 
 	\only<4>{
@@ -459,10 +459,10 @@ Serializaci jsme v DS již využívali$\dots $
 	\frametitle{Příchozí požadavek od jiného procesu}
 	\vspace{1.8em}
 	\begin{center}
-		\only<1>{\includegraphics[width=0.95\linewidth]{figs/mutex_oreq_released_1.pdf}}%
-		\only<2>{\includegraphics[width=0.95\linewidth]{figs/mutex_oreq_released_2.pdf}}%
-		\only<3>{\includegraphics[width=0.95\linewidth]{figs/mutex_oreq_higherprio_1.pdf}}%
-		\only<4>{\includegraphics[width=0.95\linewidth]{figs/mutex_oreq_higherprio_2.pdf}}%
+		\only<1>{\includegraphics[width=0.95\linewidth]{11/figs/mutex_oreq_released_1.pdf}}%
+		\only<2>{\includegraphics[width=0.95\linewidth]{11/figs/mutex_oreq_released_2.pdf}}%
+		\only<3>{\includegraphics[width=0.95\linewidth]{11/figs/mutex_oreq_higherprio_1.pdf}}%
+		\only<4>{\includegraphics[width=0.95\linewidth]{11/figs/mutex_oreq_higherprio_2.pdf}}%
 	\end{center}
 
 	\only<4>{
@@ -481,10 +481,10 @@ Serializaci jsme v DS již využívali$\dots $
 	\frametitle{Příchozí požadavek od jiného procesu}
 	\vspace{1.8em}
 	\begin{center}
-		\only<1>{\includegraphics[width=0.95\linewidth]{figs/mutex_oreq_lowerprio_1.pdf}}%
-		\only<2>{\includegraphics[width=0.95\linewidth]{figs/mutex_oreq_lowerprio_2.pdf}}%
-		\only<3>{\includegraphics[width=0.95\linewidth]{figs/mutex_oreq_held_1.pdf}}%
-		\only<4>{\includegraphics[width=0.95\linewidth]{figs/mutex_oreq_held_2.pdf}}%
+		\only<1>{\includegraphics[width=0.95\linewidth]{11/figs/mutex_oreq_lowerprio_1.pdf}}%
+		\only<2>{\includegraphics[width=0.95\linewidth]{11/figs/mutex_oreq_lowerprio_2.pdf}}%
+		\only<3>{\includegraphics[width=0.95\linewidth]{11/figs/mutex_oreq_held_1.pdf}}%
+		\only<4>{\includegraphics[width=0.95\linewidth]{11/figs/mutex_oreq_held_2.pdf}}%
 	\end{center}
 
 	\only<4>{
@@ -504,9 +504,9 @@ Serializaci jsme v DS již využívali$\dots $
 	\frametitle{Opuštění kritické sekce}
 	\vspace{1.8em}
 	\begin{center}
-		\only<1>{\includegraphics[width=0.95\linewidth]{figs/mutex_oreq_release_1.pdf}}%
-		\only<2>{\includegraphics[width=0.95\linewidth]{figs/mutex_oreq_release_2.pdf}}%
-		\only<3>{\includegraphics[width=0.95\linewidth]{figs/mutex_oreq_release_3.pdf}}%
+		\only<1>{\includegraphics[width=0.95\linewidth]{11/figs/mutex_oreq_release_1.pdf}}%
+		\only<2>{\includegraphics[width=0.95\linewidth]{11/figs/mutex_oreq_release_2.pdf}}%
+		\only<3>{\includegraphics[width=0.95\linewidth]{11/figs/mutex_oreq_release_3.pdf}}%
 	\end{center}
 
 	\only<3>{

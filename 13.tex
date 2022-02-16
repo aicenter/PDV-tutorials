@@ -5,10 +5,10 @@
 \usetikzlibrary{arrows,shapes,snakes,automata,calc,matrix,backgrounds,petri, positioning}
 
 \makeatletter
-\def\input@path{{../support/beamer-template/}}
+\def\input@path{{support/beamer-template/}}
 \makeatother
 
-\usepackage{../support/beamer-template/beamerthememetropolis}
+\usepackage{support/beamer-template/beamerthememetropolis}
 
 \usepackage[utf8]{inputenc}
 \usepackage[czech]{babel}
@@ -25,7 +25,7 @@
 \usepackage{amssymb}
 \usepackage{qrcode}
 
-\input{../common/tutorial/commands.tex}
+\input{commands.tex}
 
 % Url for generating QR code with feedback form.
 \newcommand{\feedbackurl}{https://bit.ly/3dGdawj}
@@ -194,7 +194,7 @@ Kdy prohlásíme řez (globální stav) za konzistentní?
 \vspace{1em}
 
 \begin{center}
-\includegraphics[width=.9\linewidth]{figs/cuts.pdf}
+\includegraphics[width=.9\linewidth]{13/figs/cuts.pdf}
 \end{center}
 
 \pause\vspace{1em}
@@ -241,7 +241,7 @@ Kdy prohlásíme řez (globální stav) za konzistentní?
 \frametitle{Začátek snapshotu}
 	\vspace{1.8em}
 	\begin{center}
-		\includegraphics[width=\snapsize\linewidth]{figs/snapshot1.pdf}%
+		\includegraphics[width=\snapsize\linewidth]{13/figs/snapshot1.pdf}%
 	\end{center}
 
 	{
@@ -258,7 +258,7 @@ Kdy prohlásíme řez (globální stav) za konzistentní?
 \frametitle{Nahrávání}
 	\vspace{1.8em}
 	\begin{center}
-		{\includegraphics[width=\snapsize\linewidth]{figs/snapshot2.pdf}}%
+		{\includegraphics[width=\snapsize\linewidth]{13/figs/snapshot2.pdf}}%
 	\end{center}
 
 	{
@@ -274,8 +274,8 @@ Kdy prohlásíme řez (globální stav) za konzistentní?
 \frametitle{Příjem markovací zprávy poprvé}
 	\vspace{1.8em}
 	\begin{center}
-		\only<1>{\includegraphics[width=\snapsize\linewidth]{figs/snapshot3.pdf}}%
-		\only<2>{\includegraphics[width=\snapsize\linewidth]{figs/snapshot4.pdf}}%
+		\only<1>{\includegraphics[width=\snapsize\linewidth]{13/figs/snapshot3.pdf}}%
+		\only<2>{\includegraphics[width=\snapsize\linewidth]{13/figs/snapshot4.pdf}}%
 	\end{center}
 
 {
@@ -291,7 +291,7 @@ Kdy prohlásíme řez (globální stav) za konzistentní?
 \frametitle{Příjem markovací zprávy po nahrávaném kanálu}
 	\vspace{1.8em}
 	\begin{center}
-		{\includegraphics[width=\snapsize\linewidth]{figs/snapshot5.pdf}}%
+		{\includegraphics[width=\snapsize\linewidth]{13/figs/snapshot5.pdf}}%
 	\end{center}
 
 	{
@@ -351,7 +351,7 @@ Kdy poslat zprávu {\bf mark}
 %   \hfill
 %   \begin{minipage}{0.5\linewidth}
 %     \vspace{4em}
-%     \centering\includegraphics[width=\linewidth]{figs/qr_feedback.png}
+%     \centering\includegraphics[width=\linewidth]{13/figs/qr_feedback.png}
 
 %     \raggedleft\url{https://goo.gl/forms/DnKuKvur3lsrW4dI3}
 %   \end{minipage}
