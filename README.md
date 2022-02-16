@@ -1,6 +1,12 @@
 # PDV
 These steps describe the build process of the slides on Linux or Windows Subsystem for Linux.
+
+The repository with the tutorial sources now lives at
+https://github.com/aicenter/PDV-tutorials
+
 You can also edit the slides in Overleaf at https://www.overleaf.com/project/62055881c2d6c95f912de323
+
+
 
 ## What should I do after cloning this repository?
 From the root of the repository, load the git aliases to the build scripts:
