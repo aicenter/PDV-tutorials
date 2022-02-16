@@ -25,10 +25,10 @@
 \usepackage{amssymb}
 \usepackage{qrcode}
 
-\input{commands.tex}
+\input{../../common/tutorial/commands.tex}
 
 % Url for generating QR code with feedback form.
-\newcommand{\feedbackurl}{https://bit.ly/3dGdawj}
+\newcommand{\feedbackurl}{https://forms.gle/rr1S1s2JEggfJzuo8}
 
 % \newcommand{\download}[1]{\hfill\faDownload\hspace{5pt}\href{https://cw.fel.cvut.cz/wiki/_media/courses/be4m36mas/#1}{\tt #1}\\[1.3em]}
 % \newcommand{\see}[1]{\faEye\hspace{5pt}#1}
@@ -100,18 +100,25 @@
 {\bf Jakým způsobem Raft zpracovává klientské požadavky?}
 \end{center}
 
-\vspace{2em}
+\vspace{1em}
 
 {\em Zvolte, které z následujících možností platí}
 
 \begin{itemize}
-\item všechny požadavky splní
-\item splní jen požadavky, které leader klientovi potvrdí
-\item splní jen požadavky, které si zapíše do logu nadpoloviční většina serverů
-\item potvrzené požadavky může ze svého logu mazat jen nový leader
-\item nepotvrzené požadavky si může z logu smazat jakýkoli server
+\item všechny požadavky splní \uncover<2->{- \textcolor{red}{FALSE}}
+\item splní jen požadavky, které leader klientovi potvrdí \uncover<3->{- \textcolor{green}{TRUE}}
+\item splní jen požadavky, které si zapíše do logu nadpoloviční většina serverů \uncover<4->{- \textcolor{red}{FALSE}}
+\item potvrzené požadavky může ze svého logu mazat jen nový leader \uncover<5->{- \textcolor{red}{FALSE}}
+\item nepotvrzené požadavky si může z logu smazat jakýkoli server \uncover<6->{- \textcolor{green}{TRUE}}
 \end{itemize}
-
+\vspace{1em}
+\begin{overprint}[\textwidth]
+  \onslide<2> Ne, např. požadavky přijmuté nelídrem nejsou vůbec zaznamenány. Dále všechny leaderem nepotvrzené požadavky mohou být ze systému smazány.
+  \onslide<3> Ano, klientovi potvrzené požadavky už systém nesmí smazat.
+  \onslide<4> Ne, splní jen požadavky, jejichž přijetí \emph{leadorovi potvrdí} nadpoloviční většina serverů. Pro protipříklad viz \href{https://www.cs.princeton.edu/courses/archive/fall16/cos418/papers/raft.pdf}{\see{paper, Figure 8}}.
+  \onslide<5> Ne, žádný server nesmí ze svého logu mazat potvrzené požadavky.
+  \onslide<6> Ano, na základě komunikace (AppendEntries RPC) s leaderem.
+\end{overprint}
 \end{frame}
 
 
@@ -122,19 +129,27 @@
 {\bf Jakým způsobem Raft používá leadera?}
 \end{center}
 
-\vspace{2em}
+\vspace{1em}
 
 {\em Zvolte, které z následujících možností platí}
 
 \begin{itemize}
-\item leader má vždy nejvyšší index z běžících procesů
-\item kandidát na leadera musí mít nejnovější log
-\item pouze leader může posílat požadavky o zápis do logů followerům
-\item při výpadku leadera Raft přestane fungovat navždy
-\item v systému může být vždy nanejvýš jeden leader
-\item systém může být několik epoch bez leadera
+\item leader má vždy nejvyšší index z běžících procesů \uncover<2->{- \textcolor{red}{FALSE}}
+\item kandidát na leadera musí mít nejnovější log \uncover<3->{- \textcolor{red}{FALSE}} 
+\item pouze leader může posílat požadavky o zápis do logů followerům \uncover<4->{- \textcolor{green}{TRUE}}
+\item při výpadku leadera Raft přestane fungovat navždy \uncover<5->{- \textcolor{red}{FALSE}}
+\item v systému může být vždy nanejvýš jeden leader \uncover<6->{- \textcolor{gray}{DEPENDS}}
+\item systém může být několik epoch bez leadera \uncover<7->{- \textcolor{green}{TRUE}}
 \end{itemize}
-
+\vspace{1em}
+\begin{overprint}[\textwidth]
+  \onslide<2> Ne, volba leadera se nezakládá na id serverů (id se používá pouze pro identifikaci odesílatelu a příjemcu zpráv).
+  \onslide<3> Ne, kandidátem se může stát libovolný follower nebo kandidát. Ale server nedá hlas kandidátovi s méně aktuálním logem než má sám. 
+  \onslide<4> Ano, leader je zodpovědný za koordinaci zpracování požadavků a jako jediný může zapisovat do logů followerů. 
+  \onslide<5> Ne, systém si zvolí nového leadera který začne zpracovávat požadavky klientů. 
+  \onslide<6> Záleží, v jednom \emph{termu} může být maximálně jeden leader, ale v jeden \emph{okamžik} může být leaderů více. Viz \href{http://thesecretlivesofdata.com/raft/}{\see{protipříklad z animace}}.
+  \onslide<7> Ano, ve volbách nemusím být zvolen žádný leader (např. při rovnosti hlasů více kandidátů).
+\end{overprint}
 \end{frame}
 }
 

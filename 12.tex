@@ -27,6 +27,7 @@
 
 \input{commands.tex}
 
+
 % \newcommand{\download}[1]{\hfill\faDownload\hspace{5pt}\href{https://cw.fel.cvut.cz/wiki/_media/courses/be4m36mas/#1}{\tt #1}\\[1.3em]}
 % \newcommand{\see}[1]{\faEye\hspace{5pt}#1}
 % \newcommand{\sep}{\hspace{10pt}/\hspace{10pt}}
@@ -99,10 +100,16 @@
   \begin{frame}[fragile]
   \frametitle{Které z následujících algoritmů distribuovaného vzájemného vyloučení jsou férové?}
   \begin{enumerate}
-  \item Centrální server
-  \item Kruhové splňování
-  \item Ricart-Agrawalovo vyloučení
+  \item Centrální server \uncover<2->{- \textcolor{red}{FALSE}}
+  \item Kruhové splňování \uncover<3->{- \textcolor{red}{FALSE}}
+  \item Ricart-Agrawalovo vyloučení \uncover<4->{- \textcolor{green}{TRUE}}
   \end{enumerate}
+  \vspace{2em}
+  \begin{overprint}[\textwidth]
+    % Férovost: "procesy získávají přístup k pořadí, v jakém o něj požádali"
+    \onslide<2> Není splňen požadavek zachování pořadí, latence může změnit pořadí.
+    \onslide<3> Není splňen požadavek zachování pořadí, pořadí dané pozicí v kruhu.
+  \end{overprint}
   \end{frame}
 
 
@@ -199,6 +206,37 @@
 \section{Raft algoritmus}
 
 \begin{frame}
+  \frametitle{Raft}
+
+  \begin{columns}
+    \begin{column}{0.7\textwidth}
+      \begin{center}
+        \LARGE Algoritmus pro distribuovanou replikaci logů (koncenzus)
+      \end{center}
+    \end{column}
+    \begin{column}{0.3\textwidth}
+        \begin{center}
+        \includegraphics[width=0.8\textwidth]{12/figs/raft_logo.png}
+        \end{center}
+    \end{column}
+  \end{columns}
+
+  \pause
+  Cíle:
+  \begin{itemize}
+    \item Jednoduchý na pochopení 
+    \item Úplný a použitelný (pokud je naimplementován tak funguje) 
+  \end{itemize}  
+
+  % Má stejné paramtery jako Paxos, ale je pochopitelnější.
+
+  \vspace{1em}
+  \pause
+  Optimalizovaná verze např. v MongoDB\footnote{\href{https://henrikingo.github.io/presentations/PGDay\%20Russia\%202017\%20-\%20MongoDB\%20and\%20Raft/\#/title}{Slides: How MongoDB replication follows and doesn't the Raft algorithm}},
+  ošetřuje např. "term-inflation" pomocí pre-votingu\footnote{\href{https://www.openlife.cc/sites/default/files/php_uploads/4-modifications-for-Raft-consensus.pdf}{Paper: Four modifications for the Raft consensus algorithm}}.
+\end{frame}
+
+\begin{frame}
   \frametitle{Jak řešit konkurentní požadavky?}
 
   \begin{center}
@@ -288,7 +326,7 @@
 
   \pause
   \vspace{2em}
-  \LARGE Dvě podmínky:
+  {\LARGE Dvě podmínky:}
   \begin{itemize}
     \item Požadavek kandidáta musí být aktuální podle ,,logického času``
           \begin{center}
@@ -455,24 +493,5 @@
 
 % Frame with the feedback QR code
 \framefeedback{}
-
-% \begin{frame}[standout]
-%   \begin{minipage}{0.4\linewidth}
-%     \begin{center}
-%       \textbf{\LARGE Díky za pozornost!}
-%     \end{center}
-%
-%     \vspace{3em}
-%
-%     \raggedleft\small Budeme rádi za Vaši\\zpětnou vazbu! $\rightarrow$
-%   \end{minipage}
-%   \hfill
-%   \begin{minipage}{0.5\linewidth}
-%     \vspace{4em}
-%     \centering\qrcode[height=\linewidth]{\feedbackurl}\\
-%     \vspace{0.8em}
-%     \url{\feedbackurl}
-%   \end{minipage}
-% \end{frame}
 
 \end{document}
