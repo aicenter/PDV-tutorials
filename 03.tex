@@ -80,7 +80,7 @@
 \end{frame}
 
 % test prostredi + komentare, co veci znamenaji - postupny vypis
-{\setbeamertemplate{frame footer}{\see{{\tt test.cpp} \sep {\tt make test\_openmp}}}
+{\setbeamertemplate{frame footer}{\see{{\tt test.cpp} }}
 \begin{frame}[fragile]
   \frametitle{Otestujte si své prostředí}
 
@@ -106,7 +106,7 @@
 % vypocet integralu - jak muzeme vypocitat
 \section{Cvičení: Numerická integrace}
 
-{\setbeamertemplate{frame footer}{\see{{\tt integrate.cpp},\ \ \ {\tt main.cpp} \sep {\tt make main}}}
+{\setbeamertemplate{frame footer}{\see{{\tt integrate.cpp},\ \ \ {\tt main.cpp}}}
 \begin{frame}[fragile]
   \frametitle{Numerická integrace}
   
@@ -185,7 +185,7 @@ int num_threads = 0;
   \end{minted}
 \end{frame}
 
-{\setbeamertemplate{frame footer}{\see{{\tt integrate.cpp},\ \ \ {\tt main.cpp} \sep {\tt make main}}}
+{\setbeamertemplate{frame footer}{\see{{\tt integrate.cpp},\ \ \ {\tt main.cpp} }}
 \begin{frame}
   \begin{block}{Doimplementujte metodu \texttt{integrate\_omp\_critical}}
     Doimplementujte metodu \texttt{integrate\_omp\_critical} v \texttt{integrate.cpp}.
@@ -248,7 +248,7 @@ int num_threads = 0;
   \end{minipage}
 \end{frame}
 
-{\setbeamertemplate{frame footer}{\see{{\tt integrate.cpp},\ \ \ {\tt main.cpp} \sep {\tt make main}}}
+{\setbeamertemplate{frame footer}{\see{{\tt integrate.cpp},\ \ \ {\tt main.cpp} }}
 \begin{frame}
   \begin{block}{Doimplementujte metodu \texttt{integrate\_omp\_atomic}}
     Doimplementujte metodu \texttt{integrate\_omp\_atomic} v \texttt{integrate.cpp}.
@@ -285,7 +285,7 @@ int num_threads = 0;
 \end{frame}
 
 % uloha, proc nam uloha neskaluje tak dobre v druhem pripade? co udelat, aby se zlepsil vykon?
-{\setbeamertemplate{frame footer}{\see{{\tt integrate.cpp},\ \ \ {\tt main.cpp} \sep {\tt make main}}}
+{\setbeamertemplate{frame footer}{\see{{\tt integrate.cpp},\ \ \ {\tt main.cpp}}}
 \begin{frame}[fragile]
   \begin{block}{Doimplementujte metodu \texttt{integrate\_omp\_reduction}}
     Doimplementujte tělo metody \texttt{integrate\_omp\_reduction} v souboru \texttt{integrate.cpp}.
@@ -326,7 +326,7 @@ return acc;
   To neplatí o funkci $f(x)=\int_0^{0.001x^2} \sin(p) \ \mathrm{d}p$, kterou aproximujeme numerickou integrací s proměnlivým počtem kroků.
 \end{frame}
 
-{\setbeamertemplate{frame footer}{\see{{\tt integrate.cpp},\ \ \ {\tt main.cpp} \sep {\tt make main}}}
+{\setbeamertemplate{frame footer}{\see{{\tt integrate.cpp},\ \ \ {\tt main.cpp}}}
 \begin{frame}[fragile]
   \begin{block}{Doimplementujte metodu \texttt{integrate\_omp\_for\_dynamic}}
     Doimplementujte tělo metody \texttt{integrate\_omp\_for\_dynamic}.

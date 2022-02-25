@@ -94,7 +94,7 @@
 %   \end{itemize}
 % \end{frame}
 
-{\setbeamertemplate{frame footer}{\see{{\tt PDVCrypt.cpp},\ \ \ {\tt decrypt.cpp} \sep {\tt make decrypt}} \hfill \faDownload \hspace{5pt} \texttt{decrypt\_data.zip}}
+{\setbeamertemplate{frame footer}{\see{{\tt PDVCrypt.cpp},\ \ \ {\tt decrypt.cpp}}  \hfill \faDownload \hspace{5pt} \texttt{decrypt\_data.zip}}
 \begin{frame}[fragile]
   \frametitle{Šifra \texttt{PDVCrypt}}
   Vzpomeňte si na šifru z minulého cvičení
@@ -115,7 +115,7 @@
 \end{frame}
 }
 
-{\setbeamertemplate{frame footer}{\see{{\tt decryption.cpp},\ \ \ {\tt benchmark.cpp}, \ \ \ {\tt PDVCrypt.cpp} \sep {\tt make benchmark}}}
+{\setbeamertemplate{frame footer}{\see{{\tt decryption.cpp},\ \ \ {\tt benchmark.cpp}, \ \ \ {\tt PDVCrypt.cpp} }}
 \begin{frame}[fragile]
   \frametitle{Šifra \texttt{PDVCrypt}}
   Jak vypadala paralelizace v OpenMP?
@@ -274,7 +274,7 @@ void decrypt_openmp(const PDVCrypt &crypt,
     
 % \end{frame}
 
-{\setbeamertemplate{frame footer}{\see{{\tt decryption.cpp},\ \ \ {\tt benchmark.cpp},\ \ \ {\tt PDVCrypt.cpp} \sep {\tt make benchmark}}}
+{\setbeamertemplate{frame footer}{\see{{\tt decryption.cpp},\ \ \ {\tt benchmark.cpp},\ \ \ {\tt PDVCrypt.cpp} }}
 \begin{frame}[fragile]
   \begin{block}{Vyřešte úlohu pomocí vláken}
     Doimplementujte tělo metody \texttt{decrypt\_threads\_1} v souboru \texttt{decryption.cpp}.
@@ -402,7 +402,7 @@ void decrypt_openmp(const PDVCrypt &crypt,
 
 %\end{frame}
 
-{\setbeamertemplate{frame footer}{\see{{\tt decryption.cpp},\ \ \ {\tt benchmark.cpp},\ \ \ {\tt PDVCrypt.cpp} \sep {\tt make benchmark}}}
+{\setbeamertemplate{frame footer}{\see{{\tt decryption.cpp},\ \ \ {\tt benchmark.cpp},\ \ \ {\tt PDVCrypt.cpp}\textbf{}}}
 \begin{frame}[fragile]
   \frametitle{Varianta opravy č.1: Mutex}
   
@@ -449,7 +449,7 @@ void decrypt_openmp(const PDVCrypt &crypt,
   \end{center}
 \end{frame}
 
-{\setbeamertemplate{frame footer}{\see{{\tt decryption.cpp},\ \ \ {\tt benchmark.cpp},\ \ \ {\tt PDVCrypt.cpp} \sep {\tt make benchmark}}}
+{\setbeamertemplate{frame footer}{\see{{\tt decryption.cpp},\ \ \ {\tt benchmark.cpp},\ \ \ {\tt PDVCrypt.cpp} }}
 \begin{frame}[fragile]
   \frametitle{Varianta opravy č.2: Atomická proměnná}
   
@@ -652,7 +652,7 @@ void decrypt_openmp(const PDVCrypt &crypt,
 
 \section{Podmínkové proměnné}
 
-{\setbeamertemplate{frame footer}{\see{{\tt condition\_variable.cpp} \sep {\tt make condition\_variable}}}% \hfill \faDownload \hspace{5pt} \texttt{decrypt\_data.zip}}
+{\setbeamertemplate{frame footer}{\see{{\tt condition\_variable.cpp}}}% \hfill \faDownload \hspace{5pt} \texttt{decrypt\_data.zip}}
 \begin{frame}[fragile]
   \vspace{1em}
   \begin{block}{Jaký je problém následujícího kódu?}
@@ -695,13 +695,22 @@ void decrypt_openmp(const PDVCrypt &crypt,
   \end{itemize}
 
 \end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Čekání s podmínkovou proměnnou}
+  
+  \vspace{1em}
+  \begin{block}{Nahraďte aktivní čekání podmínkovou proměnnou}
+    V souboru \texttt{conditional\_variable.cpp} v metodách \texttt{logger} a \texttt{setter} nahraďte aktivní čekání podmínkovou proměnnou.
+  \end{block}
+\end{frame}
 }
 
 
 \section{Zadání první domácí úlohy}
 
 %{\setbeamertemplate{frame footer}{\see{{\tt main.cpp},\ \ \ {\tt ThreadPool.h} \sep {\tt make threadpool}}} \hfill \faDownload \hspace{5pt} \texttt{hw01\_threadpool.zip}}
-{\setbeamertemplate{frame footer}{\see{{\tt main.cpp},\ \ \ {\tt ThreadPool.h} \sep {\tt make threadpool}} \hfill \faDownload \hspace{5pt} \texttt{hw01\_threadpool.zip}}
+{\setbeamertemplate{frame footer}{\see{{\tt main.cpp},\ \ \ {\tt ThreadPool.h}} \hfill \faDownload \hspace{5pt} \texttt{hw01\_threadpool.zip}}
   \begin{frame}
   \frametitle{Producent -- konzument}
   
