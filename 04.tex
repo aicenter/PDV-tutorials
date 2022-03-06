@@ -259,7 +259,7 @@ Aby jednu strukturu používalo více vláken {\bf současně}.
 
 \section{Cvičení: konkuretní spojový seznam}
 
-{\setbeamertemplate{frame footer}{\see{{\tt lockBased.cpp}, {\tt main.cpp} \sep {\tt make main}}}
+{\setbeamertemplate{frame footer}{\see{{\tt lockBased.h}, {\tt main.cpp} }}
 \begin{frame}[fragile]
   \frametitle{Konkurentní spojový seznam}
   
@@ -365,7 +365,7 @@ Aby jednu strukturu používalo více vláken {\bf současně}.
 
 \end{frame}
 
-{\setbeamertemplate{frame footer}{\see{{\tt lockFree.cpp}, {\tt main.cpp} \sep {\tt make main}}}
+{\setbeamertemplate{frame footer}{\see{{\tt lockFree.h}, {\tt main.cpp} }}
 \begin{frame}[fragile]
   \begin{block}{Doimplementujte metodu \texttt{insert}}
     Doimplementujte tělo metody \texttt{insert} v souboru \texttt{lockFree.h}.
@@ -408,7 +408,7 @@ Aby jednu strukturu používalo více vláken {\bf současně}.
   \frametitle{Konkurentní binární vyhledávací strom}
   Naimplementujte metody v \texttt{bst\_tree.cpp} a \texttt{bst\_tree.h} a zajistěte, že
   \begin{enumerate}
-    \item každý prvek je vložet právě jednou; a
+    \item každý prvek je vložen právě jednou; a
     \item žádný vložený prvek se neztratí.
   \end{enumerate}
   
