@@ -171,7 +171,7 @@ std::cout << "Finished!" << std::endl;
 
 \begin{frame}[fragile]
   \begin{center}
-    \LARGE\bf Level 1: Autovektorizace GCC \hspace{10pt} \ghost{yellow!85!red}
+    \LARGE\bf Level 1: Autovektorizace \hspace{10pt} \ghost{yellow!85!red}
   \end{center}
 \end{frame}
 
@@ -201,16 +201,50 @@ std::cout << "Finished!" << std::endl;
 \end{frame}
 
 \begin{frame}
-  \begin{block}{Vyzkoušejte si autovektorizaci GCC}
-    Zkompilujte soubor \texttt{autovec.cpp} s parametry kompilace:
-    \begin{enumerate}
-      \item \texttt{-std=c++11 -march=native -O2} \hspace{6pt} a
-      \item \texttt{-std=c++11 -march=native -O2 -ftree-vectorize}
-    \end{enumerate}
-    Jak se program zrychlí, pokud použijete autovektorizaci (\texttt{-ftree-vectorize})?
-  \end{block}
-  Můžete si i vyzkoušet použití parametru \texttt{-fopt-info-vec-all} (detailní výstup o proběhlé vektorizaci).
+\frametitle{Autovektorizace GCC}
+
+Vektorizaci kontrolujeme s pomocí parametrů kompilátoru:
+
+\begin{itemize}
+    \item \texttt{-march=native}: zapne kompilaci přímo na konrétní hw, včetně zpřístupnění vektorových instrukcí.
+    \item \texttt{-ftree-vectorize}: zapne autovektorizaci.
+    \item \texttt{-fopt-info-vec-all}: informace o autovektorizaci.
+    \item \texttt{-O2} musíme snížit level optimalizace, abychom mohli kontrolovat autovektorizaci.
+\end{itemize}
+
 \end{frame}
+
+
+\begin{frame}
+\frametitle{Autovektorizace MSVC}
+
+Vektorizaci kontrolujeme s pomocí parametrů kompilátoru \textbf{a přímo ve zdrojovém kódu}. Vektorizace je na úrovni \texttt{/O2} defaultně zapnutá.
+
+\begin{itemize}
+    \item \texttt{/Qvec-report:2}: informace o autovektorizaci.
+    \item \texttt{/fp:fast} zpřístupní pokročilou autovektorizaci floatů, která ale může mít vliv na výsledek (float operace na počítačích nejsou komutativní...).
+    \item \texttt{\#pragma loop(no\_vector)}: Deaktivuje autovektorizaci pro konkrétní cyklus.
+\end{itemize}
+    
+\end{frame}
+
+{\setbeamertemplate{frame footer}{\exe{{\tt autovec[.exe]}}}
+\begin{frame}
+  \begin{block}{Vyzkoušejte si autovektorizaci}
+    Spusťte autovec(.exe) s autovektorizací a následně zkuste autovektorizaci vypnout:
+    \begin{enumerate}
+      \item {\Large\textbf{GCC}}: zakomentujte v souboru \texttt{CMakeLists.txt} řádek \texttt{add\_compile\_options("-ftree-vectorize")}
+      \item {\Large\textbf{MSVC}}: v souboru \texttt{autovec.cpp} odkomentujte v metodě \texttt{runSequential} řádek \texttt{\#pragma loop(no\_vector) }.
+    \end{enumerate}
+    Jak se program zpomalí, pokud vypnete autovektorizaci?
+  \end{block}
+  Také se podívejte do logu ze sestavování programu na zprávy o proběhlé autovektorizaci.
+  
+   {\small
+  Kódy pro důvod selhání autovektorizace v MSVC: \url{https://docs.microsoft.com/en-us/cpp/error-messages/tool-errors/vectorizer-and-parallelizer-messages}}
+  
+\end{frame}
+}
 
 \begin{frame}[fragile]
   \begin{itemize}
@@ -307,9 +341,10 @@ std::cout << "Finished!" << std::endl;
 
 \begin{frame}[standout]
   \texttt{\#include <immintrin.h>} \\[2em]
-  \faWarning\ \ \ Všechny kódy kompilujte s\ \ \  \texttt{-march=native}\ \ \ !
+  \faWarning\ \ \ V GCC je třeba všechny kódy kompilovat s\ \ \  \texttt{-march=native}\ \ \ !
 \end{frame}
 
+{\setbeamertemplate{frame footer}{\exe{{\tt normdist[.exe]}}}
 \begin{frame}[fragile]
   \frametitle{AVX / AVX2 intrinsics}
 
@@ -330,7 +365,7 @@ std::cout << "Finished!" << std::endl;
   \pause
 
   \begin{block}{Doimplementujte načtení a zápis dat do metody \texttt{normaldist\_vec(...)}}
-    Do těla \texttt{for} smyčky v metodě \texttt{normaldist\_vec(...)} v souboru \texttt{prob.cpp} doimplementujte načtení a zpětný zápis \texttt{\_\_m256} vektoru z adresy \texttt{\&data[i]}.
+    Do těla \texttt{for} smyčky v metodě \texttt{normaldist\_vec(...)} v souboru \texttt{normdist.cpp} doimplementujte načtení a zpětný zápis \texttt{\_\_m256} vektoru z adresy \texttt{\&data[i]}.
   \end{block}
 \end{frame}
 
@@ -354,6 +389,19 @@ std::cout << "Finished!" << std::endl;
   Pro aproximaci $\mathrm{exp}(x)$ (vektorově) použijte \mintinline{c}{__m256 exp_vec(x)}
   \[ \mathrm{exp}(x) \approx \frac{(x+3)^2 + 3}{(x-3)^2 + 3} \qquad\qquad (2,2)\text{-Padé aproximátor} \]
 \end{frame}
+}
+
+
+\begin{frame}
+    \frametitle{Podmíněné zpracování}
+    Paralelní řazení bitonic sort
+    \vspace{0.5em}
+    \begin{center}
+        \includegraphics[width=\linewidth]{07/figs/bitonic.pdf}
+    \end{center}
+    \vspace{0.5em}
+    Součástí řazení je i podmíněné prohazování prvků v poli: zjednodušená verze na dalších slidech.
+\end{frame}
 
 \begin{frame}[fragile]
   \frametitle{Podmíněné zpracování}
@@ -375,6 +423,7 @@ std::cout << "Finished!" << std::endl;
   \end{center}
 \end{frame}
 
+{\setbeamertemplate{frame footer}{\exe{{\tt condswap[.exe]}}}
 \begin{frame}[fragile]
   \frametitle{Podmíněné zpracování}
 
@@ -395,11 +444,8 @@ std::cout << "Finished!" << std::endl;
   Vektorová instrukce pro porovnání vektorů $x < y$ typu \emph{packed-single}:
   \mintinline{c}{__m256 _mm256_cmp_ps(x, y, _CMP_LT_OQ)}
 \end{frame}
+}
 
-\begin{frame}
-  \frametitle{Bitonic sort}
-  \includegraphics[width=\linewidth]{07/figs/bitonic.pdf}
-\end{frame}
 
 \begin{frame}
   \frametitle{Bitové operace}
@@ -416,6 +462,7 @@ std::cout << "Finished!" << std::endl;
   \hfill My se podíváme na něco zajímavějšího...
 \end{frame}
 
+{\setbeamertemplate{frame footer}{\exe{{\tt lzcnt[.exe]}}}
 \begin{frame}
   \frametitle{Bitové operace}
 
@@ -442,16 +489,23 @@ std::cout << "Finished!" << std::endl;
     Tip: Jaký vztah má pozice nejvyššího jedničkového bitu k hodnotě logaritmu o základu 2?
   \end{block}
 \end{frame}
+}
 
+{\setbeamertemplate{frame footer}{\exe{{\tt popcnt[.exe]}}}
 \begin{frame}
   \frametitle{Bitové operace}
 
   \mintinline{c}{_mm_popcnt_u64(uint64_t x)}
 
   \vspace{-0.35em}\hspace{10pt} Počet jedničkových bitů v čísle \texttt{x}
+  
+  \begin{block}{Doimplementujte tělo metody \texttt{popcnt\_intrinsic(...)}}
+    Doimplementujte tělo metody \texttt{popcnt\_intrinsic(...)} v souboru \texttt{popcnt.cpp}.
+  \end{block}
 \end{frame}
+}
 
- \section{Semestrální úloha}
+\section{Semestrální úloha}
 
 \begin{frame}
   \frametitle{Semestrální úloha}
@@ -469,11 +523,10 @@ std::cout << "Finished!" << std::endl;
 %
 %  \hfill (resp. nejlevnější) cestu v grafu...
 
-  \vspace{2em}\pause
+  \vspace{2em}
 
   \hrule
   \begin{center}
-    Zadání semestrální práce zveřejníme do konce týdne
   \end{center}
 \end{frame}
 
