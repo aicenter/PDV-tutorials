@@ -98,6 +98,23 @@
 
 {\setbeamertemplate{frame footer}{\see{\url{http://goo.gl/a6BEMb}}}
   \begin{frame}[fragile]
+  \frametitle{Jaké vlastnosti mají vektorové hodiny?}
+  \begin{enumerate}
+  \item jsou paměťově náročnější než skal\'arn\'i hodiny \uncover<2->{- \textcolor{green}{TRUE}}
+  \item dokáží detekovat porušení kauzality vůči konkrétnímu procesu \uncover<3->{- \textcolor{green}{TRUE}}
+  \item generují částečné uspořádání zpráv \uncover<4->{- \textcolor{green}{TRUE}}
+  \item určují reálný čas, kdy byla zpráva poslána \uncover<5->{- \textcolor{red}{FALSE}}
+  \item dokáží detekovat, zda je daná událost kauzálním důsledkem jiné události \uncover<6->{- \textcolor{red}{FALSE}}
+  \end{enumerate}
+  \begin{overprint}[\textwidth]
+    \onslide<3> Ano, vektorové hodiny správně zdetekují porušení kauzaility vždy.
+    \onslide<4> Ano, všechny dvojice událostí jsou ve vztahu "nastalo po" nebo "je současné"
+    \onslide<6> Hodiny nedokáží detekovat kauzalitu (následek nastal v důsledku příčiny), ale dokáží detekovat potenciální kauzalitu (následek mohl nastat v důsledku příčiny, tzn. existuje kauzální cesta od příčiny k následku)
+  \end{overprint}
+  \end{frame}
+
+
+  \begin{frame}[fragile]
   \frametitle{Které z následujících algoritmů distribuovaného vzájemného vyloučení jsou férové?}
   \begin{enumerate}
   \item Centrální server \uncover<2->{- \textcolor{red}{FALSE}}
