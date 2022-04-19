@@ -195,12 +195,12 @@ Je nutné slévat částečné výsledky jednotlivých vláken. Jak na to?
 
 \end{frame}
 
-{\setbeamertemplate{frame footer}{\see{{\tt multiply.cpp} \sep {\tt make mult}}}
+{\setbeamertemplate{frame footer}{\exe{{\tt multiply[.exe]}}}
 \begin{frame}[fragile]
 
   \begin{minted}{c}
-  void merge_elements(element_t & dest, element_t & in) {
-  	dest = gcd(dest,in); }
+  void merge_elements(element_t& dest, element_t& in) {
+  	dest = gcd(dest, in); }
   ...
   #pragma omp declare reduction(merge : \
                                 element_t : \
@@ -216,7 +216,7 @@ Je nutné slévat částečné výsledky jednotlivých vláken. Jak na to?
   \vspace{1em}\pause\hrule\vspace{1em}
 
   \begin{block}{Doimplementujte násobení matice s vektorem}
-    Doimplementujte tělo metody \texttt{multiply\_parallel}. Vlastní redukci jsme vám již deklarovali. Redukce využívá funkci \texttt{merge}. Doimplementujte i tělo redukce (funkce \texttt{merge}). Všechny vektory se kterými pracujete jsou řídké!
+    Doimplementujte tělo metody \texttt{multiply\_parallel} v souboru \texttt{multiply.cpp}. Vlastní redukci jsme vám již deklarovali. Redukce využívá funkci \texttt{merge}. Doimplementujte i tělo redukce (funkce \texttt{merge}). Všechny vektory se kterými pracujete jsou řídké!
   \end{block}
 
 \end{frame}
@@ -486,7 +486,7 @@ Je nutné slévat částečné výsledky jednotlivých vláken. Jak na to?
   \vspace{1em}\hrule\vspace{1em}
 
   Dosud jste se pravděpodobně setkali zejména s \emph{raw pointery} ; \\
-  napříkad \mintinline{c}{state * s;}
+  napříkad \mintinline{c}{state* s;}
 
   \pause\vspace{1em}
   \hfill Veškerá zodpovědnost za správnou správu paměti by byla na vás :-(
@@ -517,10 +517,10 @@ Je nutné slévat částečné výsledky jednotlivých vláken. Jak na to?
   template <typename lock_t>
   class unique_lock {
   private:
-    lock_t & mutex;
+    lock_t& mutex;
 
   public:
-    unique_lock(lock_t & mutex) : mutex(mutex) {
+    unique_lock(lock_t& mutex) : mutex(mutex) {
       mutex.lock();
     }
 
@@ -553,7 +553,7 @@ Je nutné slévat částečné výsledky jednotlivých vláken. Jak na to?
   	\pause\item Instanci \texttt{std::unique\_ptr} uložíme například do vektoru.
   				Dále používáme raw pointer (získaný přes \texttt{ptr.get()}).
 
-  				\hfill To ale na sebe opět bereme zodpovědnost za správu paměti! \\[0.3em]
+  				\hfill Paměť se ale uvolní po zániku vektoru, raw pointer přestane být validní! \\[0.3em]
 
   	\pause\item Důsledně budeme spravovat, kdo aktuálně pointer vlastní.
   				Paměť zanikne, když ho nějaká funkce nikomu nepředá (pomocí \texttt{std::move}).
@@ -601,7 +601,7 @@ Je nutné slévat částečné výsledky jednotlivých vláken. Jak na to?
   Se shared pointery dokonce můžete provádět atomické operace:
   \begin{minted}{c}
 // 'atomicka promenna'
-std::shared_ptr<const state> & concurrent_ptr = ...;
+std::shared_ptr<const state>& concurrent_ptr = ...;
 
 // ocekavana hodnota:
 std::shared_ptr<const state> local_copy
@@ -619,7 +619,7 @@ while(...) {
   \end{minted}
 \end{frame}
 
-{\setbeamertemplate{frame footer}{\see{{\tt algorithms/iddfs.cpp} \sep {\tt make PDV\_Search}}}
+{\setbeamertemplate{frame footer}{\see{{\tt algorithms/iddfs.cpp}} \hspace{2em} \exe{{\tt search[.exe]}}}
 \begin{frame}[fragile]
 \frametitle{Sekvenční IDDFS}
 
