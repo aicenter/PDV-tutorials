@@ -16,7 +16,7 @@ Note: `..` is required, as it is relative from the .git folder in the project.
 
 ## Requirements
 For beamer slides:
- - texlive for compiling tex files: `sudo apt-get install texlive texlive-latex-extra`
+ - texlive for compiling tex files: `sudo apt-get install texlive texlive-latex-extra texlive-luatex texlive-fonts-extra texlive-lang-czechslovak`
  - pygments for syntax higlighting in slides: `sudo apt-get install python-pygments`
  - ipetoipe for converting images from .ipe to .pdf:  `sudo apt-get install ipe`
 

@@ -13,7 +13,7 @@ function build_ipe {
 }
 
 function build_latex {
-	(cd $ROOT/$1 && TEXINPUTS=.//:$ROOT/support/beamer_template:$TEXINPUTS lualatex -shell-escape main.tex)
+	(cd $ROOT/$1 && TEXINPUTS=.//:$ROOT:$ROOT/support/beamer-template:$TEXINPUTS lualatex -shell-escape $ROOT/$1.tex)
 }
 
 function build_cmake {
@@ -28,6 +28,10 @@ while [ ! $RELATIVE == "." ]; do
 	elif [ -f $ROOT/$RELATIVE/CMakeLists.txt ]; then
 		build_cmake $RELATIVE
 		exit 0
+    elif [ -f $ROOT/${RELATIVE:0:-1}.tex ] ; then
+        build_ipe $RELATIVE
+        build_latex ${RELATIVE:0:-1}
+        exit 0        
 	fi
 	RELATIVE=$(dirname $RELATIVE)
 done
