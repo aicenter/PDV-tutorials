@@ -144,9 +144,87 @@
 		}
 	}
 \end{minted}
+% V idealnim pripade je resenim 1,2.
+% Pokud se zpravy zpozduji, muze nastat take 2,1, a pokud se ztraceji tak 2 a take nemusi dojit k vypsani niceho.
+% FIFO v zadani ne nutne znamena ze kumunikacni vrstva v simulaci je FIFO: FIFO muze byt kanal spojujici dva procesy.  V tom pripade je 2,1 spravne reseni pri zpozdovani zprav.
+\end{frame}
+}
+
+\section{Detekce selhání v DS}
+
+\begin{frame}
+  \begin{minipage}{0.65\linewidth}
+  \includegraphics[width=.95\linewidth]{10/figs/hydra.png}
+  \end{minipage}
+  \pause
+  \begin{minipage}{0.33\linewidth}
+    {\Large \bf Vzpomeňte si na BFS}
+
+    \vspace{1.2em}\hrule\vspace{1.2em}
+
+    Co když spící/mrtvá hlava leží na nejkratší cestě?
+  \end{minipage}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Detekce selhání}
+
+  {\LARGE Když nám ,,umře`` důležitý proces, musíme být schopní se se situací vypořádat.}
+  \hfill (Jinak nám celý DS zhavaruje)
+
+  \pause\vspace{2.5em}
+
+  \hfill \Large \faWarning \hspace{5pt} \bf Ale to musíme nejdřív zjistit, že ,,umřel``!
+
+  \pause\hspace{2.5em}\hrule\vspace{1.5em}
+  \begin{center}
+    \LARGE \bf Jak na to?
+  \end{center}
+\end{frame}
+
+{\setbeamertemplate{frame footer}{\see{{\tt DetectorProcess.java}\sep{\tt Run MainFD.java} v balíčku {\tt failure\_detector}}}
+\begin{frame}
+  \frametitle{Algoritmy na principu \emph{heart-beats}}
+
+  \begin{itemize}
+    \item Hearbeats jsou odesílány periodicky (každých $T$ ,,vteřin``)
+    \item Nedostane-li proces heartbeat od procesu $p_j$ po dobu $T+\tau$ ,,vteřin``, považuje $p_j$ za mrtvý
+  \end{itemize}
+
+  \pause
+  \begin{itemize}
+    \item {\bf Centralizovaný heartbeat}
+    \item {\bf Kruhový heartbeat}
+    \item {\bf Všichni-všem (all-to-all) heartbeating}
+  \end{itemize}
+
+  \pause\vspace{1em}\hrule\vspace{1em}
+
+  \begin{block}{Doprogramujte detekování selhání procesu na základě (all-to-all) heartbeating}
+    Doimplementujte logiku detekování selhání procesu na základě (all-to-all) heartbeating v \texttt{DetectorProcess.java}. Následně spusťte scénář \texttt{MainFD.java}, ve kterém máte zajištěno, že selže právě jeden proces.
+  \end{block}
 
 \end{frame}
 }
+
+\begin{frame}
+  \frametitle{Vlastnosti detektorů}
+
+  \begin{itemize}
+    \pause\item {\bf Úplnost}: každé selhání je časem detekováno aspoň jedním funkčním procesem
+    \pause\item {\bf Přesnost}: nedochází k označení funkčního procesu za havarovaný
+    \pause\item {\bf Rychlost}: čas do okamžiku, kdy první proces detekuje selhání
+    \pause\item {\bf Škálovatelnost}: ani při velkém počtu agentů nedojde k zahlcení systému
+  \end{itemize}
+
+  \pause
+  All-to-all heartbeating:
+  \begin{itemize}
+    \item[\bf\textcolor{BrickRed}{:-(}] Přesnost
+    \item[\bf\textcolor{BrickRed}{:-(}] Škálovatelnost
+  \end{itemize}
+
+\end{frame}
 
 \section{Čas a uspořádání událostí v DS  (1. část)}
 
@@ -221,13 +299,13 @@
 
   	\vspace{1.5em}
 
-  	\only<1>{\includegraphics{10/figs/reqres.pdf}}%
-  	\only<2>{\includegraphics{10/figs/reqres2.pdf}}%
-  	\only<3>{\includegraphics{10/figs/reqres3.pdf}}%
-  	\only<4>{\includegraphics{10/figs/reqres4.pdf}}%
-  	\only<5>{\includegraphics{10/figs/reqres5.pdf}}%
-  	\only<6>{\includegraphics{10/figs/reqres6.pdf}}%
-  	\only<7>{\includegraphics{10/figs/reqres7.pdf}}%
+  	\only<1>{\includegraphics{10/figs/reqres.pdf}} %
+  	\only<2>{\includegraphics{10/figs/reqres2.pdf}} %
+  	\only<3>{\includegraphics{10/figs/reqres3.pdf}} %
+  	\only<4>{\includegraphics{10/figs/reqres4.pdf}} %
+  	\only<5>{\includegraphics{10/figs/reqres5.pdf}} %
+  	\only<6>{\includegraphics{10/figs/reqres6.pdf}} %
+  	\only<7>{\includegraphics{10/figs/reqres7.pdf}} %
   \end{center}
 \end{frame}
 
@@ -450,83 +528,7 @@
 %   \end{itemize}
 % \end{frame}
 
-\section{Detekce selhání v DS}
-
-\begin{frame}
-  \begin{minipage}{0.65\linewidth}
-  \includegraphics[width=.95\linewidth]{10/figs/hydra.png}
-  \end{minipage}
-  \pause
-  \begin{minipage}{0.33\linewidth}
-    {\Large \bf Vzpomeňte si na BFS}
-
-    \vspace{1.2em}\hrule\vspace{1.2em}
-
-    Co když spící/mrtvá hlava leží na nejkratší cestě?
-  \end{minipage}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Detekce selhání}
-
-  {\LARGE Když nám ,,umře`` důležitý proces, musíme být schopní se se situací vypořádat.}
-  \hfill (Jinak nám celý DS zhavaruje)
-
-  \pause\vspace{2.5em}
-
-  \hfill \Large \faWarning \hspace{5pt} \bf Ale to musíme nejdřív zjistit, že ,,umřel``!
-
-  \pause\hspace{2.5em}\hrule\vspace{1.5em}
-  \begin{center}
-    \LARGE \bf Jak na to?
-  \end{center}
-\end{frame}
-
-{\setbeamertemplate{frame footer}{\see{{\tt DetectorProcess.java}\sep{\tt Run MainFD.java} v balíčku {\tt failure\_detector}}}
-\begin{frame}
-  \frametitle{Algoritmy na principu \emph{heart-beats}}
-
-  \begin{itemize}
-    \item Hearbeats jsou odesílány periodicky (každých $T$ ,,vteřin``)
-    \item Nedostane-li proces heartbeat od procesu $p_j$ po dobu $T+\tau$ ,,vteřin``, považuje $p_j$ za mrtvý
-  \end{itemize}
-
-  \pause
-  \begin{itemize}
-    \item {\bf Centralizovaný heartbeat}
-    \item {\bf Kruhový heartbeat}
-    \item {\bf Všichni-všem (all-to-all) heartbeating}
-  \end{itemize}
-
-  \pause\vspace{1em}\hrule\vspace{1em}
-
-  \begin{block}{Doprogramujte detekování selhání procesu na základě (all-to-all) heartbeating}
-    Doimplementujte logiku detekování selhání procesu na základě (all-to-all) heartbeating v \texttt{DetectorProcess.java}. Následně spusťte scénář \texttt{MainFD.java}, ve kterém máte zajištěno, že selže právě jeden proces.
-  \end{block}
-
-\end{frame}
-}
-
-\begin{frame}
-  \frametitle{Vlastnosti detektorů}
-
-  \begin{itemize}
-    \pause\item {\bf Úplnost}: každé selhání je časem detekováno aspoň jedním funkčním procesem
-    \pause\item {\bf Přesnost}: nedochází k označení funkčního procesu za havarovaný
-    \pause\item {\bf Rychlost}: čas do okamžiku, kdy první proces detekuje selhání
-    \pause\item {\bf Škálovatelnost}: ani při velkém počtu agentů nedojde k zahlcení systému
-  \end{itemize}
-
-  \pause
-  All-to-all heartbeating:
-  \begin{itemize}
-    \item[\bf\textcolor{BrickRed}{:-(}] Přesnost
-    \item[\bf\textcolor{BrickRed}{:-(}] Škálovatelnost
-  \end{itemize}
-
-\end{frame}
-
-
+\section{Zadání domácí úlohy}
 
 \begin{frame}
   \frametitle{SWIM detektor}
@@ -534,8 +536,6 @@
   \includegraphics[width=\linewidth]{10/figs/swim.png}
   \end{center}
 \end{frame}
-
-\section{Zadání domácí úlohy}
 
 \begin{frame}
   \frametitle{Distribuovaná databáze na komoditních serverech}
