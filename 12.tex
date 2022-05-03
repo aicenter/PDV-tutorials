@@ -238,19 +238,18 @@
     \end{column}
   \end{columns}
 
-  \pause
-  Cíle:
-  \begin{itemize}
-    \item Jednoduchý na pochopení 
-    \item Úplný a použitelný (pokud je naimplementován tak funguje) 
-  \end{itemize}  
-
-  % Má stejné paramtery jako Paxos, ale je pochopitelnější.
-
+  \uncover<2->{
+      Cíle:
+      \begin{itemize}
+        \item Jednoduchost na pochopení 
+        \item Úplnost a použitelnost (pokud je naimplementován tak funguje) 
+      \end{itemize}  
+      % Má stejné paramtery jako Paxos, ale je pochopitelnější.
+    }
   \vspace{1em}
-  \pause
-  Optimalizovaná verze např. v MongoDB\footnote{\href{https://henrikingo.github.io/presentations/PGDay\%20Russia\%202017\%20-\%20MongoDB\%20and\%20Raft/\#/title}{Slides: How MongoDB replication follows and doesn't the Raft algorithm}},
-  ošetřuje např. "term-inflation" pomocí pre-votingu\footnote{\href{https://www.openlife.cc/sites/default/files/php_uploads/4-modifications-for-Raft-consensus.pdf}{Paper: Four modifications for the Raft consensus algorithm}}.
+  \uncover<3->{
+      Optimalizovaná verze použitá např. v MongoDB\footnote<3->{\href{https://henrikingo.github.io/presentations/PGDay\%20Russia\%202017\%20-\%20MongoDB\%20and\%20Raft/\#/title}{Slides: How MongoDB replication follows and doesn't the Raft algorithm}}.
+  }
 \end{frame}
 
 \begin{frame}
@@ -386,17 +385,15 @@
 \begin{frame}
   \frametitle{Potvrzování zápisů}
 
-  {\large Potřebujeme ustanovit vztah mezi ,,aktualitou`` logu, hlasováním a potvrzením úspěšného požadavku...}
-
-  Vzpomeňte si, že server, kterému chybí nějaký potvrzený záznam nesmí být zvolen leaderem...
+  {\large Zajistí požadavek aktuálnějšího logu kandidáta zvolení leadra se všemi potvrzenými záznamy?}
 
   \begin{center}
-    \LARGE Na kolika serverech musí být záznam zapsaný?
+    \LARGE Na kolika serverech musí být záznam zapsaný aby byl potvrzený (commited)?
   \end{center}
 
   \pause\vspace{2em}\hrule\vspace{2em}
 
-  {\bf \faWarning \hspace{3pt} Stačí nám zapsat záznam na nadpoloviční většinu serverů :-)}
+  {\bf \faWarning \hspace{3pt} Stačí nám zapsat záznam na nadpoloviční většinu serverů}
   \begin{itemize}
     \item Pokud by měl být zvolený leaderem server, kterému chybí potvrzený záznam, pak bude mít méně ,,aktuální`` log
   \end{itemize}
@@ -464,10 +461,12 @@
 
   \begin{itemize}
     \item V každém \texttt{term}u zvolíme maximálně jednoho leadera. \\[1em]
+    % Kolik leaderu může být v systému v jednom okamžiku? CEIL(N/2)
 
     \pause
     \item Pokud dva logy obsahují stejný záznam (stejný \texttt{term} a \texttt{index}), pak jsou až po \texttt{index} shodné. \\[1em]
-
+     % To je dane 1. pozadavkem ze v jednom termu je max jeden leader, ktery zpracovava pozadavky, a kontrolou predchoziho zaznamu pri append entries
+     
     \pause
     \item Pokud někdy klientovi potvrdíme úspěšný zápis, pak nikdy nebude leaderem server, kde tento zápis ještě neproběhl. \\[1em]
   \end{itemize}
@@ -483,9 +482,31 @@
   \url{https://raft.github.io/}
 \end{frame}
 
+\begin{frame}
+  \frametitle{Úpravy raftu - odstranění term inflation}
+
+    Raft je definovaný záměrně co nejjednodušeji, ale pro praxi jsou vyůžívany různá zefektivnění: 
+
+  \uncover<2->{
+    \begin{columns}[b]
+    \begin{column}{0.5\textwidth}
+        Příklad problému: "Term-inflation":
+    \end{column}
+    \begin{column}{0.5\textwidth}
+        \begin{center}
+        \includegraphics[width=0.9\textwidth]{12/figs/raft_term_inflation.png}
+        \end{center}
+    \end{column}
+    \end{columns}
+
+      \begin{itemize}
+        \item Follower odpojený od zbytku systému po každém election timeoutu inkrementuje svůj term. Po zpětném připojení vždy spustí nové volby.
+        \uncover<3->{\item Řešení: "Pre-vote", server se stane kandidátem jen pokud má šanci na zvolení\footnote<3->{\href{https://www.openlife.cc/sites/default/files/php_uploads/4-modifications-for-Raft-consensus.pdf}{Paper: Four modifications for the Raft consensus algorithm}}.} 
+      \end{itemize}  
+    }
+\end{frame}
+
 \section{Zadání semestrální práce}
-
-
 \begin{frame}
   \frametitle{Konsenzus pomocí Raft algoritmu}
  Naimplementujte algoritmus Raft pro replikaci key-value storu

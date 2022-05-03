@@ -64,7 +64,7 @@
 % \newcommand{\redc}{\tikz\draw[red,fill=red] (0,0) circle (.5ex);}
 % \newcommand{\greenc}{\tikz\draw[green,fill=green] (0,0) circle (.5ex);}
 
-\title{Vzájemné vyloučení}
+\title{Vektorové hodiny a vzájemné vyloučení}
 \date{}
 \institute{B4B36PDV -- Paralelní a distribuované výpočty}
 
@@ -77,6 +77,7 @@
   \frametitle{Osnova}
   \begin{itemize}
     \item Opakování z minulého cvičení\\[1.5em]
+    \item Vektorové hodiny
     \item Vzájemné vyloučení\\[1.5em]
     \item Zadání sedmé domácí úlohy
   \end{itemize}
@@ -191,15 +192,16 @@
 \begin{frame}[t]
   \frametitle{Jak to provést v distribuovaném systému?}
   \begin{center}
-  	\only<1>{\includegraphics{10/figs/bank1.pdf}}%
-  	\only<2>{\includegraphics{10/figs/bank2.pdf}}%
-  	\only<3>{\includegraphics{10/figs/bank3.pdf}}%
-  	\only<4>{\includegraphics{10/figs/bank4.pdf}}%
-  	\only<5>{\includegraphics{10/figs/bank5.pdf}}%
-  	\only<6>{\includegraphics{10/figs/bank6.pdf}}%
-  	\only<7>{\includegraphics{10/figs/bank7.pdf}}%
-  	\only<8>{\includegraphics{10/figs/bank8.pdf}}%
-  	\only<9->{\includegraphics{10/figs/bank9.pdf}}%
+  	\only<1>{\includegraphics{10/figs/bank1.pdf}}   %
+  	\only<2>{\includegraphics{10/figs/bank2.pdf}}   %
+  	\only<3>{\includegraphics{10/figs/bank3.pdf}}   %
+  	\only<4>{\includegraphics{10/figs/bank4.pdf}}   %
+  	\only<5>{\includegraphics{10/figs/bank5.pdf}}   %
+  	\only<6>{\includegraphics{10/figs/bank6.pdf}}   %
+  	\only<7>{\includegraphics{10/figs/bank7.pdf}}   % 
+  	\only<8>{\includegraphics{10/figs/bank8.pdf}}   %
+  	\only<9->{\includegraphics{10/figs/bank9.pdf}}  %
+  	% Z pohledu skalarnich hodin je vse v poradku. Problem je, ze nezdetekujeme, ze je neco spatne, tzn. skalarni hodiny nepoznaji, ze prevod v T=3 prevod mel probehnout az po zprave s T=5.
   \end{center}
 
   \only<10>{
@@ -275,14 +277,14 @@
 
   \pause\faWarning \hspace{3pt}
     \textbf{Jak využít vektorové logické hodiny k detekci souběžných událostí?}.
-
+    % 
 \end{frame}
 }
 
 
 \begin{frame}
   \begin{center}
-    \LARGE Jak protokol upravit, aby v nedocházelo k porušení kauzality?
+    \LARGE Jak protokol upravit, aby nedocházelo k porušení kauzality?
   \end{center}
 
   \pause\vspace{1em}\hrule\vspace{1em}
