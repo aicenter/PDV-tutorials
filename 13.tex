@@ -148,7 +148,7 @@
   \onslide<4> Ano, leader je zodpovědný za koordinaci zpracování požadavků a jako jediný může zapisovat do logů followerů. 
   \onslide<5> Ne, systém si zvolí nového leadera který začne zpracovávat požadavky klientů. 
   \onslide<6> Záleží, v jednom \emph{termu} může být maximálně jeden leader, ale v jeden \emph{okamžik} může být leaderů více. Viz \href{http://thesecretlivesofdata.com/raft/}{\see{protipříklad z animace}}.
-  \onslide<7> Ano, ve volbách nemusím být zvolen žádný leader (např. při rovnosti hlasů více kandidátů).
+  \onslide<7> Ano, ve volbách nemusí být zvolen žádný leader (např. při rovnosti hlasů více kandidátů).
 \end{overprint}
 \end{frame}
 }
@@ -171,6 +171,10 @@ Detekovat vlastnost systému bývá {\bf zásadní}
 \vspace{2em}
 
 V \emph{paralelním systému} již víme jak na to
+
+% neyvužitá paměť -> znát vlastnosti cache a přizpůsobit se jim
+%deadlock -> to nevím, tomu se musí předejít správnou logikou paralelizace. Nejlépe nepoužívat ručně mutexy, a pokud ano, používat RAII a ne ručně volat lock/unlock
+%ukončení výpočtu -> vlákna musí detekovat, jestli nebylo nalezeno řešení jiným vláknem (např omp cancel)
 
  \pause\vspace{2em}\hrule\vspace{2em}
 
