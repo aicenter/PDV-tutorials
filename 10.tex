@@ -414,6 +414,26 @@
 \end{frame}
 }
 
+\begin{frame}
+  \begin{center}
+    \LARGE Jak protokol upravit, aby nedocházelo k porušení kauzality?
+  \end{center}
+
+  \pause\vspace{1em}\hrule\vspace{1em}
+  Možností je mnoho, například:
+  \begin{itemize}
+    \pause\item Před odesláním \texttt{REFRESH} zprávy si počkat na potvrzení od databáze \\
+                {\small (Odeslání \texttt{REFRESH} zprávy je kauzálním následkem úspěšné replikace)}
+    \pause\item Pozdržet vyhodnocení dotazu do doby, než replikace proběhne \\
+                {\small (Druhému uživateli můžeme poslat, že má požadovat data zapsaná nejdříve v daném logickém čase)}
+  \end{itemize}
+  %Very shortly, we'll talk about designing a communication mechanism that avoid causality violations.
+  \pause
+  \begin{itemize}
+    \item[\faWarning] \bf Obecně chceme, aby události $e_1$, $e_2$, které mají proběhnout po sobě (tj. například čtení až po replikaci) byly ve vztahu kauzální závislosti.
+  \end{itemize}
+\end{frame}
+
 % %2022-04-19 - presun Vektorovych hodin do dalsiho cviceni
 % \begin{frame}[fragile]
 %   Chceme provést následující dvě operace v daném pořadí:
