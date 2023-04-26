@@ -92,7 +92,7 @@
     \vspace{3em}
 
     \begin{center}
-      \textbf{Neděle 1.5. 23:59 CET}
+      \textbf{Neděle 7.5. 23:59 CET}
     \end{center}
 
     %\raggedleft\small Budeme rádi za Vaši\\zpětnou vazbu! $\rightarrow$
@@ -252,43 +252,71 @@
 \begin{frame}
   \frametitle{Fyzické hodiny}
 
-  \begin{center}
-    \LARGE Jak jsme na tom s fyzickým časem v případě DS?
-  \end{center}
-  Uvažujte například, že si chcete domluvit čas telefonátu s kamarádem, který je na druhém konci světa...
+  % In centralized systems, where one or more processors share a common bus, time isn't much of a concern. The entire system shares the same understanding of time: right or wrong, it is consistent.
 
-  \vspace{1em}\hrule\vspace{1em}
+  {\LARGE V distribuovaném systému máme problém...} \\
+  {\large (každý proces má \underline{vlastní} hodiny)}
+
+  \vspace{1em}
+
+  Možné problémy které hodiny mohou mít:
+  \begin{itemize}
+    \pause
+    \item "Clock skew" \\
+          {\small (hodiny A: 16:24, hodiny B: 16:32)}
+    \pause
+    \item "Clock drift" \\
+          {\small (Hodiny začnou ve stejný čas, např. 12:00, ale po jedné hodině jedny ukazují 12:59 a druhé 13:01)}
+  \end{itemize}
 
   \pause
-  Každý z Vás má své vlastní hodinky...
-  \begin{itemize}
-  	\pause\item Hodinky mohou ukazovat rozdílný čas (\emph{clock skew}) \\
-  	            {\small (jiná časová zóna, zapomenutá změna letního/zimního času, aj.)}
-  	\pause\item Nastavení stejného času před kamarádovým odletem nás nezachrání \\
-  				{\small (hodinky kamaráda se mohou například opožďovat -- \emph{clock drift})}
-  \end{itemize}
-
-\end{frame}
-
-\begin{frame}
-  \begin{center}
-  	\LARGE Co s tím?
-  \end{center}
   \vspace{1em}
-  \begin{itemize}
-  	\pause\item Pokusíme se čas zobrazovaný na hodinkách sladit (\emph{synchronizovat}) \\
-  	            {\small (např. pošleme kamarádovi každých 15 minut SMS zprávu s naším časem)} \\[0.4em]
+  \hrule
+  \vspace{1em}
+  \Large \faWarning \hspace{5pt} \bf Často ale nepotřebujeme znát přesný čas, stačí znát skutečnou souslednost událostí. 
 
-  	            \pause\hfill \textcolor{BrickRed}{To ale nebude moc přesné... :-(} \\[2.2em]
-
-  	\pause\item Termín hovoru si domluvíme ad-hoc \\
-  				{\small (,,zhruba v 11:47 ti napíšu, že už mám čas -- ty mi zavolej zpět``)} \\[0.4em]
-
-  	            \pause\hfill {\LARGE Kauzalita!}
-
-                \hfill Přijetí SMS $\rightarrow$ Zahájení hovoru
-  \end{itemize}
 \end{frame}
+
+% \begin{frame}
+%   \frametitle{Fyzické hodiny}
+
+%   \begin{center}
+%     \LARGE Jak jsme na tom s fyzickým časem v případě DS?
+%   \end{center}
+%   Uvažujte například, že si chcete domluvit čas telefonátu s kamarádem, který je na druhém konci světa...
+
+%   \vspace{1em}\hrule\vspace{1em}
+
+%   \pause
+%   Každý z Vás má své vlastní hodinky...
+%   \begin{itemize}
+%   	\pause\item Hodinky mohou ukazovat rozdílný čas (\emph{clock skew}) \\
+%   	            {\small (jiná časová zóna, zapomenutá změna letního/zimního času, aj.)}
+%   	\pause\item Nastavení stejného času před kamarádovým odletem nás nezachrání \\
+%   				{\small (hodinky kamaráda se mohou například opožďovat -- \emph{clock drift})}
+%   \end{itemize}
+
+% \end{frame}
+
+% \begin{frame}
+%   \begin{center}
+%   	\LARGE Co s tím?
+%   \end{center}
+%   \vspace{1em}
+%   \begin{itemize}
+%   	\pause\item Pokusíme se čas zobrazovaný na hodinkách sladit (\emph{synchronizovat}) \\
+%   	            {\small (např. pošleme kamarádovi každých 15 minut SMS zprávu s naším časem)} \\[0.4em]
+
+%   	            \pause\hfill \textcolor{BrickRed}{To ale nebude moc přesné... :-(} \\[2.2em]
+
+%   	\pause\item Termín hovoru si domluvíme ad-hoc \\
+%   				{\small (,,zhruba v 11:47 ti napíšu, že už mám čas -- ty mi zavolej zpět``)} \\[0.4em]
+
+%   	            \pause\hfill {\LARGE Kauzalita!}
+
+%                 \hfill Přijetí SMS $\rightarrow$ Zahájení hovoru
+%   \end{itemize}
+% \end{frame}
 
 \begin{frame}
   \frametitle{Kauzalita}
@@ -383,6 +411,7 @@
 \only<5>{\hspace{6.1pt}\includegraphics[scale=0.35]{10/figs/pdv_cloud_4.png}}%
 \only<6>{\vspace{1em}\hrule\vspace{1em}
 \Large K čemu bychom zde mohli chtít používat logické hodiny?}
+% Zodpovězeno na dalších slidech [chceme detekovat, zda si User 2 refreshoval spravnou hodnotu.]
 \end{center}
 \end{frame}
 
