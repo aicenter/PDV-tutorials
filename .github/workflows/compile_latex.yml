@@ -1,2 +1,21 @@
-- name: Github Action for LaTeX
-  uses: xu-cheng/latex-action@v2
+name: Bulid beamer presenations
+on: [push]
+jobs:
+  build_latex:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Git repository
+        uses: actions/checkout@v3
+      - name: Compile latex documents
+        uses: xu-cheng/latex-action@v2
+        with:
+          root_file: |
+            01.tex
+            02.tex
+      - name: Cre
+        uses: actions/upload-artifact@v3
+        with:
+          name: PDF
+          path: |
+            01.pdf 
+            02.pdf
