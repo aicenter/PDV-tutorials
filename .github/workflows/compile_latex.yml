@@ -16,10 +16,7 @@ jobs:
             13.tex
           latexmk_shell_escape: true
       - name: Upload generated pdfs to a release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            10.pdf 
-            11.pdf
-            12.pdf
-            13.pdf
+        env:
+          GITHUB_TOKEN: "${{ secrets.RELEASE_REPO_SECRET }}"
+        run: |
+          gh release create v0.0.1 *.pdf -R https://github.com/BoZenKhaa/PDV-tutorials-pdf
