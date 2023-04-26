@@ -6,17 +6,18 @@ jobs:
     steps:
       - name: Set up Git repository
         uses: actions/checkout@v3
-#       - name: Compile latex documents
-#         uses: xu-cheng/latex-action@v2
-#         with:
-#           root_file: |
-#             10.tex
-#             11.tex
-#             12.tex
-#             13.tex
-#           latexmk_shell_escape: true
+      - name: Compile latex documents
+        uses: xu-cheng/latex-action@v2
+        with:
+          root_file: |
+            10.tex
+            11.tex
+            12.tex
+            13.tex
+          latexmk_shell_escape: true
       - name: Upload generated pdfs to a release
         env:
           GITHUB_TOKEN: "${{ secrets.RELEASE_REPO_SECRET }}"
         run: |
-          gh release create v0.0.1 *.tex -R https://github.com/BoZenKhaa/PDV-tutorials-pdf
+          gh release delete v0.0.1 -y -R https://github.com/BoZenKhaa/PDV-tutorials-pdf
+          gh release create v0.0.1 10.pdf 11.pdf 12.pdf 13.pdf -R https://github.com/BoZenKhaa/PDV-tutorials-pdf
