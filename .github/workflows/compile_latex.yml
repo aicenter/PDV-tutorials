@@ -19,4 +19,5 @@ jobs:
         env:
           GITHUB_TOKEN: "${{ secrets.RELEASE_REPO_SECRET }}"
         run: |
+          gh release create v0.0.1 -R https://github.com/BoZenKhaa/PDV-tutorials-pdf
           gh release create v0.0.1 ./13/figs/cuts.pdf -R https://github.com/BoZenKhaa/PDV-tutorials-pdf
