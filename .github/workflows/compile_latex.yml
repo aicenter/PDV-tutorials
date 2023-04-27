@@ -1,2 +1,32 @@
-- name: Github Action for LaTeX
-  uses: xu-cheng/latex-action@v2
+name: Bulid latex presenations and refresh release
+on: [push]
+jobs:
+  build_latex:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Git repository
+        uses: actions/checkout@v3
+      - name: Compile latex presentations
+        uses: xu-cheng/latex-action@v2
+        with:
+          root_file: |
+            01.tex
+            02.tex
+            03.tex
+            04.tex
+            05.tex
+            06.tex
+            07.tex
+            08.tex
+            09.tex
+            10.tex
+            11.tex
+            12.tex
+            13.tex
+          latexmk_shell_escape: true
+      - name: Upload generated pdfs to a release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete v0.0.1
+          gh release create v0.0.1 ./*.pdf
