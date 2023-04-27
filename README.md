@@ -45,3 +45,6 @@ Go to https://sites.google.com/a/fel.cvut.cz/quiz/, your cvut googleapps account
 
 ### Online feedback form
 There is one form for all tutorials, it is saved in the G-drive of the course. Use the `\framefeedback{}` command to include a slide. Don't forget to activate the form before classes and lock it afterwards.
+
+## Github Actions Automated Compilation and Release
+The repository is configured with a Github action that runs on every push. It is sufficient to push changes from overleaf, the pdfs linked from Courseware should get updated automatically in couple of minutes. Investigate failures by checking the Actions tab on github.
