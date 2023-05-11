@@ -226,7 +226,7 @@
   	\pause\item Před každou významnou událostí (obzvlášť posláním zprávy!) si proces $i$ lokální čas posune... \textbf{Ale jen svoji komponentu!} \\
   				\mintinline{java}{++vectorTime[i]}
   	\pause\item Každé zprávě přiřadíme časovou značku $\texttt{msg.}T = \texttt{vectorTime}$
-  	\pause\item Po přijetí zprávy \texttt{msg} procesem $i$ si proces $i$ aktualizuje svůj \texttt{logicalTime}:
+  	\pause\item Po přijetí zprávy \texttt{msg} procesem $i$ si proces $i$ aktualizuje svůj \texttt{logicalTime} ve všech složkách $(\forall j)$ podle:
   				\[ \texttt{vectorTime[j]} = \begin{cases}
   				      1 + \max \lbrace \texttt{vectorTime[j]},\ \texttt{msg.}T\texttt{[j]} \rbrace & \text{if } i = j \\
   				      \max \lbrace \texttt{vectorTime[j]},\ \texttt{msg.}T\texttt{[j]} \rbrace & \text{jinak}
