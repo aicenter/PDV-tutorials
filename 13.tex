@@ -115,7 +115,7 @@
 \begin{overprint}[\textwidth]
   \onslide<2> Ne, např. požadavky přijmuté nelídrem nejsou vůbec zaznamenány. Dále všechny leaderem nepotvrzené požadavky mohou být ze systému smazány.
   \onslide<3> Ano, klientovi potvrzené požadavky už systém nesmí smazat.
-  \onslide<4> Ne, splní jen požadavky, jejichž přijetí \emph{leadorovi potvrdí} nadpoloviční většina serverů. Pro protipříklad viz \href{https://www.cs.princeton.edu/courses/archive/fall16/cos418/papers/raft.pdf}{\see{paper, Figure 8}}.
+  \onslide<4> Ne, splní jen požadavky, jejichž přijetí \emph{leaderovi potvrdí} nadpoloviční většina serverů (platí pro požadavky v aktuálním termu). Pro protipříklad viz \href{https://www.cs.princeton.edu/courses/archive/fall16/cos418/papers/raft.pdf}{\see{paper, Figure 8}}.
   \onslide<5> Ne, žádný server nesmí ze svého logu mazat potvrzené požadavky.
   \onslide<6> Ano, na základě komunikace (AppendEntries RPC) s leaderem.
 \end{overprint}
@@ -144,7 +144,7 @@
 \vspace{1em}
 \begin{overprint}[\textwidth]
   \onslide<2> Ne, volba leadera se nezakládá na id serverů (id se používá pouze pro identifikaci odesílatelu a příjemcu zpráv).
-  \onslide<3> Ne, kandidátem se může stát libovolný follower nebo kandidát. Ale server nedá hlas kandidátovi s méně aktuálním logem než má sám. 
+  \onslide<3> Ne, kandidátem se může stát libovolný follower nebo kandidát. Ale server nedá hlas kandidátovi s méně aktuálním logem než má sám. Zvolený leader také nemusí mít nejnovější log, stačí aby byl aktuálnější než většina serverů. Viz \href{https://www.cs.princeton.edu/courses/archive/fall16/cos418/papers/raft.pdf}{\see{paper, Figure 7}}.
   \onslide<4> Ano, leader je zodpovědný za koordinaci zpracování požadavků a jako jediný může zapisovat do logů followerů. 
   \onslide<5> Ne, systém si zvolí nového leadera který začne zpracovávat požadavky klientů. 
   \onslide<6> Záleží, v jednom \emph{termu} může být maximálně jeden leader, ale v jeden \emph{okamžik} může být leaderů více. Viz \href{http://thesecretlivesofdata.com/raft/}{\see{protipříklad z animace}}.
@@ -336,7 +336,7 @@ Kdy poslat zprávu {\bf mark}
 \end{itemize}
   \vspace{1em}
 \begin{block}{Doprogramujte Chandy-Lamportův algoritmus}
-    Doimplementujte logiku Chandy-Lamportova algoritmu ve třídě \texttt{snapshot/BankingProcess.java}. Následně spusťte scénář \texttt{bank.Main}.
+    Doimplementujte logiku Chandy-Lamportova algoritmu ve třídě \texttt{snapshot/BankProcess.java}. Následně spusťte scénář \texttt{SnapshotRun.main}.
   \end{block}
 \end{frame}
 
