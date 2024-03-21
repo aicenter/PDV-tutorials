@@ -185,7 +185,7 @@ void compute_2(){
 	Sekvenčně je to jednoduché:
 	\begin{minted}{c}
 		unsigned long i = 1;
-		while(collatz(i) < k) i++;
+		while(collatz(i) >= k) i++;
 	\end{minted}
 	\begin{center}
 		\Large Jak tento výpočet zparalelizujeme?
