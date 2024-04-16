@@ -120,7 +120,8 @@
   \begin{itemize}
     \pause\item I ty nejšílenější procesory mají omezený počet vláken (za šílenou cenu) \\
                 {\small (Xeon Platinum 9282, 112 vláken, $\sim$\$25000-\$50000 ? (2018),}\\
-                {\small AMD Ryzen Threadripper PRO 3995WX, 128 vláken, $\sim$\$7000 ? (2022))}
+                {\small AMD Ryzen Threadripper PRO 3995WX, 128 vláken, $\sim$\$7 000 ? (2022))}
+                {\small AMD Ryzen Threadripper PRO 7995WX, 192 vláken, $\sim$\$11 570 \href{https://www.alza.cz/amd-ryzen-threadripper/18869777.htm}{alza} (2023))}
 
     \pause\item Přístupy do sdílené paměti jsou drahé \\
                 {\small (I pokud nepotřebujeme synchronizovat! -- sběrnice má omezenou kapacitu)} \\[1.25em]
@@ -135,17 +136,17 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}
-\begin{center}
-\includegraphics[width=.9\linewidth]{09/figs/ds.jpeg}
-\end{center}
-\end{frame}
+% \begin{frame}
+% \begin{center}
+% \includegraphics[width=.9\linewidth]{09/figs/ds.jpeg}
+% \end{center}
+% \end{frame}
 
-\begin{frame}
-\begin{center}
-  \includegraphics[width=0.4\linewidth]{09/figs/complete.pdf}
-\end{center}
-\end{frame}
+% \begin{frame}
+% \begin{center}
+%   \includegraphics[width=0.4\linewidth]{09/figs/complete.pdf}
+% \end{center}
+% \end{frame}
 
 \begin{frame}
 
@@ -246,6 +247,12 @@ Hledáme nejkratší cestu do cíle.
 \item Neznáme dopředu velikost ani strukturu prostoru
 \end{itemize}
 
+\only<1>{
+    \vspace{4em}
+    \includegraphics[width=.8\linewidth]{09/figs/bfs01.pdf}
+}%
+\only<2,3>{
+
   \pause\vspace{1em}\hrule\vspace{1em}
 
   \begin{center}
@@ -254,11 +261,12 @@ Hledáme nejkratší cestu do cíle.
   \pause
   \begin{itemize}
 \item[$\rightarrow$] Každý stav je {\bf samostaný proces}.
-\item[$\rightarrow$]  Každý proces zná jen své následovníky.
+\item[$\rightarrow$]  Každý proces zná jen své sousedy.
 \item[$\rightarrow$] Jeden z procesů je {\bf kořen}.
 \end{itemize}
 
 \hfill Kořen lze zvolit pomocí volby leadera!
+}
 
 \end{frame}
 
@@ -284,14 +292,14 @@ Jaký algoritmus bude provádět každý proces?
 Označujeme procesy, když jsou {\bf poprvé navštíveny}
 \begin{itemize}
 \item Na začátku je označený jen kořen
-\item Kořen pošle zprávu \texttt{hledej} všem svým následovníkům
+\item Kořen pošle zprávu \texttt{hledej} všem svým sousedům
 \end{itemize}
 \pause
 V každém kole \textit{neoznačené} procesy, které přijmou zprávu \texttt{hledej}, provedou
 \begin{itemize}
 \item Označí se
 \item Určí jednoho z procesů, od kterého přijal zprávu, jako předka
-\item Pošlou zprávu \texttt{hledej} všem svým následovníkům
+\item Pošlou zprávu \texttt{hledej} všem svým sousedům
 \end{itemize}
 
 
