@@ -409,20 +409,12 @@
 \only<3>{\includegraphics[scale=0.35]{10/figs/pdv_cloud_2.png}}%
 \only<4>{\hspace{6.1pt}\includegraphics[scale=0.35]{10/figs/pdv_cloud_3.png}}%
 \only<5>{\hspace{6.1pt}\includegraphics[scale=0.35]{10/figs/pdv_cloud_4.png}}%
-\only<6>{\vspace{1em}\hrule\vspace{1em}
-\Large K čemu bychom zde mohli chtít používat logické hodiny?}
 % Zodpovězeno na dalších slidech [chceme detekovat, zda si User 2 refreshoval spravnou hodnotu.]
 \end{center}
 \end{frame}
 
-{\setbeamertemplate{frame footer}{\see{{\tt ScalarClock.java} a {\tt ScalarTimestamp.java}\sep{\tt Run ScalarClockRun.java} v balíčku {\tt pdv\_cloud.scalar}}}
 \begin{frame}
 
-  \begin{block}{Doprogramujte Lamportovy logické hodiny}
-    Doimplementujte logiku Lamportových logických hodin ve třídě \texttt{ScalarClock.java}. Následně spusťte scénář \texttt{ScalarClockRun.java}.
-  \end{block}
-
-  \pause\vspace{2em}
   \begin{center}
     \LARGE Co je v našem systému špatně?
   \end{center}
@@ -433,13 +425,29 @@
   \pause
   \vspace{2em}
   \begin{center}
-    {\LARGE Jsme to schopní detekovat skalárními hodinami?}
+    {\LARGE Dokázali bychom použít skalární hodiny?}
 
-    \hfill Doimplementujte metodu \texttt{isCausalityForProcessViolated}
-
-    \hfill Pak zkuste spustit scénář \texttt{ScalarDSConfigBombarding}   % Bombarding rozbije právě naimplementovanou detekci tím způsobem, že bude navyšovat čas na databázi a tím pádem budeme detekovat porušení kauzality pokaždé, přestože k němu třeba vůbec nedošlo.
   \end{center}
 
+\end{frame}
+
+{\setbeamertemplate{frame footer}{\see{{\tt ScalarClock.java} a {\tt ScalarTimestamp.java}\sep{\tt Run ScalarClockRun.java} v balíčku {\tt pdv\_cloud.scalar}}}
+\begin{frame}
+    \begin{block}{Doprogramujte Lamportovy logické hodiny}
+        Doimplementujte logiku Lamportových logických hodin ve třídě \texttt{ScalarClock.java}. Následně spusťte scénář \texttt{ScalarClockRun.java}.
+  \end{block}
+    \begin{center}
+        {\LARGE Následně spusťte i scénář s configem \small ScalarDSConfigBombarding}
+
+        \vspace{2em}
+        \pause
+
+        {\LARGE Jaký je problém?}
+        
+    \end{center}
+
+    
+  
 \end{frame}
 }
 
