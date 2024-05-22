@@ -87,12 +87,7 @@
 
 \section{Opakování z minulého cvičení}
 
-\begin{frame}[standout]
- \Huge
- \url{http://goo.gl/a6BEMb}
-\end{frame}
-
-{\setbeamertemplate{frame footer}{\see{\url{http://goo.gl/a6BEMb}}}
+{\setbeamertemplate{frame footer}{\see{\url{https://forms.gle/X9Mx4qJGUkqpBRc87}}}
 \begin{frame}[fragile]
 \frametitle{Klientské požadavky}
 
@@ -107,7 +102,7 @@
 \begin{itemize}
 \item všechny požadavky splní \uncover<2->{- \textcolor{red}{FALSE}}
 \item splní jen požadavky, které leader klientovi potvrdí \uncover<3->{- \textcolor{green}{TRUE}}
-\item splní jen požadavky, které si zapíše do logu nadpoloviční většina serverů \uncover<4->{- \textcolor{red}{FALSE}}
+\item splní právě ty požadavky, které si zapíše do logu nadpoloviční většina serverů \uncover<4->{- \textcolor{red}{FALSE}}
 \item potvrzené požadavky může ze svého logu mazat jen nový leader \uncover<5->{- \textcolor{red}{FALSE}}
 \item nepotvrzené požadavky si může z logu smazat jakýkoli server \uncover<6->{- \textcolor{green}{TRUE}}
 \end{itemize}
@@ -134,11 +129,11 @@
 {\em Zvolte, které z následujících možností platí}
 
 \begin{itemize}
-\item leader má vždy nejvyšší index z běžících procesů \uncover<2->{- \textcolor{red}{FALSE}}
+\item leader má vždy nejvyšší ID z běžících procesů \uncover<2->{- \textcolor{red}{FALSE}}
 \item kandidát na leadera musí mít nejnovější log \uncover<3->{- \textcolor{red}{FALSE}} 
 \item pouze leader může posílat požadavky o zápis do logů followerům \uncover<4->{- \textcolor{green}{TRUE}}
 \item při výpadku leadera Raft přestane fungovat navždy \uncover<5->{- \textcolor{red}{FALSE}}
-\item v systému může být vždy nanejvýš jeden leader \uncover<6->{- \textcolor{gray}{DEPENDS}}
+\item v celém systému může být v jednu chvíli vždy nanejvýš jeden leader \uncover<6->{- \textcolor{red}{FALSE}}
 \item systém může být několik epoch bez leadera \uncover<7->{- \textcolor{green}{TRUE}}
 \end{itemize}
 \vspace{1em}
@@ -147,7 +142,7 @@
   \onslide<3> Ne, kandidátem se může stát libovolný follower nebo kandidát. Ale server nedá hlas kandidátovi s méně aktuálním logem než má sám. Zvolený leader také nemusí mít nejnovější log, stačí aby byl aktuálnější než většina serverů. Viz \href{https://www.cs.princeton.edu/courses/archive/fall16/cos418/papers/raft.pdf}{\see{paper, Figure 7}}.
   \onslide<4> Ano, leader je zodpovědný za koordinaci zpracování požadavků a jako jediný může zapisovat do logů followerů. 
   \onslide<5> Ne, systém si zvolí nového leadera který začne zpracovávat požadavky klientů. 
-  \onslide<6> Záleží, v jednom \emph{termu} může být maximálně jeden leader, ale v jeden \emph{okamžik} může být leaderů více. Viz \href{http://thesecretlivesofdata.com/raft/}{\see{protipříklad z animace}}.
+  \onslide<6> Ne, v jednom \emph{termu} může být maximálně jeden leader, ale v jeden \emph{okamžik} může být leaderů více. Viz \href{http://thesecretlivesofdata.com/raft/}{\see{protipříklad z animace}}.
   \onslide<7> Ano, ve volbách nemusí být zvolen žádný leader (např. při rovnosti hlasů více kandidátů).
 \end{overprint}
 \end{frame}
