@@ -66,14 +66,11 @@
 \begin{frame}
   \frametitle{Důležité informace}
   \small
-  \textbf{Přednášející}: \hspace{5pt} Jakub Mareček \hspace{10pt} Michal Jakob \\[1em]
+  \textbf{Přednášející}: \hspace{5pt} Matěj Kafka \hspace{10pt} Michal Jakob \\[1em]
   \textbf{Cvičící}: \\
-  \hspace*{10pt} \textbf{Paralelní část}: Matěj Kafka, Petr Macejko, Daria Mikhaylovskaya, Michal Slouka  \\
-  \hspace*{10pt} \textbf{Distribuovaná část}: Petr Macejko, Jan Mrkos, David Milec \\[3.5em]
+  \hspace*{10pt} Petr Macejko, Jakub Dupák, Max Hollmann, Jáchym Herynek, David Milec \\[3.5em]
   Důležité odkazy: \\[0.7em]
-  {\Large\url{https://cw.fel.cvut.cz/wiki/courses/b4b36pdv}} \\[0.7em]
-  \url{https://cw.felk.cvut.cz/forum/} \\
-  \url{https://cw.felk.cvut.cz/brute/}
+  {\Large\url{https://pdv.pages.fel.cvut.cz/}} \\[0.7em]
 \end{frame}
 
 \begin{frame}[t]
@@ -223,7 +220,6 @@
 \section{Opakování}
 \begin{frame}
   \frametitle{Kompilace programů v C/C++ s pomocí Cmake}
-  \download{tutorial\_01.zip} \\[1.3em]
   \begin{block}{Vygenerování build scriptů}
     \texttt{cmake <src dir>}
   \end{block}
@@ -253,16 +249,10 @@
       \item A jak bychom dále mohli navýšit výkon procesoru?
     \end{itemize}
     \vspace{1em}
-    \see{{\tt memory.cpp}}
+    \see{{\tt 1memory.cpp}}
   \end{minipage}
 
   \vspace{3em}
-
-  \pause
-  \alert{
-    \Large
-    Vyzkoušejte si prosím, že Vám funguje přístup do BRUTE a odevzdejte soubor \texttt{memory.cpp}.
-  }
 \end{frame}
 \begin{frame}
   \frametitle{Moderní procesor}
@@ -290,11 +280,11 @@
 \begin{frame}
   \frametitle{Cache-miss}
 
-  \see{\tt{memory.cpp}}
+  \see{\tt{1memory.cpp}}
 
   \vspace{2em}
 
-  \see{\tt{matrix.cpp}}
+  \see{\tt{2matrix.cpp}}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -393,7 +383,7 @@
   \end{itemize}
 \end{frame}
 \begin{frame}{False-sharing}
-  \centering\see{{\tt false\_sharing.cpp}}
+  \centering\see{{\tt 3false\_sharing.cpp}}
 \end{frame}
 
 \section{Paralelizace v praxi}
@@ -425,7 +415,7 @@
             array[i] = exp(log(array[i]));
           }
         }
-      }
+
     \end{minted}
   \end{block}
   \pause
@@ -448,13 +438,13 @@
     Tuto úlohu lze dobře paralelizovat.
 
     \begin{minted}[fontsize=\footnotesize]{c}
-      void magic_operation(double * array) {
-        for(unsigned int i = 0 ; i < 1000000 ; i++) {
-          for(unsigned int k = 0 ; k < 500 ; k++) {
-            array[i] = exp(log(array[i]));
-          }
+        void magic_operation(std::vector<double>& array) {
+            for (ptrdiff_t i = 0; i < (ptrdiff_t)array.size(); i++) {
+                for (size_t k = 0; k < 500; k++) {
+                    array[i] = exp(log(array[i]));
+                }
+            }
         }
-      }
     \end{minted}
   \end{block}
   
@@ -491,7 +481,7 @@
 }
 \fi
 
-{\setbeamertemplate{frame footer}{\see{{\tt PDVCrypt.cpp},\ \ \ {\tt decrypt.cpp}} \hfill \download{decrypt\_data.zip}}
+{\setbeamertemplate{frame footer}{\see{{\tt PDVCrypt.hpp},\ \ \ {\tt 5decrypt.cpp}}}
 
 \begin{frame}[fragile]
   \frametitle{Šifra \texttt{PDVCrypt}}

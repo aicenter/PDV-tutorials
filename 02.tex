@@ -94,7 +94,7 @@
 %   \end{itemize}
 % \end{frame}
 
-{\setbeamertemplate{frame footer}{\see{{\tt PDVCrypt.cpp},\ \ \ {\tt decrypt.cpp}}  \hfill \faDownload \hspace{5pt} \texttt{decrypt\_data.zip}}
+{\setbeamertemplate{frame footer}{\see{{\tt PDVCrypt.hpp},\ \ \ {\tt 5decrypt.cpp}}}
 \begin{frame}[fragile]
   \frametitle{Šifra \texttt{PDVCrypt}}
   Vzpomeňte si na šifru z minulého cvičení
@@ -115,23 +115,18 @@
 \end{frame}
 }
 
-{\setbeamertemplate{frame footer}{\see{{\tt decryption.cpp},\ \ \ {\tt benchmark.cpp}, \ \ \ {\tt PDVCrypt.cpp} }}
+{\setbeamertemplate{frame footer}{\see{{\tt 5decrypt.cpp}, \ \ \ {\tt PDVCrypt.hpp} }}
 \begin{frame}[fragile]
   \frametitle{Šifra \texttt{PDVCrypt}}
   Jak vypadala paralelizace v OpenMP?
 
     \begin{minted}[fontsize=\footnotesize]{c}
-void decrypt_openmp(const PDVCrypt &crypt, 
-        std::vector<std::pair<std::string, enc_params>> &encrypted,
-        unsigned int numThreads) {
-    const unsigned long size = encrypted.size();
-
-    #pragma omp parallel for num_threads(numThreads)
-    for(unsigned long i = 0 ; i < size ; i++) {
-        auto & enc = encrypted[i];
-        crypt.decrypt(enc.first, enc.second);
-    }
-}
+    pdv::benchmark("Decryption", [&] {
+        #pragma omp parallel for num_threads(numThreads)
+        for (auto& enc : encrypted) {
+            crypt.decrypt(enc.first, enc.second);
+        }
+    });
     \end{minted}
     
 \end{frame}

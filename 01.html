@@ -1,0 +1,289 @@
+<h3 id="osnova">Osnova</h3>
+<ul>
+<li>Čím se budeme zabývat?</li>
+<li>Hodnocení předmětu</li>
+<li>Úvod do paralelního hardwaru a softwaru</li>
+</ul>
+<h1 id="organizace-předmětu">Organizace předmětu</h1>
+<h3 id="důležité-informace">Důležité informace</h3>
+<p><strong>Přednášející</strong>: Matěj Kafka Michal Jakob<br />
+<strong>Cvičící</strong>:<br />
+Petr Macejko, Jakub Dupák, Max Hollmann, Jáchym Herynek, David
+Milec<br />
+Důležité odkazy:<br />
+<a href="https://pdv.pages.fel.cvut.cz/"
+class="uri">https://pdv.pages.fel.cvut.cz/</a><br />
+:::</p>
+<h3 id="čím-se-budeme-zabývat">Čím se budeme zabývat?</h3>
+<div class="center">
+<p>     a       výpočty</p>
+</div>
+<p>:::</p>
+<h3 id="hodnocení-předmětu">Hodnocení předmětu</h3>
+<div class="block">
+<p>Paralelní výpočty</p>
+<ul>
+<li><p>5 malých programovacích úloh 10 bodů</p></li>
+<li><p>Semestrální práce 12 bodů</p></li>
+</ul>
+</div>
+<div class="block">
+<p>Distribuované výpočty</p>
+<ul>
+<li><p>2 malé úlohy 4 body</p></li>
+<li><p>Semestrální práce 14 bodů</p></li>
+</ul>
+</div>
+<div class="block">
+<p>Praktická zkouška</p>
+<ul>
+<li><p>Praktická část zkoušky (min. 10b) 20 bodů<br />
+  (Vyřešení zadaného problému za použití paralelizace.)</p></li>
+<li><p>Teoretická část zkoušky (min. 20b) 40 bodů</p></li>
+</ul>
+</div>
+<p>V semestru musíte získat <strong>alespoň 20 bodů</strong> Celkem: 100
+bodů :::</p>
+<h3 id="hodnocení-předmětu-1">Hodnocení předmětu</h3>
+<div class="center">
+<p>Vyžadujeme <strong>samostatnou</strong> práci na všech úlohách.</p>
+</div>
+<p><strong>Plagiáty jsou zakázané.</strong> Nepřidělávejte prosím
+starosti nám, ani sobě. :::</p>
+<h3 id="hodnocení-předmětu-2">Hodnocení předmětu</h3>
+<p>Docházka na cvičení není povinná.</p>
+<p>To ale neznamená, že byste na cvičení neměli chodit...</p>
+<ul>
+<li><p>Budeme probírat látku, která se Vám bude hodit u úkolů a u
+zkoušky.</p></li>
+<li><p>Dostanete prostor pro práci na semestrálních pracích.</p></li>
+<li><p>Konzultace budou probíhat <strong>primárně</strong> na
+cvičeních.</p></li>
+<li><p>Ušetříme Vám čas a nervy (nebo v to alespoň doufáme ;-)</p></li>
+</ul>
+<hr />
+<p>Pokud se na cvičení rozhodnete nechodit, budeme předpokládat, že
+probírané látce dokonale rozumíte. Případné konzultace v žádném případě
+nenahrazují cvičení! :::</p>
+<h3 id="na-čem-budeme-stavět">Na čem budeme stavět?</h3>
+<ul>
+<li><p>Programování v jazyce C/C++ (B0B36PRP)</p>
+<ul>
+<li><p>Základy programování v jazyce C/C++</p></li>
+<li><p>Kompilace programů v jazyce C/C++</p></li>
+<li><p>Základy objektového programování (znalost C++11 výhodou)</p></li>
+</ul></li>
+<li><p>Technologické předpoklady paralelizace (B4B36OSY)</p>
+<ul>
+<li><p>Vlákna a jejich princip</p></li>
+<li><p>Metody synchronizace a komunikace vláken</p></li>
+</ul></li>
+<li><p>Základní znalost fungování počítače a procesoru
+(B4B35APO)</p></li>
+<li><p>Znalost základních algoritmů (B4B33ALG) :::</p></li>
+</ul>
+<h1 id="opakování">Opakování</h1>
+<h3 id="kompilace-programů-v-cc-s-pomocí-cmake">Kompilace programů v
+C/C++ s pomocí Cmake</h3>
+<div class="block">
+<p>Vygenerování build scriptů <code>cmake &lt;src dir&gt;</code></p>
+</div>
+<p>Zde <code>&lt;src dir&gt;</code> je složka se souborem
+<code>CMakeLists.txt</code>.</p>
+<div class="block">
+<p>Kompilace <code>cmake –build &lt;build dir&gt;</code></p>
+</div>
+<p>Zde <code>&lt;build dir&gt;</code> je složka s vygenerovanými soubory
+pro sestavení programu.</p>
+<p>Nebo použijte IDE s dobrou podporou C++, například CLion
+(multiplatformní) nebo Visual Studio (Windows) :::</p>
+<h3 id="bylo-nebylo...">Bylo, nebylo...</h3>
+<p>Pro připomenutí: Cílem paralelních výpočtů je dosáhnout zvýšení
+výkonu</p>
+<figure>
+<embed src="01/figs/single_thread.pdf" />
+<figcaption aria-hidden="true">image</figcaption>
+</figure>
+<p><strong><u>von Neumannova architektura</u></strong></p>
+<ul>
+<li><p>Jaké má nevýhody?</p></li>
+<li><p>Jak bychom je mohli opravit?</p></li>
+<li><p>A jak bychom dále mohli navýšit výkon procesoru? :::</p></li>
+</ul>
+<h3 id="moderní-procesor">Moderní procesor</h3>
+<p><embed src="01/figs/modern_cpu.pdf" /> :::</p>
+<h3 id="moderní-procesor-1">Moderní procesor</h3>
+<p>:::</p>
+<h3 id="moderní-procesor-2">Moderní procesor</h3>
+<p>Možné “nástrahy” použití moderního procesoru s více jádry a
+cache:</p>
+<ul>
+<li><p>Komunikace s pamětí je stále pomalá (problém
+<em>cache-miss</em>)</p></li>
+<li><p>Přístup ke sdíleným datům více vlákny (<em>true
+sharing</em>)</p></li>
+<li><p>Udržování koherence cache může být drahé (<em>false
+sharing</em>)<br />
+</p></li>
+<li><p>... a jiné :::</p></li>
+</ul>
+<h3 id="cache-miss">Cache-miss</h3>
+<p><code>1memory.cpp</code></p>
+<p><code>2matrix.cpp``</code> :::</p>
+<h3 id="true-sharing">True sharing</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span> multiply<span class="op">(</span><span class="dt">int</span><span class="op">*</span> number<span class="op">,</span> <span class="dt">int</span> multiplyBy<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>      <span class="op">*</span>number <span class="op">=</span> <span class="op">(*</span>number<span class="op">)</span> <span class="op">*</span> multiplyBy<span class="op">;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span></code></pre></div>
+<p>Předpokládejme <code
+class="sourceCode c"><span class="dt">int</span> number <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></code>
+a mějme dvě vlákna:</p>
+<ul>
+<li><p>Vlákno 1: <code
+class="sourceCode c">multiply<span class="op">(&amp;</span>number<span class="op">,</span><span class="dv">2</span><span class="op">)</span></code></p></li>
+<li><p>Vlákno 2: <code
+class="sourceCode c">multiply<span class="op">(&amp;</span>number<span class="op">,</span><span class="dv">3</span><span class="op">)</span></code></p></li>
+</ul>
+<p>Co bude v proměnné <code class="sourceCode c">number</code> po
+skončení obou vláken? :::</p>
+<h3 id="true-sharing-1">True sharing</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span> multiply<span class="op">(</span><span class="dt">int</span> <span class="op">*</span> number<span class="op">,</span> <span class="dt">int</span> multiplyBy<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>      <span class="op">*</span>number <span class="op">=</span> <span class="op">(*</span>number<span class="op">)</span> <span class="op">*</span> multiplyBy<span class="op">;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span></code></pre></div>
+<p><span class="math display">$$\Bigg\downarrow$$</span></p>
+<pre class="gas"><code>    imul esi, DWORD PTR [rdi]
+    mov DWORD PTR [rdi], esi
+    ret</code></pre>
+<p><a href="http://godbolt.org" class="uri">http://godbolt.org</a>
+:::</p>
+<h3 id="true-sharing-2">True sharing</h3>
+<p>Vlákno 1 /<code class="gas">mov esi, 2</code><br />
+</p>
+<hr />
+<p><code class="gas">imul esi, DWORD PTR [rdi]</code><br />
+<code class="gas">mov DWORD PTR [rdi], esi</code><br />
+<code class="gas">ret</code></p>
+<p>Vlákno 2 /<code class="gas">mov esi, 3</code><br />
+</p>
+<hr />
+<p><code class="gas">imul esi, DWORD PTR [rdi]</code><br />
+<code class="gas">mov DWORD PTR [rdi], esi</code><br />
+<code class="gas">ret</code></p>
+<div class="center">
+<p><code></code></p>
+</div>
+<p>:::</p>
+<h3 id="false-sharing">False-sharing</h3>
+<p>Moderní procesor pracuje s pamětí <em>po blocích</em>, které se
+mapují do cache.</p>
+<ul>
+<li><p>I když vlákna nepracují se stejnými proměnnými, mohou chtít
+pracovat se stejným <em>blokem</em>.</p></li>
+<li><p>Jeden blok se pak nutně musí nacházet v cachích různých jader – a
+ve více kopiích</p></li>
+</ul>
+<figure>
+</figure>
+<ul>
+<li>Ale právě té komunikaci s pamětí jsme se chtěli použitím cache
+vyhnout! :::</li>
+</ul>
+<p>False-sharing :::</p>
+<h1 id="paralelizace-v-praxi">Paralelizace v praxi</h1>
+<div class="block">
+<p>Je následující tvrzení pravdivé? Mějme procesor s <span
+class="math inline"><em>p</em></span> jádry a úlohu, která při využití
+jednoho jádra trvá <span class="math inline"><em>T</em></span>
+milisekund. Využijeme-li všech <span
+class="math inline"><em>p</em></span> jader pro vyřešení úlohy, vyřešení
+úlohy zvládneme za <span
+class="math inline"><em>T</em>/<em>p</em></span> milisekund.</p>
+</div>
+<p><span style="color: BrickRed"><strong>Tvrzení není
+pravdivé.</strong></span> Proč? Zkuste vymyslet co možná nejvíce důvodů,
+proč tomu tak není.</p>
+<p>O úlohách, kde toto tvrzení platí říkáme, že jsou tzv.
+<em>lineární</em> nebo také <em>embarassingly parallel</em>. Takových
+úloh ale v praxi potkáme velmi málo. :::</p>
+<div class="block">
+<p>Je následující tvrzení pravdivé? Mějme pole o 1,000,000 prvků. S
+každým prvkem pole máme za úkol 100<span class="math inline">×</span>
+provést “magickou operaci” <span
+class="math inline"><em>x</em> ← <em>e</em><sup>ln <em>x</em></sup></span>.
+Tuto úlohu lze dobře paralelizovat.</p>
+<div class="sourceCode" id="cb4" data-fontsize="\footnotesize"><pre
+class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>      <span class="dt">void</span> magic_operation<span class="op">(</span><span class="dt">double</span> <span class="op">*</span> array<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span><span class="op">(</span><span class="dt">unsigned</span> <span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span> <span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">1000000</span> <span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>          <span class="cf">for</span><span class="op">(</span><span class="dt">unsigned</span> <span class="dt">int</span> k <span class="op">=</span> <span class="dv">0</span> <span class="op">;</span> k <span class="op">&lt;</span> <span class="dv">500</span> <span class="op">;</span> k<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>            array<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> exp<span class="op">(</span>log<span class="op">(</span>array<span class="op">[</span>i<span class="op">]));</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>          <span class="op">}</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span></code></pre></div>
+</div>
+<p><span style="color: OliveGreen"><strong>Tvrzení je
+pravdivé.</strong></span> Jednotlivé výpočty hodnot <code
+class="sourceCode c">array<span class="op">[</span>i<span class="op">]</span></code>
+na sobě nezávisí a můžeme je rozložit mezi různá vlákna a dosáhnout
+téměř lineárního nárůstu výkonu.</p>
+<hr />
+<p>A nebo bychom si mohli vzpomenout, že <span
+class="math inline">ln <em>x</em></span> a <span
+class="math inline"><em>e</em><sup><em>x</em></sup></span> jsou inverzní
+funkce. Ale to bychom neměli co paralelizovat ;-) :::</p>
+<div class="block">
+<p>Je následující tvrzení pravdivé? Mějme pole o 1,000,000 prvků. S
+každým prvkem pole máme za úkol 100<span class="math inline">×</span>
+provést “magickou operaci” <span
+class="math inline"><em>x</em> ← <em>e</em><sup>ln <em>x</em></sup></span>.
+Tuto úlohu lze dobře paralelizovat.</p>
+<div class="sourceCode" id="cb5" data-fontsize="\footnotesize"><pre
+class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>        <span class="dt">void</span> magic_operation<span class="op">(</span>std<span class="op">::</span>vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;&amp;</span> array<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> <span class="op">(</span><span class="dt">ptrdiff_t</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="op">(</span><span class="dt">ptrdiff_t</span><span class="op">)</span>array<span class="op">.</span>size<span class="op">();</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> k <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> k <span class="op">&lt;</span> <span class="dv">500</span><span class="op">;</span> k<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                    array<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> exp<span class="op">(</span>log<span class="op">(</span>array<span class="op">[</span>i<span class="op">]));</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>                <span class="op">}</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span></code></pre></div>
+</div>
+<p>Proč jsme ale nedosáhli <span
+class="math inline"><em>s</em></span>-násobného zrychlení (kde <span
+class="math inline"><em>s</em></span> je počet jader procesoru?).
+Vzpomeňte si na Amdahlův zákon. <span class="math display">$$S =
+\cfrac{1}{(1-p) + \frac{p}{s}}$$</span> Dokážete říct, co tvoří
+neparalelizovatelnou část programu? (vyžadující <span
+class="math inline">(1−<em>p</em>)%</span> času) :::</p>
+<h3 id="šifra-pdvcrypt">Šifra <code>PDVCrypt</code></h3>
+<div class="center">
+<figure>
+<embed src="01/figs/pdvcrypt.pdf" />
+<figcaption aria-hidden="true">image</figcaption>
+</figure>
+</div>
+<p>Jeden krok dešifrování:</p>
+<ul>
+<li><p><span class="math inline">$s_i \gets \Big[ s_i + p_1 \times
+secret(\overbrace{s_{[i-2 .. i+2]}}^{\text{EQRBF}}) \Big] \
+\mathrm{mod}\ |\Sigma|$</span></p></li>
+<li><p><span
+class="math inline"><em>i</em> ← [<em>i</em> + <em>p</em><sub>2</sub> × <em>s</em><em>e</em><em>c</em><em>r</em><em>e</em><em>t</em>(<em>s</em><sub>[<em>i</em>−2..<em>i</em>+2]</sub>)] mod |<em>s</em>|</span></p></li>
+</ul>
+<p>... opakován <span class="math inline"><em>N</em></span>-krát</p>
+<p><strong>Úkol:</strong> Doimplementujte dešifrovací pravidlo do metody
+<code>decrypt</code> v souboru <code>PDVCrypt.cpp</code>. :::</p>
+<h3 id="šifra-pdvcrypt-1">Šifra <code>PDVCrypt</code></h3>
+<div class="block">
+<p>Je následující tvrzení pravdivé? Proces dešifrování řetězce
+zašifrovaného pomocí <code>PDVCrypt</code> lze snadno paralelizovat.</p>
+</div>
+<p><span style="color: BrickRed"><strong>Tvrzení není
+pravdivé.</strong></span> Proč paralelní verze dešifrovacího algoritmu
+vůbec nefunguje?</p>
+<hr />
+<p>Uvažujte množinu zašifrovaných řetězců, které máte za úkol
+dešifrovat. Mohli bychom využít více jader v tomto případě? :::</p>
+<div class="center">
+<p><strong>Díky za pozornost!</strong></p>
+</div>
+<p>Budeme rádi za Vaši<br />
+zpětnou vazbu! <span class="math inline">→</span></p>
+<p><br />
+<a href="https://forms.gle/q6dTqGkjFfMdKMTr5"
+class="uri">https://forms.gle/q6dTqGkjFfMdKMTr5</a> :::</p>
