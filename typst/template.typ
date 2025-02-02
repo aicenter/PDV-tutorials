@@ -156,7 +156,7 @@
     fill: rgb("#23373b"), // dark teal
   )
   set strong(delta: 100)
-  show math.equation: set text(font: "Fira Math")
+  show math.equation: set text(font: "New Computer Modern Math")
   show raw: set text(font: code-font)
   set align(horizon)
   show emph: it => text(weight: 500, it.body)
