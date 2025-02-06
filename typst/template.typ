@@ -116,7 +116,8 @@
   divider
 
   text(size: .6em)[
-    B4B36PDV -- Paralelní a distribuované výpočty FEL ČVUT
+    B4B36PDV -- Paralelní a distribuované výpočty \
+    FEL ČVUT
   ]
 })
 

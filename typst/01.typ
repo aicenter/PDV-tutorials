@@ -4,7 +4,6 @@
 
 #show: metropolis.setup
 
-// Title slide
 #slide[
   #text(size: 1.3em)[
     *Úvod do B4B36PDV*
@@ -19,7 +18,6 @@
   FEL ČVUT
 ]
 
-// Outline slide
 #slide[
   = Osnova
 
@@ -31,7 +29,6 @@
 
 #new-section[Organizace předmětu]
 
-// Important info slide
 #slide[
   = Důležité informace
 
@@ -42,7 +39,6 @@
   *Stránky cvičení:* #link("https://pdv.pages.fel.cvut.cz/")
 ]
 
-// What we'll cover slide
 #slide[
   = Čím se budeme zabývat?
 
