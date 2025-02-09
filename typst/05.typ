@@ -85,7 +85,7 @@ void compute_2(){
 
   Má se za to, že tato sekvence vždy dosáhne *1* (_Collatz conjecture_). \
   Po kolika krocích se tak ale stane?
-
+][
   #h(1fr) Collatzova funkce $C(n)$ \
   #h(1fr) např. $C(5)=5$, $C(16)=4$
 ]
@@ -103,7 +103,7 @@ void compute_2(){
   ]
 ][
   #important[
-    Jak paralelní výpočet zrychlit? Musíme vždy generovat celé sekvence?
+    Jak paralelní výpočet zrychlit? #small[Musíme vždy generovat celé sekvence?]
   ]
 ][
 #frame[
