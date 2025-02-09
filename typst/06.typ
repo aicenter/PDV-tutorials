@@ -12,7 +12,9 @@
 
 #slide-items[
   = Osnova
+
   - Opakování z minulého cvičení
+  \
   - Dynamické vytváření úloh s `#pragma omp task`
   - Paralelní merge sort
   - Paralelní counting sort
@@ -44,9 +46,9 @@ for(int i = 0 ; i < size ; i++) {
 - Nepůjde pravděpodobně zkompilovat
 - Paralelní blok skončí po nalezení prvního řešení
 - Paralelní blok skončí, až všechna vlákna najdou řešení
-- Aby blok skončil ihned po nalezení řešení, musíme (vhodně) doplnit \texttt{\#pragma omp cancel for}
-- Aby blok skončil ihned po nalezení řešení, musíme (vhodně) doplnit \texttt{\#pragma omp cancelation point for}
-- Měli bychom nastavit proměnnou prostředí \texttt{OMP\_CANCELLATION=true}
+- Aby blok skončil ihned po nalezení řešení, musíme (vhodně) doplnit `#pragma omp cancel for`
+- Aby blok skončil ihned po nalezení řešení, musíme (vhodně) doplnit `#pragma omp cancelation point for`
+- Měli bychom nastavit proměnnou prostředí `OMP_CANCELLATION=true`
 ]
 
 #slide[
@@ -112,11 +114,11 @@ unsigned long long traverse_and_sum(node * n) {
 
 #v(2em)
 
-#emoji.warning #h(5pt) Pozor! Nutno použít `shared` (pro přístup k proměnné) a `taskwait`! \
+#emoji.warning #h(5pt) *Pozor!* Nutno použít `shared` (pro přístup k proměnné) a `taskwait`! 
 Nepoužití těchto konstruktů povede k špatnému výsledku programu (data se nezapíší globálně) nebo i k pádu (proměnná `sum` zanikne po `return`)!
 ]
 
-#slide[
+#slide-items[
 = `#pragma omp task`
 
 Něco nám tam ale chybí... Ještě potřebujeme ,,někoho``, kdo `tasky` bude řešit. Potřebujeme si připravit vlákna!
@@ -127,15 +129,15 @@ unsigned long long start_traversal() {
   traverse_and_sum(root);
 }
 ```
-
-#v(2em)#v(1em)
+][
+#v(2em)
 
 #important[
 Rychlá otázka: Stane se skutečně to, co bychom chtěli?
 ]
 ]
 
-#slide[
+#slide-items[
 = `#pragma omp task`
 
 My ale chceme, aby kořen zpracovávalo pouze _jedno_ vlákno!
@@ -150,7 +152,8 @@ unsigned long long start_traversal() {
 }
 ```
 
-#v(1em)#v(1em)
+][
+#v(1em)
 
 #important[
 Rychlá otázka: Stane se skutečně to, co bychom chtěli?
@@ -241,7 +244,7 @@ function mergesort(m)
 #slide[
 = Paralelní merge sort
 
-#image("06/figs/mergesort.svg", width: 70%)
+#image("06/figs/mergesort.png", width: 70%)
 ]
 
 #slide[
@@ -259,9 +262,9 @@ Doimplementujte tělo metody `mergesort_parallel(...)` (a případných dalšíc
 ]
 
 #slide[
-= Otázka
+= Složitost
 
-Jakou složitost má sekvenční mergesort? A jak je na tom jeho paralelní verze?
+*Otázka:* Jakou složitost má sekvenční mergesort? A jak je na tom jeho paralelní verze?
 ]
 
 #new-section[Paralelní counting sort]
@@ -269,15 +272,15 @@ Jakou složitost má sekvenční mergesort? A jak je na tom jeho paralelní verz
 #slide[
 = Counting sort
 
-Uvažujme, že máme za úkol seřadit pole prvků, které obsahuje hodnoty z malého omezeného rozsahu $a \leq x \leq b$.
+Uvažujme, že máme za úkol seřadit pole prvků, které obsahuje hodnoty z malého omezeného rozsahu $a <= x <= b$.
 
-Pak může být použití standardních algoritmů se složitostí $O(n \log n)$ nevhodné.
+Pak může být použití standardních algoritmů se složitostí $O(n "log" n)$ nevhodné.
 
-#v(1em)#v(1em)
+#v(2em)
 
-Counting sort:
+=== Counting sort:
 
-1. Napočítáme si počty jednotlivých prvků $c(x)$ z rozsahu $x \in [a,b]$ (,,histogram``)
+1. Napočítáme si počty jednotlivých prvků $c(x)$ z rozsahu $x in [a,b]$ ("histogram")
 2. Počty prvků projdeme ve vzestupném pořadí. Prvek $x$ zapíšeme do výstupního pole $c(x)$-krát.
 
 #v(1em)
@@ -285,16 +288,16 @@ Counting sort:
 #h(1fr) Složitost $O(n + k)$, kde $k = b-a+1$
 ]
 
-#slide[
+#slide-items[
 = Counting sort
 
-1. Napočítáme si počty jednotlivých prvků $c(x)$ z rozsahu $x \in [a,b]$ (,,histogram``)
+1. Napočítáme si počty jednotlivých prvků $c(x)$ z rozsahu $x in [a,b]$ (,,histogram``)
 2. Počty prvků projdeme ve vzestupném pořadí. Prvek $x$ zapíšeme do výstupního pole $c(x)$-krát.
 
 #v(1em)#v(1em)
 
 #h(1fr) Jak bychom kroky 1 a 2 mohli paralelizovat?
-
+][
 #frame[
 === Doimplementujte metodu `counting_parallel`
 
@@ -303,6 +306,8 @@ Doimplementujte tělo metody `counting_parallel(...)` v souboru `countingsort.h`
 ]
 
 #slide[
+  #show: focus
+
 = SPOILER ALERT!
 
 #v(2em)
@@ -315,32 +320,39 @@ Doimplementujte tělo metody `counting_parallel(...)` v souboru `countingsort.h`
 #slide[
 = Prefixní suma
 
-1. Napočítáme si počty jednotlivých prvků $c(x)$ z rozsahu $x \in [a,b]$ (,,histogram``)
+1. Napočítáme si počty jednotlivých prvků $c(x)$ z rozsahu $x in [a,b]$ (,,histogram``)
 2. Počty prvků projdeme ve vzestupném pořadí. Prvek $x$ zapíšeme do výstupního pole $c(x)$-krát.
 
 #v(1em)#v(1em)
 
 #h(1fr) Bod (2) algoritmu nešel snadno paralelizovat, protože nevíme, kam máme dané číslo umístit bez toho, abychom vyřešili předešlá čísla!
+
+#show "?": text(fill: red, " ? ")
+$
+  c(x) = [?, ?, 5, ?, ?]
+$
 ]
 
 #slide[
 = Prefixní suma
 
-Pro posloupnost čísel $x_0, x_1, x_2, \dots$ je prefixní suma posloupnost $y_0, y_1, y_2, \dots$ taková, že
+Pro posloupnost čísel $x_0, x_1, x_2, dots$ je prefixní suma posloupnost $y_0, y_1, y_2, dots$ taková, že
 
-$y_0 = x_0$
-$y_1 = y_0 + x_1$
-$y_2 = y_1 + x_2$
-$\dots$
+$
+y_0 &= x_0 \
+y_1 &= y_0 + x_1 \
+y_2 &= y_1 + x_2 \
+dots
+$
 
-#v(1em)#v(1em)
+#v(2em)
 
-#h(1fr) Příklad:
+=== Příklad:
 
 #table(
-  columns: 7,
-  [Vstupní sekvence:, 1, 2, 3, 4, 5, 6, ...],
-  [Prefixní suma:, 1, 3, 6, 10, 15, 21, ...]
+  columns: 8,
+  [Vstupní sekvence:], [1], [2], [3], [4], [5], [6], [...],
+  [Prefixní suma:], [1], [3], [6], [10], [15], [21], [...]
 )
 ]
 
@@ -356,6 +368,12 @@ Použijte prefixní sumu pro paralelizaci bodu (2) counting sortu.
 
 #slide[
 = Prefixní suma
+
+Jak bychom mohli výypočet prefixní sumy paralelizovat?
+
+#small[
+  Hodnota $y_i$ závisí na hodnotě $y_(i-1)$.
+]
 
 #frame[
 === Doimplementujte metodu `prefix_sum_parallel`
@@ -374,7 +392,7 @@ Algoritmus pro lexikografické seřazení řetězců stejné délky.
 #v(1.5em)
 
 #frame[
-=== Doimplementujte metodu `radix_par`
+=== Naimplementujte metodu `radix_par`
 
 Naimplementujte metodu `radix_par` v `sort.cpp`.
 ]
