@@ -7,7 +7,6 @@
 #title-slide[
   Konkuretní datové struktury
 ][
-  Cvičení 4
 ]
 
 #slide-items[
@@ -32,8 +31,10 @@
   = Osnova
 
   - Opakování z minulého cvičení
+  \
   - Zámková architektura datových struktur
   - Bezzámková architektura datových struktur
+  \
   - Zadání třetí domácí úlohy
 ]
 
@@ -117,7 +118,7 @@ Napište odpověď
 
 #new-section[Tvorba konkurentních datových struktur]
 
-#slide[
+#slide-items[
   = Co bychom si přáli?
 
   Aby jednu strukturu používalo více vláken *současně*.
@@ -126,7 +127,7 @@ Napište odpověď
     Co musíme změnit oproti frontě z prvního domácího úkolu?
   ]
 
-  #v(1em)
+][
 
   - Nesmíme zamykat *celou* datovou strukturu!
   - Se zamykáním zámků musíme šetřit
