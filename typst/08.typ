@@ -24,7 +24,7 @@
 
   Skalární součin vektorů $u$ a $v$ délky $n$ lze spočítat jako
   $ u times v = sum_(i=0)^(n-1) u[i] dot v[i] $
-][
+
   #important[
     Co když je mnoho prvků v obou vektorech nulových?
   ]
@@ -35,12 +35,14 @@
 #slide-items[
   = Řídké vektory
 
-  Vektory s *málo nenulovými hodnotami* lze reprezentovat kompaktněji! Místo toho, abychom si pamatovali všechny (i
-  nulové) prvky, tak si pamatujeme pouze:
+  Vektory s *málo nenulovými hodnotami* lze reprezentovat kompaktněji!
+
+  Místo toho, abychom si pamatovali všechny (i nulové) prvky, tak si pamatujeme pouze:
+
   - na jakých indexech jsou nenulové prvky
   - jaké hodnoty jsou na těchto indexech
 ][
-  Např. vektor $v = (0,0,0,0,3,0,1,0,0,0,2)$ reprezentujeme pomocí
+  Např. vektor $v = (0,0,0,0,3,0,1,0,0,0,2)$ reprezentujeme pomocí \
   $v = { (4,3), (6,1), (10,2) }$
 ][
   Jak spočteme skalární součin vektorů $u$ a $v$?
@@ -213,63 +215,49 @@ Všechny vektory se kterými pracujete jsou řídké!
   #emoji.warning Doména je korektní, pokud $log_2("WIDTH" * "HEIGHT") >= 64$
 ]
 
-#slide-items[
+#slide[
   = Prohledávání do šířky (BFS)
 
-  #only("1")[#image("08/figs/bfs15.svg", width: 100%)]
-][
-  #only("2")[#image("08/figs/bfs14.svg", width: 100%)]
-][
-  #only("3")[#image("08/figs/bfs13.svg", width: 100%)]
-][
-  #only("4")[#image("08/figs/bfs12.svg", width: 100%)]
-][
-  #only("5")[#image("08/figs/bfs11.svg", width: 100%)]
-][
-  #only("6")[#image("08/figs/bfs10.svg", width: 100%)]
-][
-  #only("7")[#image("08/figs/bfs9.svg", width: 100%)]
-][
-  #only("8")[#image("08/figs/bfs8.svg", width: 100%)]
-][
-  #only("9")[#image("08/figs/bfs7.svg", width: 100%)]
-][
-  #only("10")[#image("08/figs/bfs6.svg", width: 100%)]
-][
-  #only("11")[#image("08/figs/bfs5.svg", width: 100%)]
-][
-  #only("12")[#image("08/figs/bfs4.svg", width: 100%)]
-][
-  #only("13")[#image("08/figs/bfs3.svg", width: 100%)]
-][
-  #only("14")[#image("08/figs/bfs2.svg", width: 100%)]
-][
-  #only("15")[#image("08/figs/bfs1.svg", width: 100%)]
-][
-  #only("16-")[#image("08/figs/bfs0.svg", width: 100%)]
+  #align(top)[
 
-  Optimální, ale (potenciálně) s exponenciální pamětí!
+    #only("1")[#image("08/figs/bfs15.svg", width: 100%)]
+    #only("2")[#image("08/figs/bfs14.svg", width: 100%)]
+    #only("3")[#image("08/figs/bfs13.svg", width: 100%)]
+    #only("4")[#image("08/figs/bfs12.svg", width: 100%)]
+    #only("5")[#image("08/figs/bfs11.svg", width: 100%)]
+    #only("6")[#image("08/figs/bfs10.svg", width: 100%)]
+    #only("7")[#image("08/figs/bfs9.svg", width: 100%)]
+    #only("8")[#image("08/figs/bfs8.svg", width: 100%)]
+    #only("9")[#image("08/figs/bfs7.svg", width: 100%)]
+    #only("10")[#image("08/figs/bfs6.svg", width: 100%)]
+    #only("11")[#image("08/figs/bfs5.svg", width: 100%)]
+    #only("12")[#image("08/figs/bfs4.svg", width: 100%)]
+    #only("13")[#image("08/figs/bfs3.svg", width: 100%)]
+    #only("14")[#image("08/figs/bfs2.svg", width: 100%)]
+    #only("15")[#image("08/figs/bfs1.svg", width: 100%)]
+    #only("16-")[#image("08/figs/bfs0.svg", width: 100%)]
+    #v(8em)
+    #only("16-")[ Optimální, ale (potenciálně) s exponenciální pamětí! ]
+  ]
 ]
 
 #slide-items[
   = Prohledávání do hloubky (DFS)
 
-  #only("1")[#image("08/figs/dfs6.svg", width: 100%)]
-][
-  #only("2")[#image("08/figs/dfs5.svg", width: 100%)]
-][
-  #only("3")[#image("08/figs/dfs4.svg", width: 100%)]
-][
-  #only("4")[#image("08/figs/dfs3.svg", width: 100%)]
-][
-  #only("5")[#image("08/figs/dfs2.svg", width: 100%)]
-][
-  #only("6")[#image("08/figs/dfs3.svg", width: 100%)]
-][
-  #only("7")[#image("08/figs/dfs1.svg", width: 100%)]
-][
-  #only("8")[#image("08/figs/dfs0.svg", width: 100%)]
-  Malá paměťová náročnost, ale bez garancí!
+  #align(top)[
+    #only("1")[#image("08/figs/dfs6.svg", width: 100%)]
+    #only("2")[#image("08/figs/dfs5.svg", width: 100%)]
+    #only("3")[#image("08/figs/dfs4.svg", width: 100%)]
+    #only("4")[#image("08/figs/dfs3.svg", width: 100%)]
+    #only("5")[#image("08/figs/dfs2.svg", width: 100%)]
+    #only("6")[#image("08/figs/dfs3.svg", width: 100%)]
+    #only("7")[#image("08/figs/dfs1.svg", width: 100%)]
+    #only("8")[#image("08/figs/dfs0.svg", width: 100%)]
+    #v(8em)
+    #only("8")[
+      Malá paměťová náročnost, ale bez garancí!
+    ]
+  ]
 ]
 
 #slide[
@@ -288,122 +276,43 @@ Všechny vektory se kterými pracujete jsou řídké!
 #slide-items[
   = ID-DFS
 
-  #only("1")[#image("08/figs/iddfs26.svg", width: 100%)]
-][
-  #only("2")[#image("08/figs/iddfs25.svg", width: 100%)]
-][
-  #only("3")[#image("08/figs/iddfs24.svg", width: 100%)]
-][
-  #only("4")[#image("08/figs/iddfs25.svg", width: 100%)]
-][
-  #only("5")[#image("08/figs/iddfs23.svg", width: 100%)]
-][
-  #only("6")[#image("08/figs/iddfs25.svg", width: 100%)]
-][
-  #only("7")[#image("08/figs/iddfs22.svg", width: 100%)]
-][
-  #only("8")[#image("08/figs/iddfs21.svg", width: 100%)]
-][
-  #only("9")[#image("08/figs/iddfs20.svg", width: 100%)]
-][
-  #only("10")[#image("08/figs/iddfs21.svg", width: 100%)]
-][
-  #only("11")[#image("08/figs/iddfs19.svg", width: 100%)]
-][
-  #only("12")[#image("08/figs/iddfs21.svg", width: 100%)]
-][
-  #only("13")[#image("08/figs/iddfs22.svg", width: 100%)]
-][
-  #only("14")[#image("08/figs/iddfs18.svg", width: 100%)]
-][
-  #only("15")[#image("08/figs/iddfs17.svg", width: 100%)]
-][
-  #only("16")[#image("08/figs/iddfs18.svg", width: 100%)]
-][
-  #only("17")[#image("08/figs/iddfs16.svg", width: 100%)]
-][
-  #only("18")[#image("08/figs/iddfs18.svg", width: 100%)]
-][
-  #only("19")[#image("08/figs/iddfs22.svg", width: 100%)]
-][
-  #only("20")[#image("08/figs/iddfs15.svg", width: 100%)]
-][
-  #only("21")[#image("08/figs/iddfs14.svg", width: 100%)]
-][
-  #only("22")[#image("08/figs/iddfs13.svg", width: 100%)]
-][
-  #only("23")[#image("08/figs/iddfs12.svg", width: 100%)]
-][
-  #only("24")[#image("08/figs/iddfs13.svg", width: 100%)]
-][
-  #only("25")[#image("08/figs/iddfs11.svg", width: 100%)]
-][
-  #only("26")[#image("08/figs/iddfs13.svg", width: 100%)]
-][
-  #only("27")[#image("08/figs/iddfs14.svg", width: 100%)]
-][
-  #only("28")[#image("08/figs/iddfs10.svg", width: 100%)]
-][
-  #only("29")[#image("08/figs/iddfs9.svg", width: 100%)]
-][
-  #only("30")[#image("08/figs/iddfs10.svg", width: 100%)]
-][
-  #only("31")[#image("08/figs/iddfs8.svg", width: 100%)]
-][
-  #only("32")[#image("08/figs/iddfs10.svg", width: 100%)]
-][
-  #only("33")[#image("08/figs/iddfs14.svg", width: 100%)]
-][
-  #only("34")[#image("08/figs/iddfs15.svg", width: 100%)]
-][
-  #only("35")[#image("08/figs/iddfs7.svg", width: 100%)]
-][
-  #only("36")[#image("08/figs/iddfs6.svg", width: 100%)]
-][
-  #only("37")[#image("08/figs/iddfs5.svg", width: 100%)]
-][
-  #only("38")[#image("08/figs/iddfs6.svg", width: 100%)]
-][
-  #only("39")[#image("08/figs/iddfs4.svg", width: 100%)]
-][
-  #only("40")[#image("08/figs/iddfs6.svg", width: 100%)]
-][
-  #only("41")[#image("08/figs/iddfs7.svg", width: 100%)]
-][
-  #only("42")[#image("08/figs/iddfs3.svg", width: 100%)]
-][
-  #only("43")[#image("08/figs/iddfs2.svg", width: 100%)]
-][
-  #only("44")[#image("08/figs/iddfs3.svg", width: 100%)]
-][
-  #only("45")[#image("08/figs/iddfs0.svg", width: 100%)]
+  #for i in range(1, 26) {
+    only(i)[#image("08/figs/iddfs" + str(26 - i + 1) + ".svg", width: 100%)]
+  }
 
-  V paměti máme pouze aktuální cestu :-)
+  #only(26)[#image("08/figs/iddfs0.svg", width: 100%)]
+  #v(8em)
+  #only(26)[
+    V paměti máme pouze aktuální cestu :-)
+  ]
 ]
 
-#slide[
+#slide-items[
   = Co byste ještě měli vylepšit?
 
   Nechceme vás příliš ovlivňovat...
 
-  Některé uzly jsme navštěvovali mnohokrát (i na stejné cestě!) (Zkuste zabránit vstupování do stejných stavů -- v
-  paralelní verzi možná budete muset dělat kompromisy...)
+][
+  - Některé uzly jsme navštěvovali mnohokrát (i na stejné cestě!) (Zkuste zabránit vstupování do stejných stavů -- v
+    paralelní verzi možná budete muset dělat kompromisy...)
+][
 
-  Nemusíte implementovat přesné verze těchto algoritmů (Například, v ID-DFS si můžete pamatovat o něco víc než jen
-  aktuální cestu. Také můžete malé části stromu procházet pomocí BFS...)
-
+  - Nemusíte implementovat přesné verze těchto algoritmů (Například, v ID-DFS si můžete pamatovat o něco víc než jen
+    aktuální cestu. Také můžete malé části stromu procházet pomocí BFS...)
+][
   ... ale především po vás budeme chtít tyto algoritmy paralelizovat :-)
 ]
 
-#slide[
-= Shared pointers
+#slide-items[
+  = Shared pointers
 
-Zejména v ID-DFS algoritmu je správná správa paměti nutností! (Váš algoritmus musí být schopný běžet v prostředí s
-omezenou pamětí)
-
-Dosud jste se pravděpodobně setkali zejména s *raw pointery* ; napříkad `state* s;`
-
-Veškerá zodpovědnost za správnou správu paměti by byla na vás :-(
+  Zejména v ID-DFS algoritmu je správná správa paměti nutností! \
+  (Váš algoritmus musí být schopný běžet v prostředí s omezenou pamětí)
+][
+Dosud jste se pravděpodobně setkali zejména s *raw pointery* ; \
+napříkad `state* s;`
+][
+  Veškerá zodpovědnost za správnou správu paměti by byla na vás :-(
 ]
 
 #slide-items[
@@ -415,7 +324,7 @@ Veškerá zodpovědnost za správnou správu paměti by byla na vás :-(
 
   #h(1fr) Jak to děláme?
 
-#slogan[  C++11 shared pointers]
+  #slogan[ C++11 shared pointers ]
 ]
 
 #slide-items[
@@ -441,8 +350,9 @@ S RAII návrhovým vzorem jsme se už setkali u `std::unique_lock`.
   ```
 ][
   #important[
-Vlastnictví zámku je unikátní.
-]]
+    Vlastnictví zámku je unikátní.
+  ]
+]
 
 #slide-items[
 = Shared pointers
@@ -456,8 +366,8 @@ Paměť se uvolní okamžitě po zániku instance `std::unique_ptr`!
 ]
 #v(2em)
 ][
-- Instanci `std::unique_ptr` uložíme například do vektoru. Dále používáme raw pointer (získaný přes `ptr.get()`). Paměť se
-  ale uvolní po zániku vektoru, raw pointer přestane být validní!
+- Instanci `std::unique_ptr` uložíme například do vektoru. Dále používáme raw pointer (získaný přes `ptr.get()`).\
+  Paměť se ale uvolní po zániku vektoru, raw pointer přestane být validní!
 ][
 - Důsledně budeme spravovat, kdo aktuálně pointer vlastní. Paměť zanikne, když ho nějaká funkce nikomu nepředá (pomocí `std::move`).
 
