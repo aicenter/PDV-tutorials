@@ -41,6 +41,8 @@
   - Zadání druhé domácí úlohy
 ]
 
+#new-section[Opakování z minulého cvičení]
+
 #quiz-link-slide("http://goo.gl/a6BEMb")
 
 #new-section[Co je OpenMP?]
@@ -161,7 +163,8 @@
 #slide[
   = `#pragma omp atomic`
 
-  Na minulém cvičení jsme si ukázali, že mutexy mohou být pomalé. Opravdu pomalé.
+  Na minulém cvičení jsme si ukázali, že mutexy mohou být pomalé. \
+  *Opravdu pomalé.*
 
   - Jednoduché operace nad jednou proměnnou lze řešit _hardwarovým_ zámkem -- provedením atomické operace
 
@@ -246,10 +249,12 @@
   ```
 ]
 
-#slide[
+#slide-items[
   #important[
-    Proč při integraci funkce $"f" paren.l x paren.r = x$ dosahujeme většího zrychlení?
+    Proč při integraci funkce $"f" paren.l x paren.r = x$ \
+    dosahujeme většího zrychlení?
   ]
+  ][
 
   Výpočet $"f" paren.l x paren.r = x$ trvá konstantní dobu a práce je tak mezi vlákna rozdělena rovnoměrně.
 
@@ -272,7 +277,7 @@
   ```cpp
   #pragma omp parallel for schedule(type[,chunk_size])
   ```
-
+][
   `chunk_size` udává minimální velikost bloku, se kterým se plánuje, např:
 
   ```cpp
@@ -310,7 +315,7 @@
   Vaším úkolem je čísla v každém vektoru *sečíst* a tento součet vložit do vektoru s řešením na index odpovídající pořadí vektoru, který jste sčítali.
 ]
 
-#slide[
+#slide-items[
   = Paralelní suma vektoru
 
   Doimplementujte metody v `SumsOfVectors.cpp` a zajistěte, že
@@ -318,7 +323,6 @@
   - Výpočet sum je paralelní a každá metoda vrací korektní výsledky
   - Metody využívají požadované způsoby paralelizace
 
-  #v(1.5em)
-
+][
   Za spravné výsledky na každé ze *čtyř* datových sad dostanete 2b.
 ]
