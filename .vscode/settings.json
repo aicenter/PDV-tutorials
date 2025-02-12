@@ -1,0 +1,4 @@
+{
+    "tinymist.rootPath": "${workspaceFolder}/typst",
+    "tinymist.formatterMode": "typstyle",
+}
