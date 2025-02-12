@@ -1,5 +1,5 @@
 #import "@preview/polylux:0.4.0": *
-#import "template.typ" as metropolis
+#import "../template/main.typ" as metropolis
 #import metropolis: *
 
 #show: metropolis.setup
@@ -22,7 +22,7 @@
   - Zadání páté domácí úlohy
 ]
 
-#new-section[Opakování z minulého cvičení]
+#section-slide[Opakování z minulého cvičení]
 
 #quiz-link-slide("http://goo.gl/a6BEMb")
 
@@ -71,7 +71,7 @@ std::cout << parallel_worker(3) ;
 ```
 ]
 
-#new-section[`#pragma omp task`]
+#section-slide[`#pragma omp task`]
 
 #slide[
 = `#pragma omp task`
@@ -213,7 +213,7 @@ static float parallel_sum(const float *a, size_t n){
 ```
 ]
 
-#new-section[Paralelní merge sort]
+#section-slide[Paralelní merge sort]
 
 #slide[
 = Paralelní merge sort
@@ -267,7 +267,7 @@ Doimplementujte tělo metody `mergesort_parallel(...)` (a případných dalšíc
 *Otázka:* Jakou složitost má sekvenční mergesort? A jak je na tom jeho paralelní verze?
 ]
 
-#new-section[Paralelní counting sort]
+#section-slide[Paralelní counting sort]
 
 #slide[
 = Counting sort
@@ -315,7 +315,7 @@ Doimplementujte tělo metody `counting_parallel(...)` v souboru `countingsort.h`
 #emoji.warning #h(5pt) SPOILER ALERT!
 ]
 
-#new-section[Prefixní suma]
+#section-slide[Prefixní suma]
 
 #slide[
 = Prefixní suma
@@ -382,7 +382,7 @@ Doimplementujte tělo metody `prefix_sum_parallel` v souboru `prefixsum.h`.
 ]
 ]
 
-#new-section[Zadání páté domácí úlohy]
+#section-slide[Zadání páté domácí úlohy]
 
 #slide[
 = Paralelní radix sort

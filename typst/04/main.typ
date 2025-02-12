@@ -1,5 +1,5 @@
 #import "@preview/polylux:0.4.0": *
-#import "template.typ" as metropolis
+#import "../template/main.typ" as metropolis
 #import metropolis: *
 
 #show: metropolis.setup
@@ -38,7 +38,7 @@
   - Zadání třetí domácí úlohy
 ]
 
-#new-section[Opakování z minulého cvičení]
+#section-slide[Opakování z minulého cvičení]
 
 #quiz-link-slide("http://goo.gl/a6BEMb")
 
@@ -116,7 +116,7 @@ Napište odpověď
 4. OpenMP bude naprosto zbytečně serializovat vlákna pomocí critical
 ]
 
-#new-section[Tvorba konkurentních datových struktur]
+#section-slide[Tvorba konkurentních datových struktur]
 
 #slide-items[
   = Co bychom si přáli?
@@ -189,7 +189,7 @@ Napište odpověď
   #see-file("C++ Concurrency In Action: Practical Multithreading")
 ]
 
-#new-section[Cvičení: konkuretní spojový seznam]
+#section-slide[Cvičení: konkuretní spojový seznam]
 
 #slide-items[
   = Konkurentní spojový seznam
@@ -238,7 +238,7 @@ Napište odpověď
   Můžeme se zámků zbavit úplně?
 ]
 
-#new-section[Bezzámková architektura datových struktur]
+#section-slide[Bezzámková architektura datových struktur]
 
 #slide-items[
   Navrhnout správně zamykání je náročné
@@ -289,7 +289,7 @@ Napište odpověď
   ]
 ]
 
-#new-section[Zadání třetí domácí úlohy]
+#section-slide[Zadání třetí domácí úlohy]
 
 #slide[
   = Konkurentní binární vyhledávací strom

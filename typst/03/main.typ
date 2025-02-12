@@ -1,5 +1,5 @@
 #import "@preview/polylux:0.4.0": *
-#import "template.typ" as metropolis
+#import "../template/main.typ" as metropolis
 #import metropolis: *
 
 #show: metropolis.setup
@@ -41,11 +41,11 @@
   - Zadání druhé domácí úlohy
 ]
 
-#new-section[Opakování z minulého cvičení]
+#section-slide[Opakování z minulého cvičení]
 
 #quiz-link-slide("http://goo.gl/a6BEMb")
 
-#new-section[Co je OpenMP?]
+#section-slide[Co je OpenMP?]
 
 #slide-items[
   = OpenMP: Přehled
@@ -76,7 +76,7 @@
   Detailní přehled metod s ukázkami na \ #link("https://msdn.microsoft.com/en-us/library/k1h4zbed.aspx").
 ]
 
-#new-section[Cvičení: Numerická integrace]
+#section-slide[Cvičení: Numerická integrace]
 
 #slide-center[
   = Numerická integrace
@@ -111,7 +111,7 @@
   Jaké problémy budeme mít, pokud budeme chtít tento sekvenční kód paralelizovat?
 ]
 
-#new-section[Alternativy k mutexům a atomickým proměným v OpenMP]
+#section-slide[Alternativy k mutexům a atomickým proměným v OpenMP]
 
 #slide-items[
   = `#pragma omp parallel`
@@ -197,7 +197,7 @@
   ]
 ]
 
-#new-section[Redukce v OpenMP]
+#section-slide[Redukce v OpenMP]
 
 #slide-items[
   = Redukce v OpenMP
@@ -299,7 +299,7 @@
     - Rozhodnuto za běhu na základě nastavení prostředí \ (`export OMP_SCHEDULE="dynamic, 100"`)
 ]
 
-#new-section[Zadání druhé domácí úlohy]
+#section-slide[Zadání druhé domácí úlohy]
 
 #slide[
   = Paralelní suma vektoru

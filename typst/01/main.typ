@@ -1,6 +1,5 @@
-#import "@preview/polylux:0.4.0": *
-#import "template.typ" as metropolis
-#import metropolis: new-section, focus, frame, highlight, see-file, quiz, small
+#import "../template/main.typ" as metropolis
+#import metropolis: *
 
 #show: metropolis.setup
 
@@ -27,7 +26,7 @@
   - Úvod do paralelního hardwaru a softwaru
 ]
 
-#new-section[Organizace předmětu]
+#section-slide[Organizace předmětu]
 
 #slide[
   = Důležité informace
@@ -43,11 +42,10 @@
   = Čím se budeme zabývat?
 
   #align(center)[
-    #v(3em)
     #text(size: 1.2em)[
       #highlight("2", "1,3-", [ Paralelní ]) a #highlight("3-", "-2", [ Distribuované ]) výpočty
     ]
-    #v(2em)
+    #v(1em)
   ]
 
   #grid(columns: (1fr, 1fr), gutter: 1em, align: top, [
@@ -105,7 +103,7 @@
 
     - 5 malých programovacích úloh #h(1fr) 10 bodů
     - Semestrální práce #h(1fr) 12 bodů
-    #v(0.5em)
+    #v(0.2em)
     - Praktická zkouška #h(1fr) 20 bodů
   ]
 
@@ -114,7 +112,7 @@
 
     - 2 malé úlohy #h(1fr) 4 body
     - Semestrální práce #h(1fr) 14 bodů
-    #v(0.5em)
+    #v(0.2em)
     - Praktická zkouška #h(1fr) 20 bodů
   ]
 
@@ -184,23 +182,8 @@
   ]
 ]
 
-#new-section[Opakování]
+#section-slide[Opakování]
 
-// // CMake compilation slide
-// #slide[
-// = Kompilace programů v C/C++ s pomocí Cmake
-
-// #block(title: "Vygenerování build scriptů", [`cmake <src dir>`])
-
-// Zde `<src dir>` je složka se souborem `CMakeLists.txt`.
-
-// #block(title: "Kompilace", [`cmake --build <build dir>`])
-
-// Zde `<build dir>` je složka s vygenerovanými soubory pro sestavení programu.
-
-// Nebo použijte IDE s dobrou podporou C++, například CLion (multiplatformní) nebo Visual Studio (Windows)
-// ]
-//
 #slide[
 = Kompilace programů v C/C++ s pomocí Cmake
 
@@ -268,7 +251,7 @@ Nebo použijte IDE s dobrou podporou C++, například CLion (multiplatformní) n
     ][
       - #block(width: 100%, outset: 0.5em, fill: rgb("#5d9bc4"))[Vektorizace #small[(kompilátor)]]
     ][
-      - #block(width: 100%, height: 2em, outset: 0.5em, fill: rgb("#9970a1"))[Vlákna #small[(Vy #emoji.face)]]
+      - #block(width: 100%, height: 1.2em, outset: 0.5em, fill: rgb("#9970a1"))[Vlákna #small[(Vy #emoji.face)]]
     ]
   ]
 ]
@@ -341,44 +324,6 @@ Co bude v proměnné `number` po skončení obou vláken?
 ]
 
 #slide[
-
-// \frametitle{True sharing}
-//   \begin{minipage}[t]{0.45\linewidth}
-//     Vlákno 1 \sep\mintinline{gas}{mov esi, 2}\\[-0.5em]
-//     \hrule\vspace{0.5em}
-
-//     \footnotesize
-//     \only<4-5>{\vspace{4em}}%
-//     \mintinline{gas}{imul esi, DWORD PTR [rdi]}\only<6-7>{\vspace{2em}}\only<8->{\vspace{4.5em}}\\
-//     \mintinline{gas}{mov DWORD PTR [rdi], esi}\\
-//     \mintinline{gas}{ret}
-//     \only<4-5>{\vspace{0.5em}}
-//   \end{minipage}
-//   \hfill
-//   \begin{minipage}[t]{0.45\linewidth}
-//     Vlákno 2 \sep\mintinline{gas}{mov esi, 3}\\[-0.5em]
-//     \hrule\vspace{0.5em}
-
-//     \footnotesize
-//     \only<2-3>{\vspace{4em}}%
-//     \only<6->{\vspace{1.5em}}%
-//     \mintinline{gas}{imul esi, DWORD PTR [rdi]}\only<6-7>{\vspace{3em}}\\
-//     \mintinline{gas}{mov DWORD PTR [rdi], esi}\\
-//     \mintinline{gas}{ret}
-//     \only<2-3>{\vspace{0.5em}}
-//   \end{minipage}
-
-//   \begin{center}
-//     \vfill\only<3,5,7,9>{Výsledek:\hspace{20pt}}%
-//     \tt
-//     \only<3,5>{number = 6}%
-//     \only<7>{number = 3}%
-//     \only<9>{number = 2}%
-//   \end{center}
-//   \only<10>{
-//     \vspace{1em}\hrule
-//     \small Jaké máme možnosti, abychom dosáhli deterministického výsledku (který pravděpodobně chceme)?
-//   }
 
 = True sharing
 
@@ -470,7 +415,7 @@ Co bude v proměnné `number` po skončení obou vláken?
   ]
 ]
 
-#new-section[Paralelizace v praxi]
+#section-slide[Paralelizace v praxi]
 
 #slide[
   = Paralelizace v praxi

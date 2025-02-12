@@ -1,5 +1,5 @@
 #import "@preview/polylux:0.4.0": *
-#import "template.typ" as metropolis
+#import "../template/main.typ" as metropolis
 #import metropolis: *
 
 #show: metropolis.setup
@@ -19,7 +19,7 @@
   - Ruční vektorizace pomocí intrinsics
 ]
 
-#new-section[Opakování z minulého cvičení]
+#section-slide[Opakování z minulého cvičení]
 
 #quiz-link-slide("http://goo.gl/a6BEMb")
 
@@ -124,7 +124,7 @@ vspace[1em]
 - _single_ -- _single-precision number_ aka `float`
 ]
 
-#new-section[
+#section-slide[
   Level 1: Autovektorizace #h(1em) #emoji.ghost
 ]
 
@@ -225,7 +225,7 @@ Také se podívejte do logu ze sestavování programu na zprávy o proběhlé au
   ```
 ]
 
-#new-section[
+#section-slide[
   Level 2: Intel SPMD Compiler #h(1em) #emoji.ghost #emoji.ghost
 ]
 
@@ -253,7 +253,7 @@ Také se podívejte do logu ze sestavování programu na zprávy o proběhlé au
   #slogan[Bohužel nemáme čas se ISPC na PDV věnovat :-(]
 ]
 
-#new-section[
+#section-slide[
   Level 3: Intrinsics #h(1em) #emoji.ghost #emoji.ghost #emoji.ghost
 ]
 
@@ -440,7 +440,7 @@ Doimplementujte tělo metody `popcnt_intrinsic(...)` v souboru `popcnt.cpp`.
 ]
 ]
 
-#new-section[Semestrální úloha]
+#section-slide[Semestrální úloha]
 
 #slide[
   = Semestrální úloha

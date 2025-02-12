@@ -1,5 +1,5 @@
 #import "@preview/polylux:0.4.0": *
-#import "template.typ" as metropolis
+#import "../template/main.typ" as metropolis
 #import metropolis: *
 
 #show: metropolis.setup
@@ -20,7 +20,7 @@
   - Zadání čtvrté domácí úlohy
 ]
 
-#new-section[Opakování z minulého cvičení]
+#section-slide[Opakování z minulého cvičení]
 
 #quiz-link-slide("http://goo.gl/a6BEMb")
 
@@ -72,7 +72,7 @@ void compute_2(){
 ```
 ]
 
-#new-section[Cvičení: Problém $3n+1$]
+#section-slide[Cvičení: Problém $3n+1$]
 
 #slide-items[
   = Problém $3n+1$ (Collatzův problém)
@@ -135,7 +135,7 @@ Doimplementujte metodu `findn_parallel` v souboru `decompose.cpp` pro paralelní
 ]
 ]
 
-#new-section[Explorativní dekompozice]
+#section-slide[Explorativní dekompozice]
 
 #slide-items[
   = Explorativní dekompozice

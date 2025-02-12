@@ -1,5 +1,5 @@
 #import "@preview/polylux:0.4.0": *
-#import "template.typ" as metropolis
+#import "../template/main.typ" as metropolis
 #import metropolis: *
 
 #show: metropolis.setup
@@ -17,7 +17,7 @@
   - Semestrální úloha
 ]
 
-#new-section[Paralelní maticové operace]
+#section-slide[Paralelní maticové operace]
 
 #slide-items[
   = Násobení vektorů
@@ -144,7 +144,7 @@ Všechny vektory se kterými pracujete jsou řídké!
 ]
 ]
 
-#new-section[Semestrální úloha]
+#section-slide[Semestrální úloha]
 
 #slide[
   = Stavové prostory

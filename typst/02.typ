@@ -73,7 +73,7 @@
 // %  \hfill
 // %  \begin{minipage}{0.5\linewidth}
 // %    \vspace{4em}
-// %    \centering\includegraphics[width=\linewidth]{02/figs/qr_feedback.pdf}
+// %    \centering\includegraphics[width=\linewidth]{assets/qr_feedback.pdf}
 // %  \end{minipage}
 // %\end{frame}
 
@@ -99,7 +99,7 @@
 //   \frametitle{Šifra \texttt{PDVCrypt}}
 //   Vzpomeňte si na šifru z minulého cvičení
 //   \begin{center}
-//     \includegraphics[scale=0.8]{02/figs/pdvcrypt.pdf}
+//     \includegraphics[scale=0.8]{assets/pdvcrypt.pdf}
 //   \end{center}
 
 //   {\small
@@ -708,7 +708,7 @@
 
 //   \vspace{1em}
 
-//   \centering\includegraphics[width=.6\linewidth]{02/figs/producer-consumer.png}
+//   \centering\includegraphics[width=.6\linewidth]{assets/producer-consumer.png}
 
 //   \vspace{1em}
 
@@ -786,7 +786,7 @@
 
 Vzpomeňte si na šifru `PDVCrypt` z minulého cvičení:
 
-#image("01/figs/pdvcrypt.svg", width: 70%)
+#image("assets/pdvcrypt.svg", width: 70%)
 
 Jeden krok dešifrování:
 
@@ -1080,7 +1080,7 @@ void logger() {
 
   #v(2em)
 
-  #image("02/figs/producer-consumer.png", width: 70%)
+  #image("assets/producer-consumer.png", width: 70%)
 ][
   #important[
     Co je na tomto přístupu zajímavé?
