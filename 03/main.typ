@@ -1,405 +1,347 @@
-% !TEX options=--shell-escape
-\documentclass[usenames,dvipsnames,9pt]{beamer}
+#import "@preview/polylux:0.4.0": *
+#import "/template/main.typ" as ctu-lab-slides
+#import ctu-lab-slides: *
 
-\makeatletter
-\def\input@path{{support/beamer-template/}}
-\makeatother
+#show: ctu-lab-slides.setup
 
-\usepackage{support/beamer-template/beamerthememetropolis}
+#title-slide[
+  Paralení programování pro vícejádrové stroje s použitím OpenMP
+][
+  Cvičení 3
+]
 
-\usepackage[utf8]{inputenc}
-\usepackage[czech]{babel}
-\selectlanguage{czech}
-
-\usepackage{hyperref}
-\usepackage{fontawesome}
-\usepackage{minted}
-\usepackage{mathtools}
-\usepackage{tabularx}
-\usepackage{smartdiagram}
-\usepackage{amssymb}
-\usepackage{qrcode}
-
-\input{commands.tex}
-
-\title{Paralení programování pro vícejádrové stroje s použitím OpenMP}
-%\subtitle{Organizace předmětu a seznámení se s paralelizací}
-\date{}
-\institute{B4B36PDV -- Paralelní a distribuované výpočty}
-
-\metroset{block=fill}
-
-\begin{document}
-\maketitle
-
-\begin{frame}
+#slide[
   Minulé cvičení:
-  \begin{center}
-    \Large\emph{``Vlákna a jejich synchronizace v C++ 11...''}
-  \end{center}
-  \pause
-  \vspace{1.5em}
-  
-  Programování vícevláknových aplikací ručně může být dřina. Proč znovu objevovat kolo, když mužeme použít hotové řešení?
 
-  \pause
-  \vspace{2.5em}
-  Dnešní menu: \hspace{10pt} \huge OpenMP
-\end{frame}
+  #one-by-one[
+    #slogan[
+      "Vlákna a jejich synchronizace v C++ 11..."
+    ]
+  ][
+    #important[
+      Programování vícevláknových aplikací ručně může být dřina. Proč znovu objevovat kolo, když mužeme použít hotové řešení?
+    ]
+    #v(1em)
+  ][
+    Dnešní cvičení:
+    #slogan[
+      OpenMP
+    ]
+  ]
+]
 
-\begin{frame}
-  \frametitle{Osnova}
-  \begin{itemize}
-    \item Opakování z minulého cvičení
-    \item Úvod do OpenMP
-    \item Paralelní bloky se sdílenou pamětí a synchronizace
-    \item Redukce s OpenMP
-    \item Rozvrhování výpočtu v OpenMP\\[1.5em]
-    \item Zadání druhé domácí úlohy
-  \end{itemize}
-\end{frame}
+#slide[
+  = Osnova
 
-\section{Opakování z minulého cvičení}
-\begin{frame}[standout]
-  \Huge
-  \url{http://goo.gl/a6BEMb}
-\end{frame}
+  - Opakování z minulého cvičení
+  \
+  - Úvod do OpenMP
+  - Paralelní bloky se sdílenou pamětí a synchronizace
+  - Redukce s OpenMP
+  - Rozvrhování výpočtu v OpenMP
+  \
+  - Zadání druhé domácí úlohy
+]
 
-% pripomenuti - prehled, co je openmp
-\section{Co je OpenMP?}
-\begin{frame}
-  \frametitle{OpenMP: Přehled}
-  \begin{itemize}
-    \item API pro psání vícevláknových aplikací se sdílenou pamětí
-    \item Sada directiv, proměnných prostředí a rutin pro kompilátor a programátory
-    \item Ulehčuje psaní vícevláknových aplikací v C/C++ a Fortran na většině platform s podporou většiny instrukčních sad a operačních systémů
-  \end{itemize}
-  \pause
-  {\small
-  Jako základní referenční příručku můžete použít \url{https://msdn.microsoft.com/en-us/library/tt15eb9t.aspx}}
-\end{frame}
+#section-slide[Opakování z minulého cvičení]
 
-% test prostredi + komentare, co veci znamenaji - postupny vypis
-{\setbeamertemplate{frame footer}{\see{{\tt test.cpp} }}
-\begin{frame}[fragile]
-  \frametitle{Otestujte si své prostředí}
+#quiz-link-slide("http://goo.gl/a6BEMb")
 
-  \desc{\mintinline{c}{omp_get_num_procs()}}{Počet procesorů, které OpenMP využívá v době volání funkce}
+#section-slide[Co je OpenMP?]
 
-  \desc{\mintinline{c}{omp_get_num_threads()}}{Počet vláken, které OpenMP využívá v době volání funkce}
+#slide-items[
+  = OpenMP: Přehled
 
-  \desc{\mintinline{c}{omp_get_max_threads()}}{Maximální počet vláken, které OpenMP může využít}
+  - API pro psání vícevláknových aplikací se sdílenou pamětí
+  - Sada directiv, proměnných prostředí a rutin pro kompilátor a programátory
+  - Ulehčuje psaní vícevláknových aplikací v C/C++ a Fortran na většině platform s podporou většiny instrukčních sad a
+    operačních systémů
+][
+  Jako základní referenční příručku můžete použít \ #link("https://msdn.microsoft.com/en-us/library/tt15eb9t.aspx").
+]
 
-  \desc{\mintinline{c}{omp_in_parallel()}}{Vrací nenulovou hodnotu, pokud jsme uvnitř paralelního bloku}
+#slide-items[
+= Otestujte si své prostředí
 
-  \desc{\mintinline{c}{omp_get_nested()}}{Vrací nenulu, pokud je povoleno vnořování paralelních bloků}
+#set list(marker: none, spacing: 1.25em)
 
-  \pause
+- `omp_get_num_procs()`
+  - Počet procesorů, které OpenMP využívá v době volání funkce
+- `omp_get_num_threads()`
+  - Počet vláken, které OpenMP využívá v době volání funkce
+- `omp_get_max_threads()`
+  - Maximální počet vláken, které OpenMP může využít
+- `omp_in_parallel()`
+  - Vrací nenulovou hodnotu, pokud jsme uvnitř paralelního bloku
+- `omp_get_nested()`
+  - Vrací nenulu, pokud je povoleno vnořování paralelních bloků
+][
+  #frame[
+    === Otestujte si své prostředí
 
-  \vspace{1em}
+    Otestujte na souboru `1openmp_test.cpp`.
+  ]
+]
 
-  {\small
-  Detailní přehled metod s ukázkami na \url{https://msdn.microsoft.com/en-us/library/k1h4zbed.aspx}.}
-\end{frame}
-}
+#section-slide[Cvičení: Numerická integrace]
 
-% vypocet integralu - jak muzeme vypocitat
-\section{Cvičení: Numerická integrace}
+#slide-center[
+= Numerická integrace
 
-{\setbeamertemplate{frame footer}{\see{{\tt integrate.cpp},\ \ \ {\tt main.cpp}}}
-\begin{frame}[fragile]
-  \frametitle{Numerická integrace}
-  
-  \begin{figure}
-    \centering\includegraphics{03/figs/integral.pdf}
-  \end{figure}
+#image("assets/integral.svg", width: 50%)
 
-  \begin{minted}{c}
-    double integrate(
-      std::function<double(double)> integrand,
-      double a, double step_size, int step_count);
-  \end{minted}
-\end{frame}
+```cpp
+  double integrate(
+    std::function<double(double)> integrand,
+    double a, double step_size, int step_count);
+  ```
+]
 
-% dve funkce - prehled, vytvorte sekvencni verzi, zadani - sekvencni implementace.
-\begin{frame}[fragile]
-  \begin{block}{Doimplementujte sekvenční verzi numerické integrace}
-    Doimplementujte tělo metody \texttt{integrate\_sequential} v souboru \texttt{integrate.cpp}.
-    Použijte obdélníkovou metodu, kdy jako ``výšku'' obdélníku použijete hodnotu funkce uprostřed intervalu.
+#slide-items[
+#frame[
+=== Doimplementujte sekvenční verzi numerické integrace
 
-    \desc{\texttt{integrand}}{Funkce, kterou máte za úkol numericky zintegrovat}
-    \desc{\texttt{a}}{Dolní mez integrálu}
-    \desc{\texttt{step\_size}}{Velikost kroku (šířka obdélníku)}
-    \desc{\texttt{num\_steps}}{Počet kroků (horní mez je \texttt{a + step\_size * step\_count})}
-  \end{block}
+Doimplementujte tělo metody `integrate_sequential` v souboru `2integrate.cpp`. Použijte obdélníkovou metodu, kdy jako "výšku"
+obdélníku použijete hodnotu funkce uprostřed intervalu.
 
-  % jake jsou problemy, pokud budeme chtit paralelizovat? jak byste to resili na zaklade toho, co znate z minula?
-  \pause
-  \vspace{0.2em}
-  \begin{center}
-    \Large
-    Jaké problémy budeme mít, pokud budeme chtít tento sekvenční kód paralelizovat?
-  \end{center}
-\end{frame}
-}
+#v(1em)
 
-\section{Alternativy k mutexům a atomickým proměným v OpenMP}
+#set list(marker: none, spacing: 1.25em)
 
-\begin{frame}[fragile]
-  \frametitle{\texttt{\#pragma omp parallel}}
-  \begin{minted}{c}
-int num_threads = 0;
-#pragma omp parallel
-{
-  // Zde jsme vytvorili tym vlaken, ktera vykonavaji
-  // nasledujici kod
-  num_threads += 1; 
-}
-  \end{minted}
+/ `integrand`:
+  - Funkce, kterou máte za úkol numericky zintegrovat
+/ `a`:
+  - Dolní mez integrálu
+/ `step_size`:
+  - Velikost kroku (šířka obdélníku)
+/ `step_count`:
+  - Počet kroků (horní mez je `a + step_size * step_count`)
+]
+][
+  Jaké problémy budeme mít, pokud budeme chtít tento sekvenční kód paralelizovat?
+]
 
-  \pause
+#section-slide[Alternativy k mutexům a atomickým proměným v OpenMP]
 
-  \begin{center}
-    \Large Jaký bude výsledek?
-  \end{center}
-\end{frame}
+#slide-items[
+= `#pragma omp parallel`
 
-% ukazka na critical
-\begin{frame}[fragile]
-  \frametitle{\texttt{\#pragma omp critical} \hspace{10pt} (``mutex'')}
-  \begin{minted}{c}
-int num_threads = 0;
-#pragma omp parallel
-{
-  // Zde muze byt vice vlaken soucasne...
-
-  #pragma omp critical
+```cpp
+  int num_threads = 0;
+  #pragma omp parallel
   {
-    // ..,ale inkrementaci provadi vzdy maximalne
-    // jedno vlakno
-    num_threads += 1; 
+    // Zde jsme vytvorili tym vlaken, ktera vykonavaji nasledujici kod
+    num_threads += 1;
   }
+  ```
+][
+  #important[
+    Jaký bude výsledek?
+  ]
+]
 
-  // Zde opet muze byt vice vlaken soucasne
-}
-  \end{minted}
-\end{frame}
+#slide-items[
+= `#pragma omp critical` (``mutex'')
 
-{\setbeamertemplate{frame footer}{\see{{\tt integrate.cpp},\ \ \ {\tt main.cpp} }}
-\begin{frame}
-  \begin{block}{Doimplementujte metodu \texttt{integrate\_omp\_critical}}
-    Doimplementujte metodu \texttt{integrate\_omp\_critical} v \texttt{integrate.cpp}.
-    Využijte k tomu \texttt{\#pragma omp parallel} a \texttt{\#pragma omp critical}.
+```cpp
+  int num_threads = 0;
+  #pragma omp parallel
+  {
+    // Zde muze byt vice vlaken soucasne...
 
-    \emph{Tip:}
-    Po spuštění vláken v bloku \texttt{\#pragma omp parallel} si můžete napočítat rozsahy indexů, které jednotlivá vlákna budou zpracovávat (viz \texttt{decrypt\_threads\_4} z minulého cvičení).
-    Pro zjištění indexu aktuálního vlákna použijte metodu \texttt{omp\_get\_thread\_num()}.
-    Zjistit celkový počet vláken lze pomocí \texttt{omp\_get\_num\_threads()}.
-  \end{block}
-\end{frame}
-}
+    #pragma omp critical
+    {
+      // ..,ale inkrementaci provadi vzdy maximalne jedno vlakno
+      num_threads += 1;
+    }
 
-% ukazka na atomic
-\begin{frame}[fragile]
-  \frametitle{\texttt{\#pragma omp atomic}}
-  Na minulém cvičení jsme si ukázali, že mutexy mohou být pomalé.\\
-  \textbf{Opravdu pomalé.}
-  \begin{itemize}
-    \item[\ \ \ \ \ $\rightarrow$] Jednoduché operace nad jednou proměnnou lze řešit \emph{hardwarovým} zámkem -- provedením atomické operace
-  \end{itemize}
+    // Zde opet muze byt vice vlaken soucasne
+  }
+  ```
+]
 
-  \vspace{1.5em}
+#slide-items[
+#frame[
+=== Doimplementujte metodu `integrate_omp_critical`
 
-  \begin{minipage}{0.4\linewidth}
-    \begin{minted}{c}
-int num_threads = 0;
-#pragma omp parallel
-{
-  #pragma omp atomic
-  num_threads += 1;
-}
-    \end{minted}
-  \end{minipage}
-  \begin{minipage}{0.59\linewidth}
-    Ne všechny operace lze provést atomicky!
+Doimplementujte metodu `integrate_omp_critical` v `2integrate.cpp`. Využijte k tomu `#pragma omp parallel` a `#pragma omp critical`.
 
-    \vspace{0.5em}
+_Tip:_ Po spuštění vláken v bloku `#pragma omp parallel` si můžete napočítat rozsahy indexů, které jednotlivá vlákna
+budou zpracovávat. Pro zjištění indexu aktuálního vlákna použijte metodu `omp_get_thread_num()`. Zjistit celkový počet
+vláken lze pomocí `omp_get_num_threads()`.
+]
+]
 
-    Typicky pouze: \texttt{x++}, \texttt{x--}, \texttt{++x}, \texttt{--x} \\
-    a \texttt{x} \emph{OP}\texttt{= expr}, kde
-    \vspace{-0.4em}
-    \begin{center}
-      \emph{OP} $\in \lbrace$
-      \mintinline{c}{+}, 
-      \mintinline{c}{-}, 
-      \mintinline{c}{*}, 
-      \mintinline{c}{/}, 
-      \mintinline{c}{&}, 
-      \mintinline{c}{^}, 
-      \mintinline{c}{|}, 
-      \mintinline{c}{<<}, 
-      \mintinline{c}{>>}
-      $\rbrace$
-    \end{center}
+#slide[
+= `#pragma omp atomic`
 
-    \begin{itemize}
-      \item[\faThumbsOUp] Pokud kompilátor nemá k dispozici danou atomickou operaci, použije záložní plán: mutex.
-    \end{itemize}
-  \end{minipage}
-\end{frame}
+Na minulém cvičení jsme si ukázali, že mutexy mohou být pomalé. \
+*Opravdu pomalé.*
 
-{\setbeamertemplate{frame footer}{\see{{\tt integrate.cpp},\ \ \ {\tt main.cpp} }}
-\begin{frame}
-  \begin{block}{Doimplementujte metodu \texttt{integrate\_omp\_atomic}}
-    Doimplementujte metodu \texttt{integrate\_omp\_atomic} v \texttt{integrate.cpp}.
-    Místo kritické sekce využijte \texttt{\#pragma omp atomic}.
-    Jakého zrychlení touto úpravou dosáhneme?
-  \end{block}
-\end{frame}
-}
+Jednoduché operace nad jednou proměnnou lze řešit _hardwarovým_ zámkem -- provedením atomické operace
 
-\section{Redukce v OpenMP}
+#v(2em)
 
-% ukazka na redukce
-\begin{frame}[fragile]
-  \frametitle{Redukce v OpenMP}
+#grid(columns: 2, gutter: 4em)[
+```cpp
+    int num_threads = 0;
+    #pragma omp parallel
+    {
+      #pragma omp atomic
+      num_threads += 1;
+    }
+    ```
+][
+Ne všechny operace lze provést atomicky!
 
-  To samé lze ale udělat elegantněji a efektivněji:
-  \begin{minted}{c}
-int num_threads = 0;
-#pragma omp parallel reduction(+:num_threads)
-{
-  num_threads += 1; 
-}
-  \end{minted}
+Typicky pouze: `x++`, `x--`, `++x`, `--x` a `x OP= expr`, kde \
+#h(1em) `OP` $in$ {`+`, `-`, `*`, `/`, `&`, `^`, `|`, `<<`, `>>`}
 
-  OpenMP pak zajistí, že se částečné výsledky \emph{lokálních} proměnných \texttt{num\_threads} po konci bloku posčítají
+Pokud kompilátor nemá k dispozici danou atomickou operaci, použije záložní plán: mutex.
+]
+]
 
-  \vspace{1em}\hrule\vspace{1em}
+#slide-items[
+#frame[
+=== Doimplementujte metodu `integrate_omp_atomic`
 
-  Následující ``operátory'' jsou podporované (OpenMP verze 3+):
-  \begin{itemize}
-    \item Aritmetické: \mintinline{c}{+}, \mintinline{c}{*}, \mintinline{c}{-}, \mintinline{c}{max}, \mintinline{c}{min}
-    \item Logické: \mintinline{c}{&}, \mintinline{c}{&&}, \mintinline{c}{|}, \mintinline{c}{||}, \mintinline{c}{^}
-  \end{itemize}
-\end{frame}
+Doimplementujte metodu `integrate_omp_atomic` v `2integrate.cpp`. Místo kritické sekce využijte `#pragma omp atomic`.
+Jakého zrychlení touto úpravou dosáhneme?
+]
+]
 
-% uloha, proc nam uloha neskaluje tak dobre v druhem pripade? co udelat, aby se zlepsil vykon?
-{\setbeamertemplate{frame footer}{\see{{\tt integrate.cpp},\ \ \ {\tt main.cpp}}}
-\begin{frame}[fragile]
-  \begin{block}{Doimplementujte metodu \texttt{integrate\_omp\_reduction}}
-    Doimplementujte tělo metody \texttt{integrate\_omp\_reduction} v souboru \texttt{integrate.cpp}.
-    Nahraďte \texttt{\#pragma omp atomic} redukcí.
-  \end{block}
-\end{frame}
-}
+#section-slide[Redukce v OpenMP]
 
-\begin{frame}[fragile]
-  \frametitle{\texttt{\#pragma omp parallel for}}
+#slide-items[
+= Redukce v OpenMP
 
-  Kód s redukcí lze napsat ještě jednodušeji.
+To samé lze ale udělat elegantněji a efektivněji:
 
-  Rozsahy pro vlákna si nemusíme počítat ručně a můžeme práci nechat na OpenMP:
+```cpp
+  int num_threads = 0;
+  #pragma omp parallel reduction(+:num_threads)
+  {
+    num_threads += 1;
+  }
+  ```
 
-  \begin{minted}{c}
-double acc = 0.0;
+OpenMP pak zajistí, že se částečné výsledky _lokálních_ proměnných `num_threads` po konci bloku posčítají
 
-#pragma omp parallel for reduction(+:acc) //schedule(static)
-for(int i = 0 ; i < step_count ; i++) {
-  const double cx = a + (2*i + 1.0)*step_size/2;
-  acc += integrand(cx)*step_size;
-}
-return acc;
-  \end{minted}
-\end{frame}
+#v(1em)
 
-\begin{frame}
-  \begin{center}
-    \Large
-    Proč při integraci funkce $f(x)=x$ \\ dosahujeme většího zrychlení?
-  \end{center}
+Následující "operátory" jsou podporované (OpenMP verze 3+):
 
-  \pause\vspace{1.5em}
+- Aritmetické: `+`, `*`, `-`, `max`, `min`
+- Logické: `&`, `&&`, `|`, `||`, `^`
+]
 
-  Výpočet $f(x)=x$ trvá konstantní dobu a práce je tak mezi vlákna rozdělena rovnoměrně.
+#slide-items[
+#frame[
+=== Doimplementujte metodu `integrate_omp_reduction`
 
-  To neplatí o funkci $f(x)=\int_0^{0.001x^2} \sin(p) \ \mathrm{d}p$, kterou aproximujeme numerickou integrací s proměnlivým počtem kroků.
-\end{frame}
+Doimplementujte tělo metody `integrate_omp_reduction` v souboru `2integrate.cpp`. Nahraďte `#pragma omp atomic` redukcí.
+]
+]
 
-{\setbeamertemplate{frame footer}{\see{{\tt integrate.cpp},\ \ \ {\tt main.cpp}}}
-\begin{frame}[fragile]
-  \begin{block}{Doimplementujte metodu \texttt{integrate\_omp\_for\_dynamic}}
-    Doimplementujte tělo metody \texttt{integrate\_omp\_for\_dynamic}.
-    Statické rozvrhování \texttt{schedule(static)} nahraďte dynamickým \texttt{schedule(dynamic)}.
-    Jaký má tato volba dopad na rychlost numerické integrace $f(x)=x$ a $f(x)=\int_0^{0.001x^2} \sin(p) \ \mathrm{d}p$?
-  \end{block}
-\end{frame}
-}
+#slide[
+= `#pragma omp parallel for`
 
-% ukazka schedulingu, typy s vysvetlenim 
-\begin{frame}[fragile]
-  \frametitle{\texttt{\#pragma omp parallel for \underline{schedule}}}
-  Obecná syntaxe (možno použít i další parametry jako např. \texttt{reduction}):
-  \begin{minted}{c}
+Kód s redukcí lze napsat ještě jednodušeji.
+
+Rozsahy pro vlákna si nemusíme počítat ručně a můžeme práci nechat na OpenMP:
+
+```cpp
+  double acc = 0.0;
+
+  #pragma omp parallel for reduction(+:acc) //schedule(static)
+  for(int i = 0 ; i < step_count ; i++) {
+      const double cx = a + (2*i + 1.0)*step_size/2;
+      acc += integrand(cx)*step_size;
+  }
+  return acc;
+  ```
+]
+
+#slide-items[
+  = Scheduling
+
+  #important[
+    Proč při integraci funkce $"f" paren.l x paren.r = x$ \
+    dosahujeme většího zrychlení?
+  ]
+][
+
+  Výpočet $"f" paren.l x paren.r = x$ trvá konstantní dobu a práce je tak mezi vlákna rozdělena rovnoměrně.
+
+  To neplatí o funkci $"f" paren.l x paren.r = frac(1, exp(x))$, kterou aproximujeme
+  numerickou integrací s proměnlivým počtem kroků. ]
+
+#slide-items[
+#frame[
+=== Doimplementujte metodu `integrate_omp_for_dynamic`
+
+Doimplementujte tělo metody `integrate_omp_for_dynamic`. Statické rozvrhování `schedule(static)` nahraďte dynamickým `schedule(dynamic)`.
+Jaký má tato volba dopad na rychlost numerické integrace $"f" paren.l x paren.r = x$ a $"f" paren.l x paren.r = frac(1, exp(x))
+$?
+]
+]
+
+#slide-items[
+= `#pragma omp parallel for schedule`
+
+Obecná syntaxe (možno použít i další parametry jako např. `reduction`):
+
+```cpp
   #pragma omp parallel for schedule(type[,chunk_size])
-  \end{minted}
+```
+][
+`chunk_size` udává minimální velikost bloku, se kterým se plánuje, např:
 
-  \pause
-
-  \texttt{chunk\_size} udává minimální velikost bloku, se kterým se plánuje, např:
-  \begin{minted}{c}
+```cpp
   #pragma omp parallel for schedule(dynamic,16)
-  \end{minted}
-  zajistí, že si vlákno po dokončení práce na aktuálním bloku dat řekne o další blok o 16 prvcích.
+```
 
-  \pause
+zajistí, že si vlákno po dokončení práce na aktuálním bloku dat řekne o další blok o 16 prvcích.
 
-  \begin{itemize}
-    \item dynamic - vlákna si \emph{dynamicky} alokují bloky, které mají počítat
-    \item guided - \emph{dynamické} plánování, kde se velikost bloků v průběhu výpočtu zmenšuje
-    \item static - každé vlákno má svůj blok přiřazený napevno (když skončí dříve, musí čekat)
-    \item runtime - rozhodnuto za běhu na základě nastavení prostředí \\ {\tt (export OMP\_SCHEDULE="dynamic, 100")}
-  \end{itemize}
-\end{frame}
+][
+#set list(marker: none, spacing: 1.25em)
 
-\section{Zadání druhé domácí úlohy}
+/ `dynamic`:
+  - Vlákna si _dynamicky_ alokují bloky, které mají počítat
+/ `guided`:
+  - _Dynamické_ plánování, kde se velikost bloků v průběhu výpočtu zmenšuje
+/ `static`:
+  - Každé vlákno má svůj blok přiřazený napevno (když skončí dříve, musí čekat)
+/ `runtime`: 
+  - Rozhodnuto za běhu na základě nastavení prostředí\ (`export OMP_SCHEDULE="dynamic, 100"`)
+]
 
+#section-slide[Zadání druhé domácí úlohy]
 
-% TODO - domaci uloha
-\begin{frame}
-  \frametitle{Paralelní suma vektoru}
-  
-V 2. domácí úloze si budete moct vyzkoušet, že úspěšnost různých způsobů paralelizace {\bf závisí} do značné míry na {\bf vstupních datech}.
+#slide[
+  = Paralelní suma vektoru
 
-\vspace{1.5em}
+  V 2. domácí úloze si budete moct vyzkoušet, že úspěšnost různých způsobů paralelizace *závisí* do značné míry na
+  *vstupních datech*.
 
-Na vstupu dostanete vektor složený z vektorů náhodně generovaných čísel. 
+  #v(1.5em)
 
-\vspace{1.5em}
+  Na vstupu dostanete vektor složený z vektorů náhodně generovaných čísel.
 
-Vaším úkolem je čísla v každém vektoru {\bf sečíst} a tento součet vložit do vektoru s řešením na index odpovídající pořadí vektoru, který jste sčítali.
-   
-  
-  
+  #v(1.5em)
 
-\end{frame}
+  Vaším úkolem je čísla v každém vektoru *sečíst* a tento součet vložit do vektoru s řešením na index odpovídající pořadí
+  vektoru, který jste sčítali.
+]
 
-% TODO - domaci uloha
-\begin{frame}
-  \frametitle{Paralelní suma vektoru}
-  Doimplementujte metody v \texttt{SumsOfVectors.cpp} a zajistěte, že
-  \begin{enumerate}
-    \item Výpočet sum je paralelní a každá metoda vrací korektní výsledky
-    \item Metody využívají požadované způsoby paralelizace
-  \end{enumerate}
-  
-  \pause\vspace{1.5em}
-  
-  Za spravné výsledky na každé ze {\bf čtyř} datových sad dostanete 2b.
+#slide-items[
+= Paralelní suma vektoru
 
-\end{frame}
+Doimplementujte metody v `SumsOfVectors.cpp` a zajistěte, že
 
-% Frame with the feedback QR code 
-\framefeedback{}
+- Výpočet sum je paralelní a každá metoda vrací korektní výsledky
+- Metody využívají požadované způsoby paralelizace
 
-\end{document}
+][
+  Za spravné výsledky na každé ze *čtyř* datových sad dostanete 2b.
+]

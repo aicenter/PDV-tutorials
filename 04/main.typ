@@ -1,434 +1,333 @@
-% !TEX options=--shell-escape
-\documentclass[usenames,dvipsnames,9pt]{beamer}
+#import "@preview/polylux:0.4.0": *
+#import "../template/main.typ" as ctu-lab-slides
+#import ctu-lab-slides: *
 
-\makeatletter
-\def\input@path{{support/beamer-template/}}
-\makeatother
+#show: ctu-lab-slides.setup
 
-\usepackage{support/beamer-template/beamerthememetropolis}
+#title-slide[
+  Konkuretní datové struktury
+][
+  Cvičení 4
+]
 
-\usepackage[utf8]{inputenc}
-\usepackage[czech]{babel}
-\selectlanguage{czech}
-
-\usepackage{hyperref}
-\usepackage{fontawesome}
-\usepackage{minted}
-\usepackage{mathtools}
-\usepackage{tabularx}
-\usepackage{smartdiagram}
-\usepackage{amssymb}
-\usepackage{qrcode}
-
-\input{commands.tex}
-
-\title{Konkurentní datové struktury}
-\date{}
-\institute{B4B36PDV -- Paralelní a distribuované výpočty}
-
-\metroset{block=fill}
-
-\begin{document}
-\maketitle
-
-%\begin{frame}
-%  Minulé cvičení:
-%  \begin{center}
-%    \Large\emph{``Paralelní programování v OpenMP...''}
-%  \end{center}
-%  \pause
-%  \vspace{1.5em}
-%  
-%  Zajištění konzistentního přístupu do paměti pro více vláken je složité a pomalé. Jak navrhnout strukturu ukládání dat tak, aby operace byly rychlé a mohlo s ní pracovat více vláken součastně?
-%
-%  \pause
-%  \vspace{2.5em}
-%  Dnešní menu: \hspace{10pt} \huge Konkurentní datové struktury
-%\end{frame}
-
-\begin{frame}[t]
+#slide-items[
   Minulé cvičení:
-  \begin{center}
-    \Large\emph{``Paralelní programování v OpenMP...''}
-  \end{center}
-  
- % \pause
+  #slogan[
+    "Paralelní programování v OpenMP..."
+  ]
+][
+  #only("2")[#image("assets/theory.jpg")]
+][
+  #only("3-")[#image("assets/practice.jpg")]
+]
 
-\begin{figure}
-  \only<2>{\includegraphics[scale=0.4]{04/figs/theory.pdf}}%
-  \only<3->{\includegraphics[scale=.4]{04/figs/practice.pdf}}%
-\end{figure}
+#slide[
+  Dnešní menu:
+  #slogan[
+    Konkurentní datové struktury
+  ]
+]
 
-%\pause
+#slide[
+  = Osnova
 
-  \only<4>{Dnešní menu: \hspace{10pt} \huge Konkurentní datové struktury}
-\end{frame}
+  - Opakování z minulého cvičení
+  %%
+  - Zámková architektura datových struktur
+  - Bezzámková architektura datových struktur
+  %%
+  - Zadání třetí domácí úlohy
+]
 
-\begin{frame}
-  \frametitle{Osnova}
-  \begin{itemize}
-    \item Opakování z minulého cvičení
-    \item Zámková architektura datových struktur
-    \item Bezzámková architektura datových struktur\\[1.5em]
-    \item Zadání třetí domácí úlohy
-  \end{itemize}
-\end{frame}
+#section-slide[Opakování z minulého cvičení]
 
-\section{Opakování z minulého cvičení}
-\begin{frame}[standout]
-  \Huge
-  \url{http://goo.gl/a6BEMb}
-\end{frame}
+#quiz-link-slide("http://goo.gl/a6BEMb")
 
+#slide[
+= Co provádí následující kód? Co bude po skončení v data?
 
-\begin{frame}[fragile]
-  \frametitle{Co provádí následující kód? Co bude po skončení v data?}
+```cpp
+  unsigned int num_threads = omp_get_num_threads();
+  unsigned int thread_id = omp_get_thread_num();
 
-\begin{minted}{c}
-unsigned int num_threads = omp_get_num_threads();
-unsigned int thread_id = omp_get_thread_num();
-std::vector<int> data(100000);
-#pragma omp parallel
-{
-	int chunk_size = 1 + data.size() / num_threads;
-	int begin = thread_id * chunk_size;
-	int end = std::min ( data.size(), 
-		(thread_id + 1) * chunk_size );
-	for (unsigned int i = begin; i < end; i++)
-		data[i] ++ ;
-}
-\end{minted}
-  
-\vspace{2em}
-  
-  {\bf Napište odpověď}
+  std::vector<int> data(100000);
 
-\end{frame}
+  #pragma omp parallel
+  {
+    int chunk_size = 1 + data.size() / num_threads;
+    int begin = thread_id * chunk_size;
+    int end = std::min ( data.size(), (thread_id + 1) * chunk_size );
+    for (unsigned int i = begin; i < end; i++) {
+      data[i]++;
+    }
+  }
+```
 
-\begin{frame}[fragile]
-  \frametitle{Jakým způsobem bude následující kód proveden?}
+== Napište odpověď
+]
 
-\begin{minted}{c}
-std::vector<int> data(100000);
-int size = data.size();
-#pragma omp parallel
-{
-	#pragma omp parallel for
-	for (unsigned int i = 0; i < size; i++)
-		data[i] ++ ;
-}
-\end{minted}
-  
-  \vspace{2em}
-  
-  {\bf Zvolte co se může stát}
-  
-  \begin{enumerate}
-  \item Kód nelze zkompilovat
-   \item OpenMP rozdělí práci na for cyklu mezi dostupná fyzická vlákna
-    \item Vnitřní smyčka bude provedena serielně
-     \item OpenMP vytvoří více vláken než fyzicky lze a dojde k degradaci výkonu
-     \item For smyčka bude provedena každým vláknem celá
-  \end{enumerate}
+#slide[
+= Jakým způsobem bude následující kód proveden?
 
-\end{frame}
+```cpp
+  std::vector<int> data(100000);
+  int size = data.size();
 
-\begin{frame}[fragile]
-  \frametitle{K čemu dojde u následujícího kódu?}
+  #pragma omp parallel
+  {
+    #pragma omp parallel for
+    for (unsigned int i = 0; i < size; i++) {
+      data[i]++;
+    }
+  }
+  ```
 
-\begin{minted}{c}
-int k = 0;
-std::vector<int> data = getRandomVectorOfSize(400);
-#pragma omp parallel num_threads(4)
-{
-	int begin = omp_get_thread_num() * 100;
-	int end = (1 + omp_get_thread_num()) * 100;
-	for (unsigned int i = begin; i < end; i++)
-		#pragma omp critical
-		k += data[i];
-}
-\end{minted}
-  
-  \vspace{2em}
-  
-  {\bf Zvolte co se může stát}
-  
-  \begin{enumerate}
-  \item Dojde k efektivní paralelizaci výpočtu
-  \item OpenMP zvládne distribuovat sčítání mezi vlákny aby nedošlo k degradaci výkonu
-  \item OpenMP bude zbytečně často serializovat vlákna pomocí critical
-  \item OpenMP bude naprosto zbytečně serializovat vlákna pomocí critical
-  \end{enumerate}
+#v(1em)
 
-\end{frame}
+=== Zvolte co se může stát
 
-\section{Tvorba konkurentních datových struktur}
+1. Kód nelze zkompilovat
+2. OpenMP rozdělí práci na for cyklu mezi dostupná fyzická vlákna
+3. Vnitřní smyčka bude provedena serielně
+4. OpenMP vytvoří více vláken než fyzicky lze a dojde k degradaci výkonu
+5. For smyčka bude provedena každým vláknem celá
+]
 
-\begin{frame}
-\frametitle{Co bychom si přáli?}
+#slide[
+= K čemu dojde u následujícího kódu?
 
-Aby jednu strukturu používalo více vláken {\bf současně}.
+```cpp
+  int k = 0;
+  std::vector<int> data = getRandomVectorOfSize(400);
 
-  \begin{center}
-    \Large Co musíme změnit oproti frontě z prvního domácího úkolu?
-  \end{center}
-  
-\pause\vspace{1em}\hrule\vspace{1em}
+  #pragma omp parallel num_threads(4)
+  {
+    int begin = omp_get_thread_num() * 100;
+    int end = (1 + omp_get_thread_num()) * 100;
+    for (unsigned int i = begin; i < end; i++) {
+      #pragma omp critical
+      k += data[i];
+    }
+  }
+  ```
 
-\begin{itemize}
-  \item Nesmíme zamykat \textbf{celou} datovou strukturu!
-  \item Se zamykáním zámků musíme šetřit
-\end{itemize}
+#v(1em)
 
-\vspace{1em}\hfill\faWarning \hspace{2pt} Jinak se datová struktura stane brzdou výpočtu!
+=== Zvolte co se může stát
 
-\end{frame}
+1. Dojde k efektivní paralelizaci výpočtu
+2. OpenMP zvládne distribuovat sčítání mezi vlákny aby nedošlo k degradaci výkonu
+3. OpenMP bude zbytečně často serializovat vlákna pomocí critical
+4. OpenMP bude naprosto zbytečně serializovat vlákna pomocí critical
+]
 
-\begin{frame}
-  Možný přístup:
-  \begin{enumerate}
-    \item Vezmu kód existující jednovláknové datové struktury
-    \item Ve chvíli, kdy strukturu dělám nějaké zásahy, zamknu si část struktury pro sebe
-  \end{enumerate}
-  \begin{center}
-    \Large Je to opravdu takto lehké?
-  \end{center}
-  \pause\vspace{1em}\hrule\vspace{1em}
-  Typický vzor práce s jednovláknovými strukturami:
-  \begin{center}
-    Příprava $\rightarrow$ ``Poškození'' dat $\xrightarrow{\text{\textcolor{red}{\faFlash}}}$ Oprava $\rightarrow$ Hotovo!
-  \end{center}
+#section-slide[Tvorba konkurentních datových struktur]
 
-  \pause\vspace{1em}
-  Musíme zabránit použití ``rozbité'' části = vyloučit i čtenáře\\
+#slide-items[
+  = Co bychom si přáli?
+
+  Aby jednu strukturu používalo více vláken *současně*.
+
+  #important[
+    Co musíme změnit oproti frontě z prvního domácího úkolu?
+  ]
+
+][
+
+  - Nesmíme zamykat *celou* datovou strukturu!
+  - Se zamykáním zámků musíme šetřit
+
+  #comment[ #emoji.warning Jinak se datová struktura stane brzdou výpočtu! ]
+]
+
+#slide-items[
+  = Bezzámková architektura
+
+  == Možný přístup
+
+  1. Vezmu kód existující jednovláknové datové struktury
+  2. Ve chvíli, kdy strukturu dělám nějaké zásahy, zamknu si část struktury pro sebe
+
+  #important[
+    Je to opravddu takto lehké?
+  ]
+][
+  == Typický vzor práce s jednovláknovými strukturami
+
+  #align(center)[
+    Příprava $->$ "Poškození" dat $-$ #emoji.lightning$->$ Oprava $->$ Hotovo!
+  ]
+][
+  #v(1em)
+  Musíme zabránit použití "rozbité" části = vyloučit i čtenáře \
   (a zamykat si části struktury, i když to není potřeba -- např. při čtení)
+][
+  #comment[ *To si ale moc nepomůžeme :-(* ]
+]
 
-  \pause\vspace{1.5em}
+#slide-items[
+  = Jak to tedy udělat lépe?
 
-  \hfill \large\bf To si ale moc nepomůžeme :-(
-\end{frame}
+  1. Strčit hlavu do písku a (téměř) nezamykat
+  2. Když nastane problém, tak ho (nějak) vyřešit
 
-\begin{frame}
-  \frametitle{Jak to tedy udělat lépe?}
-  \begin{enumerate}
-    \item \Large Strčit hlavu do písku a (téměř) nezamykat
-    \item \Large Když nastane problém, tak ho (nějak) vyřešit
-  \end{enumerate}
-  \hfill To se snáz řekne, než udělá...
-
-  \pause\vspace{1em}\hrule\vspace{1em}
+  #comment[ *To se snáz řekne, než udělá...* ]
+][
   Některé z možných problémů:
-  \begin{itemize}
-    \item \textbf{Datová struktura se může nacházet v mezistavu:}\\
-          Buď musí být použitelná, nebo si musíme být jistí, že problém detekujeme, než poškodíme data
-    \item \textbf{Nesmíme uvolnit paměť, pokud s ní pracuje jiné vlákno:}\\
-          Složitější datové struktury často využívají techniky podobné garbage-collectoru v Javě.
-  \end{itemize}
-\end{frame}
 
-\begin{frame}
-  \frametitle{Jak to tedy udělat lépe?}
+  == Datová struktura se může nacházet v mezistavu:
+  Buď musí být použitelná, nebo si musíme být jistí, že problém detekujeme, než poškodíme data == Nesmíme uvolnit paměť,
+  pokud s ní pracuje jiné vlákno Složitější datové struktury často využívají techniky podobné garbage-collectoru v Javě.
+]
+
+#slide[
+  = Jak to tedy udělat lépe?
+
   O takových datových strukturách se těžko přemýšlí...
 
-  \hfill ... a ještě hůř se v nich hledají chyby!
+  #comment[ ... a ještě hůř se v nich hledají chyby! ]
 
-  \vspace{2em}
+  #footnote[
+    #see-file("http://libcds.sourceforge.net")
 
-  \small\see{\url{http://libcds.sourceforge.net}}
+    #see-file("C++ Concurrency In Action: Practical Multithreading")
+  ]
+]
 
-  \see{C++ Concurrency In Action: Practical Multithreading}
-\end{frame}
+#section-slide[Cvičení: konkuretní spojový seznam]
 
-% \section{Zámková architektura datových struktur}
+#slide-items[
+  = Konkurentní spojový seznam
 
-% \begin{frame}
-
-% Místo zamykání celé struktury zamykáme {\bf části} struktury
-
-% \faWarning \hspace{3pt} Uvolňujeme zámky co nejdříve!
-
-% \vspace{2em}
-
-% Vhodné je použití \textit{spinlocků} = systémový busy waiting po velmi krátkou dobu.
-%      \begin{itemize}
-%     \item[\ \ \ \ \ $\rightarrow$] Efektivnější než řešit synchronizaci
-%     \item[\ \ \ \ \ $\rightarrow$] Paměťově nenáročné (2.5\% oproti mutexu v Linuxu)
-%   \end{itemize}
-
-% \end{frame}
-
-\section{Cvičení: konkuretní spojový seznam}
-
-{\setbeamertemplate{frame footer}{\see{{\tt lockBased.h}, {\tt main.cpp} }}
-\begin{frame}[fragile]
-  \frametitle{Konkurentní spojový seznam}
-  
   Reprezentace seznamu prvků
-  \begin{itemize}
-    \item My ho budeme chtít mít seřazený vzestupně...
-    \item Vložení prvku = nalezení správné pozice + vložení nového uzlu
-  \end{itemize}  
-  
-  \vspace{1em}
 
-  \begin{figure}
-    \centering\includegraphics{04/figs/linkedList.pdf}
-  \end{figure}
-  
-    \pause
+  - My ho budeme chtít mít seřazený vzestupně...
+  - Vložení prvku = nalezení správné pozice + vložení nového uzlu
 
-  \vspace{2em}
-  
-  \begin{block}{Doimplementujte metodu \texttt{insert}}
-    Doimplementujte tělo metody \texttt{insert} v souboru \texttt{lockBased.h}.
-    Pro synchronizaci vláken použijte \texttt{spin\_lock} (používá se stejně jako \texttt{std::mutex}), který umístíte ke každému uzlu seznamu.
-    Snažte se zámky zamykat pouze na čas modifikace seznamu a pouze tam, kde jsou potřeba!
-  \end{block}
-\end{frame}
-}
+  #image("assets/linkedList.svg", width: 100%)
+][
+#frame[
+=== Doimplementujte metodu `insert`
 
-\begin{frame}[fragile]
-  \frametitle{Data race}
+Doimplementujte tělo metody `insert` v souboru `1ConcurentLunkedList.h`. Pro synchronizaci vláken použijte `SpinMutex` (používá
+se stejně jako `std::mutex`), který umístíte ke každému uzlu seznamu. Snažte se zámky zamykat pouze na čas modifikace
+seznamu a pouze tam, kde jsou potřeba!
+]
+]
+
+#slide-items[
+  = Data race
 
   Nesynchronizované přístupy do paměti (s alespoň jedním zápisem) jsou ve standardu C++ vedené jako
-  \begin{center}
-    \Large \faWarning \hspace{3pt} \emph{undefined behavior} \hspace{1pt} \faWarning
-  \end{center}
 
-  Může se nám stát spousta špatných věcí, například:\\
+  #important[
+    #emoji.warning undefined behavior #emoji.warning
+  ]
+
+  Může se nám stát spousta špatných věcí, například: \
   (ty navíc závisí na kompilátoru a platformě)
-  \begin{itemize}
-    \item Můžeme přečíst částečně zapsaná data (\emph{dirty read})
-    \item Vlákno se nedozví o změně provedené jiným vláknem
-    \item Vlákno se dozví pouze o části provedených změn
-  \end{itemize}
 
-  \pause\vspace{2em}
-  \begin{center}
-    {\Large \texttt{std::atomic}} \\
-    Synchronizace přístupů ke stejné proměnné zajištěna
-  \end{center}
-\end{frame}
+  - Můžeme přečíst částečně zapsaná data (dirty read)
+  - Vlákno se nedozví o změně provedené jiným vláknem
+  - Vlákno se dozví pouze o části provedených změn
+][
+#important[`std::atomic` \ Synchronizace přístupů ke stejné proměnné zajištěna]
+]
 
-\begin{frame}
-  \begin{center}
-    \Large Můžeme se zámků zbavit úplně?
-  \end{center}
-\end{frame}
+#slide[
+  = Bezzámková architektura datových struktur
 
-\section{Bezzámková architektura datových struktur}
+  Můžeme se zámků zbavit úplně?
+]
 
-\begin{frame}
+#section-slide[Bezzámková architektura datových struktur]
 
-  Navrhnout správně zamykání je náročné
+#slide-items[
+= Bezzámková architektura datových struktur
 
-  \begin{itemize}
-    \item Špatné použití může vést k deadlocku
-    \item Velké množství zámků snižuje potenciál opravdové konkurence 
-    \item Paměťový overhead (\texttt{std::mutex} na Linuxu má 40B!)
-  \end{itemize}
-  
-  \pause
-  \begin{center}
-    \Large Jak na to?
-  \end{center}
+Navrhnout správně zamykání je náročné
 
-  \pause
- 
-  \begin{itemize}
-  \item[\ \ \ \ \ $\rightarrow$] Pomocí atomických operací s pamětí
-  \end{itemize}
+- Špatné použití může vést k deadlocku
+- Velké množství zámků snižuje potenciál opravdové konkurence
+- Paměťový overhead (`std::mutex` na Linuxu má 40B!)
+][
+  #important[
+    Jak na to?
+  ]
+][
+  #set list(marker: sym.arrow)
+  - Pomocí atomických operací s pamětí
+]
 
-\end{frame}
+#slide-items[
+= Porovnej a prohoď
 
-\begin{frame}[fragile]
-  \frametitle{Porovnej a prohoď}
-  \textbf{Klíčová} operace pro \emph{lock-free} datové struktury.
-  \vspace{2em}
+*Klíčová* operace pro _lock-free_ datové struktury.
 
-  Porovnej a prohoď (neboli \textit{compare-and-swap}) je atomická operace s pamětí na objektu \texttt{std::atomic<T> X}, definovaná v C++ jako 
+Porovnej a prohoň (neboli *compare-and-swap*) je atomická operace s pamětí na objektu `std::atomic<T> X`, definovaná v
+C++ jako
 
-  \begin{minted}{c}
+```cpp
   bool X.compare_exchange_strong( T& expected, T desired)
-  \end{minted}
-  
-  která ma funkcionalitu ekvivalentní 
-  
-  \begin{minted}{c}
+  ```
+
+která ma funkcionalitu ekvivalentní
+
+```cpp
   if ( X == expected ){ X = desired; return true; }
   else{ expected = X; return false; }
-  \end{minted}
-  
-  \pause\vspace{1em}
-  
-  Kontrolu a změnu datové struktury lze provést {\bf atomicky}!
+  ```
+][
+  Kontrolu a změnu datové struktury lze provést *atomicky*!
+]
 
-\end{frame}
+#slide-items[
+= Implementace
 
-{\setbeamertemplate{frame footer}{\see{{\tt lockFree.h}, {\tt main.cpp} }}
-\begin{frame}[fragile]
-  \begin{block}{Doimplementujte metodu \texttt{insert}}
-    Doimplementujte tělo metody \texttt{insert} v souboru \texttt{lockFree.h}.
-    Namísto použití zámků nyní použijte atomickou operaci \emph{compare-and-swap} pro úpravu pointerů ve spojovém seznamu.
-  \end{block}
+#frame[
+=== Doimplementujte metodu `insert`
 
-  \vspace{2em}\hrule\vspace{2em}
-  \pause
-  \textbf{Bonusové úlohy:}
-  \begin{enumerate}
-    \item Zkuste se zamyslet, zda byste dokázali naimplementovat i dvousměrný spojový seznam
-    \item Zkuste naimplementovat spojový seznam, ve kterém může kromě přidávání docházet konkurentně i k mazání prvků
-  \end{enumerate}
-\end{frame}
-}
+Doimplementujte tělo metody `insert` v souboru `2LockFreeLinkedList.h`. Namísto použití zámků nyní použijte atomickou
+operaci *compare-and-swap* pro úpravu pointerů ve spojovém seznamu.
+]
+][
+  #frame[
+    === Bonusové úlohy:
 
+    1. Zkuste se zamyslet, zda byste dokázali naimplementovat i dvousměrný spojový seznam
+    2. Zkuste naimplementovat spojový seznam, ve kterém může kromě přidávání docházet konkurentně i k mazání prvků
+  ]
+]
 
-\section{Zadání třetí domácí úlohy}
+#section-slide[Zadání třetí domácí úlohy]
 
-\begin{frame}[fragile]
-  \frametitle{Konkurentní binární vyhledávací strom}
-  
-    \begin{minipage}{0.6\linewidth}
+#slide[
+  = Konkurentní binární vyhledávací strom
+
+  #grid(columns: 2, gutter: 2em)[
     Struktura, v níž jsou jednotlivé prvky uspořádány tak, aby bylo možné rychle vyhledávat
-    \vspace{2em}
-    \begin{itemize}
-    \item každý uzel tedy má nanejvýš dva potomky;
-    \item každému uzlu je přiřazen určitý klíč;
-    \item levý podstrom uzlu obsahuje klíče menší než je klíč uzlu; a
-    \item pravý podstrom uzlu obsahuje klíče větší než je klíč uzlu.
-    \end{itemize}
-  \end{minipage}
-  \hfill
-  \begin{minipage}{0.3\linewidth}
-    \includegraphics[width=1.3\linewidth]{04/figs/bst.pdf}
-  \end{minipage}
-\end{frame}
 
-\begin{frame}
-  \frametitle{Konkurentní binární vyhledávací strom}
-  Naimplementujte metody v \texttt{bst\_tree.cpp} a \texttt{bst\_tree.h} a zajistěte, že
-  \begin{enumerate}
-    \item každý prvek je vložen právě jednou; a
-    \item žádný vložený prvek se neztratí.
-  \end{enumerate}
-  
-  Zpracování musí být {\bf konkurentní}, nikoli serielní!
-  
-  \pause\vspace{1.5em}
-  
-  Za spravné výsledky a vysoký stupeň konkurence dostanete až {\bf 2b}.
-  
-    \pause\vspace{1.5em}
+    - každý uzel tedy má nanejvšš dva potomky;
+    - každému uzlu je přiřazen určitý klíč;
+    - levý podstrom uzlu obsahuje klíče menší než je klíč uzlu; a
+    - pravý podstrom uzlu obsahuje klíče větší než je klíč uzlu.
+  ][
+    #image("assets/bst.svg", width: 80%)
+  ]
+]
 
-Soubory \texttt{bst\_tree.cpp} a \texttt{bst\_tree.h} nahrajte do systému BRUTE.
-  
+#slide-items[
+= Konkurentní binární vyhledávací strom
 
-\end{frame}
+Naimplementujte metody v `bst_tree.cpp` a `bst_tree.h` a zajistěte, že
 
+1. každý prvek je vložen právě jednou; a
+2. žádný vložený prvek se neztratí.
 
-% Frame with the feedback QR code 
-\framefeedback{}
+Zpracování musí být *konkurentní*, nikoli serielní!
 
-
-
-\end{document}
+][
+  Za spravné výsledky a vysoký stupeň konkurence dostanete až *2b*.
+][
+Soubory `bst_tree.cpp` a `bst_tree.h` nahrajte do systému BRUTE.
+]

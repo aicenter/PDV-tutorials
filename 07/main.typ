@@ -1,61 +1,32 @@
-% !TEX options=--shell-escape
-\documentclass[usenames,dvipsnames,9pt]{beamer}
+#import "@preview/polylux:0.4.0": *
+#import "../template/main.typ" as ctu-lab-slides
+#import ctu-lab-slides: *
 
-\makeatletter
-\def\input@path{{support/beamer-template/}}
-\makeatother
+#show: ctu-lab-slides.setup
 
-\usepackage{support/beamer-template/beamerthememetropolis}
+#title-slide[
+  Vektorové instrukce
+][
+  Cvičení 7
+]
 
-\usepackage[utf8]{inputenc}
-\usepackage[czech]{babel}
-\selectlanguage{czech}
+#slide-items[
+  = Osnova
 
-\usepackage{hyperref}
-\usepackage{fontawesome}
-\usepackage{minted}
-\usepackage{mathtools}
-\usepackage{tabularx}
-\usepackage{smartdiagram}
-\usepackage{soul}
-\usepackage{tikz}
-\usepackage{amssymb}
-\usepackage{qrcode}
+  - Opakování z minulého cvičení
+  \
+  - Autovektorizace
+  - Ruční vektorizace pomocí intrinsics
+]
 
-\input{commands.tex}
+#section-slide[Opakování z minulého cvičení]
 
-\title{Vektorové instrukce}
-\date{}
-\institute{B4B36PDV -- Paralelní a distribuované výpočty}
+#quiz-link-slide("http://goo.gl/a6BEMb")
 
-\metroset{block=fill}
+#slide[
+= Který způsob je efektivnější?
 
-\begin{document}
-\maketitle
-
-\begin{frame}
-  \frametitle{Osnova}
-  \begin{itemize}
-    \item Opakování z minulého cvičení\\[1.5em]
-    \item Autovektorizace
-    \item Ruční vektorizace pomocí intrinsics\\[1.5em]
-    %\item Zadání semestrální úlohy
-  \end{itemize}
-\end{frame}
-
-
-\section{Opakování z minulého cvičení}
-
-\begin{frame}[standout]
-  \Huge
-  \url{http://goo.gl/a6BEMb}
-\end{frame}
-
-{\setbeamertemplate{frame footer}{\see{\url{http://goo.gl/a6BEMb}}}
-\begin{frame}[fragile]
-\frametitle{Který způsob je efektivnější?}
-
- \begin{minted}{c}
+```c
 bool mat[M][N];
 
 // A:
@@ -70,17 +41,16 @@ for(int i = 0; i < M; i++) {
 for(int i = 0; i < M; i++) {
   #pragma omp parallel
   #pragma omp for
-  for(int j = 0; j < N; j++){
+  for(int j = 0; i < N; j++){
     if (mat[i][j]){ /* report solution and terminate all; */ }
 }}
- \end{minted}
+```
+]
 
-\end{frame}
+#slide[
+= Jakým způsobem bude následující kód proveden?
 
-\begin{frame}[fragile]
-\frametitle{Jakým způsobem bude následující kód proveden?}
-
- \begin{minted}{c}
+```c
 bool mat[M][N];
 for(int i = 0; i < M; i++) {
     #pragma omp parallel
@@ -93,444 +63,370 @@ for(int i = 0; i < M; i++) {
     }
 }
 std::cout << "Finished!" << std::endl;
- \end{minted}
- 
- \vspace{.3em}
- 
- \begin{itemize}
- \item Výpočet končí okamžitě po nalezení prvního řešení.
- \item Po nalezení prvního řešení výpočet skončí, až všechna vlákna narazí na 'cancellation point'.
- \item Ani jedna z předchozích odpovědí není správná.
- \end{itemize}
+```
 
-\end{frame}
+== Možné odpovědi:
 
++ Výpočet končí okamžitě po nalezení prvního řešení.
++ Po nalezení prvního řešení výpočet skončí, až všechna vlákna narazí na 'cancellation point'.
++ Ani jedna z předchozích odpovědí není správná.
+]
 
+#slide[
+  = Moderní procesor
 
+  #align(center)[
+    #v(3em)
+    #set text(size: 1.8em)
+    #text(fill: rgb("#3f3d3d"))[*Paralelizace:*]
+    #set list(marker: none, spacing: 1em)
+
+    - #block(width: 100%, outset: 0.5em, fill: rgb("#c16a6a"))[Pipelining #small[(procesor)]]
+    - #block(width: 100%, outset: 0.5em, fill: rgb("#5d9bc4"))[
+        Vektorizace #small[
+          #only("1")[(kompilátor)]
+          #only("2-")[#strike[(kompilátor)]\ #text(weight: 600, fill: red)[(Vy #emoji.face)]]
+        ]
+      ]
+    - #block(width: 100%, height: 1.2em, outset: 0.5em, fill: rgb("#9970a1"))[Vlákna #small[(Vy #emoji.face)]]
+  ]
+]
+
+#slide[
+  = Skalární zpracování dat
+
+  #image("assets/scalar.svg", width: 40%)
+]
+
+#slide-items[
+  = Vektorové zpracování dat
+
+  #image("assets/vectorized.svg", width: 95%)
+][
+  #important[Není to až taková magie, jak to vypadá :-)]
+]
+
+#slide-items[
+
+= Vektorové zpracování dat (pomocí AVX / AVX2)
+
+```cpp #include <immintrin.h>```
+
+/ `__m256`:
+  - datový typ "vektor délky 256 bitů" (`float` má 32 bitů, a proto se do takového vektoru vejde 8x)
+][
+/ `_mm256_add_ps(x,y)`:
+  - Nad dvěma 256-bitovými vektory `x` a `y`... (`_mm256_`)
+  - ...provádím operaci sčítání... (`add`)
+  - ...při čemž vektory obsahují elementy typu _packed-single_ (`_ps`).
+][
+/ `_packed_`:
+  - vektor ,,zabaluje`` více prvků stejného typu
+/ `_single_`:
+  - _single-precision number_ aka `float`
+]
+
+#slide[
+= Vektorové rozšíření
+
+#frame[
+=== Otestujte, jaká vektorová rozšíření podporuje váš procesor.
+
+Použijde program `07_0test_simd_support` (`0test_simd_support.cpp`) a zjistěte jakou velikost integerových a floatových
+vektorů váš procesor podporuje.
+]
+]
+
+#section-slide[
+  Level 1: Autovektorizace #h(1em) #emoji.ghost
+]
+
+#slide[
+= Autovektorizace
+
+Moderní kompilátor se snaží zdetekovat `for` smyčky, které lze vektorizovat...
+
+Například:
+
+```c
+float a[1024], b[1024], c[1024];
+for(int i = 0 ; i < 1024 ; i++) {
+  a[i] = b[i] + c[i];
 }
+```
 
-\begin{frame}[t]
-  \frametitle{Moderní procesor}
-  \centering
-  \smartdiagram[bubble diagram]{Paralelizace,
-    Pipelining \\ {\footnotesize (procesor)},
-    Vektorizace \\ {\footnotesize (kompilátor)},
-    Vlákna \\ {\footnotesize (Vy :-)}}
-\end{frame}
+lze převést na
 
-\begin{frame}[t]
-  \frametitle{Moderní procesor}
-  \centering
-  \smartdiagram[bubble diagram]{Paralelizace,
-    Pipelining \\ {\footnotesize (procesor)},
-    Vektorizace \\ \st{\footnotesize (kompilátor)} \\ \textcolor{BrickRed}{\bf (Vy :-)},
-    Vlákna \\ {\footnotesize (Vy :-)}}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Skalární zpracování dat}
-  \begin{center}
-    \includegraphics[width=0.4\linewidth]{07/figs/scalar.pdf}
-  \end{center}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Vektorové zpracování dat}
-  \begin{center}
-    \includegraphics[width=0.95\linewidth]{07/figs/vectorized.pdf}
-  \end{center}
-  \pause
-  \vspace{1.5em}
-  \begin{center}
-    \LARGE Není to až taková magie, jak to vypadá :-)
-  \end{center}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Vektorové zpracování dat (pomocí AVX / AVX2)}
-
-  \hfill \texttt{\#include <immintrin.h>}
-  \vspace{1em}
-
-  \begin{itemize}
-    \item {\large \texttt{\_\_m256} - datový typ ,,vektor délky 256 bitů``} \\
-          \hspace{30pt}(\texttt{float} má 32 bitů, a proto se do takového vektoru vejde 8x)
-    \pause
-    \item {\large \texttt{\_mm256\_add\_ps($x$,$y$)}}
-          \begin{itemize}
-            \item Nad dvěma 256-bitovými vektory $x$ a $y$... (\texttt{\_mm256\_})
-            \item ...provádím operaci sčítání... (\texttt{add})
-            \item ...při čemž vektory obsahují elementy typu \emph{packed-single} (\texttt{\_ps}).
-          \end{itemize}
-    \pause
-    \vspace{1em}
-    \item \emph{packed} -- vektor ,,zabaluje`` více prvků stejného typu
-    \item \emph{single} -- \emph{single-precision number} aka \texttt{float}
-  \end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]
-  \begin{center}
-    \LARGE\bf Level 1: Autovektorizace \hspace{10pt} \ghost{yellow!85!red}
-  \end{center}
-\end{frame}
-
-\begin{frame}[fragile]
-  Moderní kompilátor se snaží zdetekovat \texttt{for} smyčky, které lze vektorizovat...
-
-  Například:
-
-  \begin{minted}{c}
-    float a[1024], b[1024], c[1024];
-    for(int i = 0 ; i < 1024 ; i++) {
-      a[i] = b[i] + c[i];
-    }
-  \end{minted}
-
-  lze převést na
-
-  \begin{minted}{c}
-    for(int i = 0 ; i < 1024 ; i += 8) {
-      _mm256_storeu_ps(&a[i],
-        _mm256_add_ps(
-          _mm256_loadu_ps(&b[i]),
-          _mm256_loadu_ps(&c[i])
-      ));
-    }
-  \end{minted}
-\end{frame}
-
-\begin{frame}
-\frametitle{Autovektorizace GCC}
-
-Vektorizaci kontrolujeme s pomocí parametrů kompilátoru:
-
-\begin{itemize}
-    \item \texttt{-march=native}: zapne kompilaci přímo na konrétní hw, včetně zpřístupnění vektorových instrukcí.
-    \item \texttt{-ftree-vectorize}: zapne autovektorizaci.
-    \item \texttt{-fopt-info-vec-all}: informace o autovektorizaci.
-    \item \texttt{-O2} musíme snížit level optimalizace, abychom mohli kontrolovat autovektorizaci.
-\end{itemize}
-
-\end{frame}
-
-
-\begin{frame}
-\frametitle{Autovektorizace MSVC}
-
-Vektorizaci kontrolujeme s pomocí parametrů kompilátoru \textbf{a přímo ve zdrojovém kódu}. Vektorizace je na úrovni \texttt{/O2} defaultně zapnutá.
-
-\begin{itemize}
-    \item \texttt{/Qvec-report:2}: informace o autovektorizaci.
-    \item \texttt{/fp:fast} zpřístupní pokročilou autovektorizaci floatů, která ale může mít vliv na výsledek (float operace na počítačích nejsou komutativní...).
-    \item \texttt{\#pragma loop(no\_vector)}: Deaktivuje autovektorizaci pro konkrétní cyklus.
-\end{itemize}
-    
-\end{frame}
-
-{\setbeamertemplate{frame footer}{\exe{{\tt autovec[.exe]}}}
-\begin{frame}
-  \begin{block}{Vyzkoušejte si autovektorizaci}
-    Spusťte autovec(.exe) s autovektorizací a následně zkuste autovektorizaci vypnout:
-    \begin{enumerate}
-      \item {\Large\textbf{GCC}}: zakomentujte v souboru \texttt{CMakeLists.txt} řádek \texttt{add\_compile\_options("-ftree-vectorize")}
-      \item {\Large\textbf{MSVC}}: v souboru \texttt{autovec.cpp} odkomentujte v metodě \texttt{runSequential} řádek \texttt{\#pragma loop(no\_vector) }.
-    \end{enumerate}
-    Jak se program zpomalí, pokud vypnete autovektorizaci?
-  \end{block}
-  Také se podívejte do logu ze sestavování programu na zprávy o proběhlé autovektorizaci.
-  
-   {\small
-  Kódy pro důvod selhání autovektorizace v MSVC: \url{https://docs.microsoft.com/en-us/cpp/error-messages/tool-errors/vectorizer-and-parallelizer-messages}}
-  
-\end{frame}
+```c
+for(int i = 0 ; i < 1024 ; i += 8) {
+  _mm256_storeu_ps(&a[i],
+    _mm256_add_ps(
+      _mm256_loadu_ps(&b[i]),
+      _mm256_loadu_ps(&c[i])
+  ));
 }
+```
+]
 
-\begin{frame}[fragile]
-  \begin{itemize}
-    \item[\LARGE\bf\textcolor{OliveGreen}{+}] Je to ,,zadarmo`` (kompilátor se pokusí vektorizaci provést za Vás) \\[2em]
-    \pause
-    \item[\LARGE\bf\textcolor{BrickRed}{-}] Ne vždy se to kompilátoru musí povést...
-    \pause
-    \begin{itemize}
-      \item Kompilátor vám nemusí ,,rozumět``\\
-            (často dokáže vektorizovat jenom smyčky v určitém tvaru) \\[0.6em]
-      \pause
-      \item Kompilátor musí zajistit, že výsledek programu bude identický, jako kdyby nevektorizoval \textbf{i za těch nejhorších možných podmínek}
-            \begin{itemize}
-              \item Musí uvažovat, že může dojít k datovým závislostem
-              \item Musí zajistit, že dojde ke \underline{stejnému} zaokrouhlení při floating-point operacích
-            \end{itemize}
-    \end{itemize}
-  \end{itemize}
+#slide[
+= Autovektorizace GCC
 
-  \pause
-  \vspace{1em}\hrule\vspace{1em}
+== Parametry kompilátoru GCC
 
-  \begin{minted}[fontsize=\small]{c}
-    float x;
-    float y1 = x * x * x * x * x * x * x * x;
+/ `-march=native`:
+  - zapne kompilaci přímo na konrétní hw, včetně zpřístupnění vektorových instrukcí.
+/ `-ftree-vectorize`:
+  - zapne autovektorizaci.
+/ `-fopt-info-vec-all`:
+  - informace o autovektorizaci.
+/ `-O2`:
+  - musíme snížit level optimalizace, abychom mohli kontrolovat autovektorizaci.
+]
 
-    float y2 = x * x;
-    y2 = y2 * y2;
-    y2 = y2 * y2;
+#slide[
+= Autovektorizace
 
-    assert(y1 == y2);
-  \end{minted}
-\end{frame}
+#frame[
+=== Vyzkoušejte si autovektorizaci
 
-\begin{frame}[fragile]
-  \begin{center}
-    \LARGE\bf Level 2: Intel SPMD Compiler (a jiné) \hspace{10pt} \ghost{yellow!85!red} \ghost{yellow!50!red}
-  \end{center}
-\end{frame}
+Spusťte `07_1autovectorization` (`1autovectorization.cpp`) s autovektorizací a následně zkuste autovektorizaci vypnout:
 
-\begin{frame}
-  \frametitle{Intel SPMD Compiler (ISPC)}
+*GCC*: zakomentujte v souboru `CMakeLists.txt` řádek s `"-ftree-vectorize"`.
 
-  \begin{center}
-    \LARGE Tušíte co znamená zkratka SPMD?
-  \end{center}
+*Clang*: zakomentujte v souboru `CMakeLists.txt` řádek s `"-fvectorize" "-fslp-vectorize"`.
+]
 
-  \vspace{1em}\hrule\vspace{1em}
+Jak se program zpomalí, pokud vypnete autovektorizaci?
 
-  \textbf{SPMD = \emph{single-program multiple-data}}
+Také se podívejte do logu ze sestavování programu na zprávy o proběhlé autovektorizaci.
 
-  Napíšete jeden program, který ale pomocí vektorizace poběží na více daty současně.
-  Kompilátor za vás rozhodne, jak má vektorizace proběhnout.
-\end{frame}
+]
 
-\begin{frame}
-  \frametitle{Intel SPMD Compiler (ISPC)}
+#slide-items[
+  = Výhody a nevýhody autovektorizace
 
-  \textbf{Intel SPMD Compiler (ISPC)}
-  \begin{itemize}
-    \item Nadstavba jazyka C
-    \item Od základu uvažuje o programu jako o \underline{paralelním}!
-  \end{itemize}
+  #text(fill: rgb("#556B2F"))[+] Je to "zadarmo" (kompilátor se pokusí vektorizaci provést za Vás)
+][
+  #text(fill: rgb("#B22222"))[-] Ne vždy se to kompilátoru musí povést...
+][
+== Co limituje autovektorizaci?
 
-  \vspace{3em}
-  \pause
-  \begin{center}
-    \LARGE\bf Bohužel nemáme čas se ISPC na PDV věnovat :-(
-  \end{center}
-\end{frame}
+- Kompilátor vám nemusí ,,rozumět`` (často dokáže vektorizovat jenom smyčky v určitém tvaru)
+- Kompilátor musí zajistit, že výsledek programu bude identický, jako kdyby nevektorizoval *i za těch nejhorších možných
+  podmínek*
+- Musí uvažovat, že může dojít k datovým závislostem
+- Musí zajistit, že dojde ke _stejnému_ zaokrouhlení při floating-point operacích
+  ```cpp
+            float x;
+            float y1 = x * x * x * x * x * x * x * x;
+            float y2 = x * x;
+            y2 = y2 * y2;
+            y2 = y2 * y2;
+            assert(y1 == y2);
+        ```
+]
 
-\begin{frame}[fragile]
-  \begin{center}
-    \LARGE\bf Level 3: Intrinsics \hspace{10pt} \ghost{yellow!85!red} \ghost{yellow!50!red} \ghost{yellow!20!red}
-  \end{center}
-\end{frame}
+#section-slide[
+  Level 2: Intel SPMD Compiler #h(1em) #emoji.ghost #emoji.ghost
+]
 
-\begin{frame}
-  \frametitle{Intrinsics}
+#slide-items[
+  = Intel SPMD Compiler (ISPC)
 
-  {\large \textbf{Intrinsics} -- Funkce a datové typy, které zpřístupňují nativní instrukce procesoru \textbf{bez nutnosti programovat v assembleru}}
+  #slogan[Tušíte co znamená zkratka SPMD?]
 
-  \vspace{1em}
+  *SPMD = _single-program multiple-data_*
 
-  \hfill{\LARGE\bf Instrukční sada: AVX / AVX2}
+  Napíšete jeden program, který ale pomocí vektorizace poběží na více daty současně. Kompilátor za vás rozhodne, jak má
+  vektorizace proběhnout.
+][
+  - Nadstavba jazyka C
+  - Od základu uvažuje o programu jako o _paralelním_!
 
-  \pause
+][
+  #v(5em)
+  #slogan[Bohužel nemáme čas se ISPC na PDV věnovat :-(]
+]
 
-   \vspace{3em}
-   \url{https://intel.ly/2GOHp7r} (Intel Intrinsics Guide)
+#section-slide[
+  Level 3: Intrinsics #h(1em) #emoji.ghost #emoji.ghost #emoji.ghost
+]
 
-   \hspace{10pt} Výborná reference! Využívejte, když si nebudete jistí!
-\end{frame}
+#slide-items[
+= Intrinsics
 
-\begin{frame}[standout]
-  \texttt{\#include <immintrin.h>} \\[2em]
-  \faWarning\ \ \ V GCC je třeba všechny kódy kompilovat s\ \ \  \texttt{-march=native}\ \ \ !
-\end{frame}
+== Intrinsics
 
-{\setbeamertemplate{frame footer}{\exe{{\tt normdist[.exe]}}}
-\begin{frame}[fragile]
-  \frametitle{AVX / AVX2 intrinsics}
+Funkce a datové typy, které zpřístupňují nativní instrukce procesoru *bez nutnosti programovat v assembleru*
 
-  Datový typ vektor: \texttt{\_\_m256...}
-  \begin{itemize}
-    \item \texttt{\_\_m256} -- vektor obsahující 8 x 32bit \texttt{float}
-    \item \texttt{\_\_m256d} -- vektor obsahující 4 x 64bit \texttt{double}
-    \item \texttt{\_\_m256i} -- vektor obsahující celočíselné typy
-  \end{itemize}
+#important[```cpp #include <immintrin.h>```]
+#comment[Instrukční sada: AVX / AVX2]
+][
+#important[#emoji.warning V GCC je třeba všechny kódy kompilovat s `-march=native` !]
+][
+  #footnote[
+    Intel Intrinsics Guide: #link("https://intel.ly/2GOHp7r") \
+    #small[Výborná reference! Využívejte, když si nebudete jistí!]
+  ]
+]
 
-  Načtení a zápis 256 bitů (8 x 32bit \texttt{float}) z/do adresy \mintinline{c}{float * x}:
-  \begin{minted}{c}
-    __m256 data = _mm256_loadu_ps(x);
-    _mm256_storeu_ps(x, data);
-  \end{minted}
+#slide[
+= Intrinsics
 
-  \vspace{1.5em}
-  \pause
+#frame[
+=== Intrinsics test
 
-  \begin{block}{Doimplementujte načtení a zápis dat do metody \texttt{normaldist\_vec(...)}}
-    Do těla \texttt{for} smyčky v metodě \texttt{normaldist\_vec(...)} v souboru \texttt{normdist.cpp} doimplementujte načtení a zpětný zápis \texttt{\_\_m256} vektoru z adresy \texttt{\&data[i]}.
-  \end{block}
-\end{frame}
+Vyzkoušejte vektory pomocí intrinsics v programu `07_2intrinsics_test` (`2intrinsics_test.cpp`).
+]
+]
 
-\begin{frame}[fragile]
-  Načítat a ukládat stejná data je nuda...
-  \begin{block}{Doimplementujte výpočet hustoty normálního rozdělení}
-    Pro každý prvek načteného vektoru spočtěte hodnotu funkce
-    \[ f(x)=\frac{1}{\sqrt{2\pi\sigma^2}} \mathrm{exp}\left( -\frac{(x-\mu)^2}{2\sigma^2} \right) \]
-  \end{block}
+#slide-items[
+= AVX / AVX2 intrinsics
 
-  \mintinline{c}{__m256 _mm256_set1_ps(x)}
+Datový typ vektor: `__m256...`
 
-  \vspace{-0.35em}\hspace{10pt} Nastaví všechny prvky vektoru na \texttt{x}
+/ `__m256`: vektor obsahující 8 x 32bit `float`
+/ `__m256d`: vektor obsahující 4 x 64bit `double`
+/ `__m256i`: vektor obsahující celočíselné typy
 
-  \mintinline{c}{__m256 _mm256_add_ps(x, y)},\ \ \mintinline{c}{__m256 _mm256_sub_ps(x, y)} \\
-  \mintinline{c}{__m256 _mm256_mul_ps(x, y)},\ \ \mintinline{c}{__m256 _mm256_div_ps(x, y)}
+Načtení a zápis 256 bitů (8 x 32bit `float`) z/do adresy `float * x`:
+```c
+__m256 data = _mm256_loadu_ps(x);
+_mm256_storeu_ps(x, data);
+```
 
-  \vspace{-0.35em}\hspace{10pt} Vypočte součet, rozdíl, součin a podíl vektorů \texttt{x} a \texttt{y}
+#v(1.5em)
 
-  \vspace{1em}\hrule\vspace{1em}
-  Pro aproximaci $\mathrm{exp}(x)$ (vektorově) použijte \mintinline{c}{__m256 exp_vec(x)}
-  \[ \mathrm{exp}(x) \approx \frac{(x+3)^2 + 3}{(x-3)^2 + 3} \qquad\qquad (2,2)\text{-Padé aproximátor} \]
-\end{frame}
+#frame[
+=== Doimplementujte načtení a zápis dat do metody `normaldist_vec(...)`
+
+Do těla `for` smyčky v metodě `normaldist_vec(...)` v souboru `3normal_distribution.cpp` doimplementujte načtení a
+zpětný zápis `__m256` vektoru z adresy `&data[i]`.
+]
+]
+
+#slide[
+= Výpočet hustoty normálního rozdělení
+
+Načítat a ukládat stejná data je nuda...
+
+#frame[
+  === Doimplementujte výpočet hustoty normálního rozdělení
+
+  Pro každý prvek načteného vektoru spočtěte hodnotu funkce
+  $ f(x)=frac(1, sqrt(2 pi sigma^2)) "exp"( - frac((x- mu)^2, 2 sigma^2) ) $
+]
+
+/ `__m256 _mm256_set1_ps(x)`:
+  - Nastaví všechny prvky vektoru na `x`
+
+/ `__m256 _mm256_add_ps(x, y)`, `__m256 _mm256_sub_ps(x, y)`:
+/  `__m256 _mm256_mul_ps(x, y)`, `__m256 _mm256_div_ps(x, y)`:
+  - Vypočte součet, rozdíl, součin a podíl vektorů `x` a `y`
+
+Pro aproximaci $"exp"(x)$ (vektorově) použijte `__m256 exp_vec(x)`
+
+#align(center)[$
+    "exp"(x)$ approx $frac((x+3)^2 + 3, (x-3)^2 + 3)
+  (2,2)"-Padé aproximátor" $]
+]
+
+#slide[
+  = Podmíněné zpracování
+
+  Paralelní řazení bitonic sort
+
+  #image("assets/bitonic.png", width: 100%)
+
+  Součástí řazení je i podmíněné prohazování prvků v poli: zjednodušená verze na dalších slidech.
+]
+
+#slide-items[
+= Podmíněné zpracování
+
+Občas chceme zpracovat různé prvky různým způsobem...
+```c
+size_t half = N / 2;
+for(unsigned int i = 0 ; i < half ; i++) {
+    if(data[i] > data[i+half])
+      std::swap(data[i], data[i+half]);
 }
+```
+][
+#v(2em)
+`__m256 _mm256_blendv_ps(x, y, mask)`:
+#image("assets/blendv.svg", width: 95%)
+]
 
+#slide[
+= Podmíněné zpracování
 
-\begin{frame}
-    \frametitle{Podmíněné zpracování}
-    Paralelní řazení bitonic sort
-    \vspace{0.5em}
-    \begin{center}
-        \includegraphics[width=\linewidth]{07/figs/bitonic.pdf}
-    \end{center}
-    \vspace{0.5em}
-    Součástí řazení je i podmíněné prohazování prvků v poli: zjednodušená verze na dalších slidech.
-\end{frame}
+#frame[
+=== Doimplementujte tělo metody `condswap_vec(...)`
+Doimplementujte tělo metody `conditional_swap_vec(...)` v souboru `4conditional_swap.cpp`, která bude vektorově
+vykonávat následující kód:
 
-\begin{frame}[fragile]
-  \frametitle{Podmíněné zpracování}
+```cpp
+  size_t half = N / 2;
+  for(unsigned int i = 0 ; i < half ; i++) {
+      if(data[i] > data[i+half])
+        std::swap(data[i], data[i+half]);
+  }
+  ```
+Pro implementaci podmínky využijte `_mm256_blendv_ps(x,y,mask)`.
+]
 
-  Občas chceme zpracovat různé prvky různým způsobem...
-  \begin{minted}{c}
-    size_t half = N / 2;
-    for(unsigned int i = 0 ; i < half ; i++) {
-        if(data[i] > data[i+half])
-          std::swap(data[i], data[i+half]);
-    }
-  \end{minted}
+#footnote[
+Vektorová instrukce pro porovnání vektorů $x < y$ typu _packed-single_:
+`__m256 _mm256_cmp_ps(x, y, _CMP_LT_OQ)`
+]
+]
 
-  \pause
-  \vspace{1em}\hrule\vspace{1em}
-  \mintinline{c}{__m256 _mm256_blendv_ps(x, y, mask)}:
-  \begin{center}
-    \includegraphics[width=0.95\linewidth]{07/figs/blendv.pdf}
-  \end{center}
-\end{frame}
+#slide-items[
+= Bitové operace
 
-{\setbeamertemplate{frame footer}{\exe{{\tt condswap[.exe]}}}
-\begin{frame}[fragile]
-  \frametitle{Podmíněné zpracování}
+S primitivními vektorovými instrukcemi jste se setkali už dříve!
 
-  \begin{block}{Doimplementujte tělo metody \texttt{condswap\_vec(...)}}
-    Doimplementujte tělo metody \texttt{condswap\_vec(...)} v souboru \texttt{cond.cpp}, která bude vektorově vykonávat následující kód
-    \begin{minted}{c}
-    size_t half = N / 2;
-    for(unsigned int i = 0 ; i < half ; i++) {
-        if(data[i] > data[i+half])
-          std::swap(data[i], data[i+half]);
-    }
-    \end{minted}
-    Pro implementaci podmínky využijte \mintinline{c}{_mm256_blendv_ps(x,y,mask)}.
-  \end{block}
+#important[například `x & y` nebo `x ^ y`]
 
-  \vspace{1.5em}
+][
+  #comment[My se podíváme na něco zajímavějšího...]
+]
 
-  Vektorová instrukce pro porovnání vektorů $x < y$ typu \emph{packed-single}:
-  \mintinline{c}{__m256 _mm256_cmp_ps(x, y, _CMP_LT_OQ)}
-\end{frame}
-}
+#slide[
+= Bitové operace
 
+/ `_mm_popcnt_u64(uint64_t x)`: 
+  - Počet jedničkových bitů v čísle `x`
 
-\begin{frame}
-  \frametitle{Bitové operace}
+#frame[
+=== Doimplementujte tělo metody `popcnt_intrinsic(...)`
+Doimplementujte tělo metody `popcnt_intrinsic(...)` v souboru `popcnt.cpp`.
+]
+]
 
-  \begin{center}
-    \Large S primitivními vektorovými instrukcemi jste se setkali už dříve!
+#slide-items[
+= Násobení matice vektorem
 
-    \normalsize například \mintinline{c}{x & y} nebo \mintinline{c}{x ^ y}
-  \end{center}
+$
+  y = A x
+$
 
-  \vspace{3em}
+Typická operace, pro kterou je vektorizace velmi výhodná...
 
-  \pause
-  \hfill My se podíváme na něco zajímavějšího...
-\end{frame}
+#frame[
+=== Násobení matice vektorem
 
-{\setbeamertemplate{frame footer}{\exe{{\tt lzcnt[.exe]}}}
-\begin{frame}
-  \frametitle{Bitové operace}
+Prostudujte `5matrix.cpp`.
+]
+]
 
-  \mintinline{c}{_lzcnt_u64(uint64_t x)} \\
-  \mintinline{c}{_tzcnt_u64(uint64_t x)}
+#section-slide[Semestrální úloha]
 
-  \vspace{-0.35em}\hspace{10pt} Počet \emph{leading}, resp. \emph{trailing zeros} v čísle \texttt{x}
+#slide[
+  = Semestrální úloha
 
-  \vspace{1em}
+  #important[Prohledávání stavového prostoru]
 
-  Například:
-
-  \hspace{10pt} \mintinline{c}{_lzcnt_u64(0b00001000 ... 00011100) = 4}
-
-  \hspace{10pt} \mintinline{c}{_tzcnt_u64(0b00001000 ... 00011100) = 2}
-
-  \vspace{1em}
-  \pause
-
-  \begin{block}{Doimplementujte tělo metody \texttt{log2\_lzcnt(...)}}
-    Doimplementujte tělo metody \texttt{log2\_lzcnt(...)} v souboru \texttt{lzcnt.cpp}.
-    Pro \texttt{x > 0} má tato metoda provést výpočet ekvivalentní \texttt{(int)log2(x)}.
-
-    Tip: Jaký vztah má pozice nejvyššího jedničkového bitu k hodnotě logaritmu o základu 2?
-  \end{block}
-\end{frame}
-}
-
-{\setbeamertemplate{frame footer}{\exe{{\tt popcnt[.exe]}}}
-\begin{frame}
-  \frametitle{Bitové operace}
-
-  \mintinline{c}{_mm_popcnt_u64(uint64_t x)}
-
-  \vspace{-0.35em}\hspace{10pt} Počet jedničkových bitů v čísle \texttt{x}
-  
-  \begin{block}{Doimplementujte tělo metody \texttt{popcnt\_intrinsic(...)}}
-    Doimplementujte tělo metody \texttt{popcnt\_intrinsic(...)} v souboru \texttt{popcnt.cpp}.
-  \end{block}
-\end{frame}
-}
-
-\section{Semestrální úloha}
-
-\begin{frame}
-  \frametitle{Semestrální úloha}
-  \begin{center}
-    \Large Prohledávání stavového prostoru
-  \end{center}
-  
-    \vspace{1em}
-  
-  \begin{center}
-  \includegraphics[width=.4\linewidth]{07/figs/pacman2.pdf}
-  \end{center}
-  
-%  \hfill Budeme po vás chtít nejkratší
-%
-%  \hfill (resp. nejlevnější) cestu v grafu...
-
-  \vspace{2em}
-
-  \hrule
-  \begin{center}
-  \end{center}
-\end{frame}
-
-% Frame with the feedback QR code 
-\framefeedback{}
-
-\end{document}
+  #image("assets/pacman2.svg", width: 50%)
+]
