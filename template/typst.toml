@@ -1,0 +1,10 @@
+[package]
+name = "PDV Slides"
+version = "0.1.0"
+authors = ["CTU PDV teaching team"]
+license = "MIT"
+description = "Slides for the PDV course at CTU FIT"
+
+[template]
+path = "."
+entry = "main.typ"
