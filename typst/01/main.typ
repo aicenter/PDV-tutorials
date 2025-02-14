@@ -1,12 +1,12 @@
-#import "../template/main.typ" as metropolis
-#import metropolis: *
+#import "../template/main.typ" as ctu-lab-slides
+#import ctu-lab-slides: *
 
-#show: metropolis.setup
+#show: ctu-lab-slides.setup
 
 #title-slide[
-  Úvod do B4B36PDV
-][
   Organizace předmětu a seznámení se s paralelizací
+][
+  Cvičení 1
 ]
 
 #slide[
@@ -14,7 +14,7 @@
 
   - Čím se budeme zabývat?
   - Hodnocení předmětu
-  \
+  %%
   - Úvod do paralelního hardwaru a softwaru
 ]
 
@@ -23,54 +23,61 @@
 #slide[
   = Důležité informace
 
-  *Přednášející:* Matěj Kafka, Michal Jakob
+  == Přednášející
 
-  *Cvičící:* Petr Macejko, Jakub Dupák, Max Hollmann, Jáchym Herynek, David Milec
+  - Matěj Kafka #small[(paralelní část)]
+  - Michal Jakob #small[(distribuovaná část)]
 
-  *Stránky cvičení:* #link("https://pdv.pages.fel.cvut.cz/")
+  == Cvičící
+
+  - Petr Macejko
+  - Jakub Dupák
+  - Max Hollmann
+  - Jáchym Herynek
+  - David Milec
+
+  == Stránky cvičení:
+
+  https://pdv.pages.fel.cvut.cz/
 ]
 
 #slide[
   = Čím se budeme zabývat?
 
-  #v(2em)
-
   #slogan[
     #highlight("2", "1,3-", [ Paralelní ]) a #highlight("3-", "-2", [ Distribuované ]) výpočty
   ]
-  
-  #v(1em)
 
-
-  #grid(columns: (1fr, 1fr), gutter: 1em, align: top, [
+  #toolbox.side-by-side[
     #uncover("2-")[
       #frame[
         === Paralelní výpočty
 
         - *Jeden* výpočet provádí současně *více* vláken
         - Vlákna typicky sdílí pamět a výpočetní prostředky
-        #v(0.5em)
-        - Cíl: Zrychlit výpočet úlohy
-        #v(0.5em)
-        - (7 týdnů)
+        %%
+        - Cíl:
+          - Zrychlit výpočet úlohy
+
+        _7 týdnů_
       ]
     ]
-  ], [
+  ][
     #uncover("3-")[
       #frame[
         === Distribuované výpočty
 
         - Výpočet provádí současně více oddělených výpočetních uzlů #small[(často i geograficky)]
-        #v(0.5em)
+        %%
         - Cíle:
           - Zrychlit výpočet
           - #highlight("4", "-3", [ Robustnost výpočtu ])
-        #v(0.5em)
-        - (6 týdnů)
+
+        _6 týdnů_
+
       ]
     ]
-  ])
-  #v(1fr)
+  ]
 ]
 
 #slide[
@@ -81,7 +88,7 @@
 
     - 5 malých programovacích úloh #h(1fr) 10 bodů
     - Semestrální práce #h(1fr) 12 bodů
-    #v(0em)
+    %%
     - Praktická zkouška #h(1fr) 20 bodů
   ]
 
@@ -90,7 +97,7 @@
 
     - 2 malé úlohy #h(1fr) 4 body
     - Semestrální práce #h(1fr) 14 bodů
-    #v(0em)
+    %%
     - Praktická zkouška #h(1fr) 20 bodů
   ]
 
@@ -105,45 +112,36 @@
   V semestru musíte získat *alespoň 20 bodů* #h(1fr) Celkem: 100 bodů
 ]
 
-#slide[
+#slide-focus[
   = Hodnocení předmětu
 
-  #v(1fr)
-
-  #important[
-      Vyžadujeme *samostatnou* práci na všech úlohách.
+  #slogan[
+    Vyžadujeme *samostatnou* práci na všech úlohách.
   ]
 
-  #v(2em)
+  #important[
+    #emoji.warning *Plagiáty jsou zakázané.*
 
-  #emoji.warning *Plagiáty jsou zakázané.* Nepřidělávejte prosím starosti nám, ani sobě.
-
-  #v(2fr)
+    Nepřidělávejte prosím starosti nám, ani sobě.
+  ]
 ]
 
 #slide[
   = Hodnocení předmětu
 
-  #text(size: 1.2em)[
-    Docházka na cvičení není povinná.
-  ]
+  Docházka na cvičení není povinná.
 
-  #align(right)[
-    To ale neznamená, že byste na cvičení neměli chodit...
-  ]
-
-  #v(2em)
+  #comment[ _To ale neznamená, že byste na cvičení neměli chodit..._ ]
 
   - Budeme probírat látku, která se Vám bude hodit u úkolů a u zkoušky.
   - Dostanete prostor pro práci na semestrálních pracích.
   - Konzultace budou probíhat *primárně* na cvičeních.
   - Ušetříme Vám čas a nervy (nebo v to alespoň doufáme ;-)
 
-  #v(5em)
-  #line(length: 100%)
-  #set text(size: .8em)
-  #emoji.warning Pokud se na cvičení rozhodnete nechodit, budeme předpokládat, že probírané látce dokonale rozumíte.
-  Případné konzultace v žádném případě nenahrazují cvičení!
+  #footnote[
+    #emoji.warning Pokud se na cvičení rozhodnete nechodit, budeme předpokládat, že probírané látce dokonale rozumíte.
+    Případné konzultace v žádném případě nenahrazují cvičení!
+  ]
 ]
 
 #slide[
@@ -170,9 +168,7 @@
 #frame[
 === Vygenerování build scriptů
 
-```bash
-    cmake <src dir>
-    ```
+```bash cmake <src dir>```
 ]
 
 Zde `<src dir>` je složka se souborem `CMakeLists.txt`.
@@ -180,9 +176,7 @@ Zde `<src dir>` je složka se souborem `CMakeLists.txt`.
 #frame[
 === Kompilace
 
-```bash
-    cmake --build <build dir>
-    ```
+```bash cmake --build <build dir> ```
 ]
 
 Zde `<build dir>` je složka s vygenerovanými soubory pro sestavení programu.
@@ -191,52 +185,57 @@ Nebo použijte IDE s dobrou podporou C++, například CLion (multiplatformní) n
 
 #v(2em)
 
+#frame[
+=== Cvičení
 Vyzkoušejte na souboru `0hello.cpp`.
+]
 ]
 
 #slide[
   = Bylo, nebylo...
 
-  Pro připomenutí: Cílem paralelních výpočtů je dosáhnout zvýšení výkonu
+  == Pro připomenutí
 
-  #v(3em)
+  Cílem paralelních výpočtů je dosáhnout zvýšení výkonu
 
   #toolbox.side-by-side[
-    #align(center, image("assets/single_thread.svg", width: 50%))
+    #align(center + horizon, image("assets/single_thread.svg", width: 50%))
   ][
-    *_von Neumannova architektura_*
+    == _von Neumannova architektura_
     - Jaké má nevýhody?
     - Jak bychom je mohli opravit?
     - A jak bychom dále mohli navýšit výkon procesoru?
-
-    #v(1em)
-    #see-file("1memory.cpp")
   ]
 ]
 
-#slide[
+#slide-items[
   = Moderní procesor
 
   #align(center)[
     #image("assets/modern_cpu.svg", width: 80%)
   ]
+][
+#frame[
+=== Memory bandwidth
+
+Otestujte vaši paměť pomocí kódu v `1memory.cpp`.
+]
 ]
 
-#slide[
+#slide(alignment: center)[
   = Moderní procesor
 
-  #align(center)[
-    #set text(size: 1.8em)
-    #text(fill: rgb("#3f3d3d"))[*Paralelizace:*]
-    #set list(marker: none)
+  #v(3em)
+  #set text(size: 1.8em)
+  #text(fill: rgb("#3f3d3d"))[*Paralelizace:*]
+  #set list(marker: none, spacing: 1em)
 
-    #one-by-one[][
-      - #block(width: 100%, outset: 0.5em, fill: rgb("#c16a6a"))[Pipelining #small[(procesor)]]
-    ][
-      - #block(width: 100%, outset: 0.5em, fill: rgb("#5d9bc4"))[Vektorizace #small[(kompilátor)]]
-    ][
-      - #block(width: 100%, height: 1.2em, outset: 0.5em, fill: rgb("#9970a1"))[Vlákna #small[(Vy #emoji.face)]]
-    ]
+  #one-by-one[][
+    - #block(width: 100%, outset: 0.5em, fill: rgb("#c16a6a"))[Pipelining #small[(procesor)]]
+  ][
+    - #block(width: 100%, outset: 0.5em, fill: rgb("#5d9bc4"))[Vektorizace #small[(kompilátor)]]
+  ][
+    - #block(width: 100%, height: 1.2em, outset: 0.5em, fill: rgb("#9970a1"))[Vlákna #small[(Vy #emoji.face)]]
   ]
 ]
 
@@ -254,11 +253,14 @@ Vyzkoušejte na souboru `0hello.cpp`.
 #slide[
   = Cache-miss
 
-  #see-file("1memory.cpp")
+  #frame[
+    === Cache-miss
 
-  #v(2em)
-
-  #see-file("2matrix.cpp")
+    Pozorujete důsledky cache-missu na výkon programů:
+    
+    - `1memory.cpp`
+    - `2matrix.cpp`.
+  ]
 ]
 
 #slide[
@@ -284,7 +286,6 @@ Co bude v proměnné `number` po skončení obou vláken?
 
 #block(width: 100%)[
 #set text(size: 1.2em)
-#set align(center)
 
 ```c
   void multiply(int * number, int multiplyBy) {
@@ -301,9 +302,8 @@ Co bude v proměnné `number` po skončení obou vláken?
   ```
 ]
 
-#v(1.5em)
-#align(right)[
-  #emoji.eye #link("http://godbolt.org")
+#footnote[
+  #link("https://godbolt.org/#g:!((g:!((g:!((h:codeEditor,i:(filename:'1',fontScale:14,fontUsePx:'0',j:1,lang:c%2B%2B,selection:(endColumn:2,endLineNumber:3,positionColumn:2,positionLineNumber:3,selectionStartColumn:2,selectionStartLineNumber:3,startColumn:2,startLineNumber:3),source:'void+multiply(int+*+number,+int+multiplyBy)+%7B%0A*number+%3D+(*number)+*+multiplyBy%3B%0A%7D'),l:'5',n:'0',o:'C%2B%2B+source+%231',t:'0')),k:50,l:'4',n:'0',o:'',s:0,t:'0'),(g:!((h:compiler,i:(compiler:gsnapshot,filters:(b:'0',binary:'1',binaryObject:'1',commentOnly:'0',debugCalls:'1',demangle:'0',directives:'0',execute:'1',intel:'0',libraryCode:'0',trim:'1',verboseDemangling:'0'),flagsViewOpen:'1',fontScale:14,fontUsePx:'0',j:1,lang:c%2B%2B,libs:!(),options:'-O3',overrides:!(),selection:(endColumn:1,endLineNumber:1,positionColumn:1,positionLineNumber:1,selectionStartColumn:1,selectionStartLineNumber:1,startColumn:1,startLineNumber:1),source:1),l:'5',n:'0',o:'+x86-64+gcc+(trunk)+(Editor+%231)',t:'0')),k:50,l:'4',n:'0',o:'',s:0,t:'0')),l:'2',n:'0',o:'',t:'0')),version:4", "https://godbolt.org")
 ]
 ]
 
@@ -356,7 +356,7 @@ Co bude v proměnné `number` po skončení obou vláken?
 #only(
   "10",
 )[
-  #text(size: 1em)[Jaké máme možnosti, abychom dosáhli deterministického výsledku\ (který pravděpodobně chceme)?]
+  #text(size: 1em)[Jaké máme možnosti, abychom dosáhli deterministického výsledku\ (_který pravděpodobně chceme_)?]
 ]
 #v(1fr)
 ]
@@ -429,18 +429,19 @@ Co bude v proměnné `number` po skončení obou vláken?
   [
   === Je následující tvrzení pravdivé?
 
-  Mějme pole o 1,000,000 prvků. S každým prvkem pole máme za úkol 100x provést "magickou operaci" $x <- e^ln(x)$. Tuto
+  Mějme pole o 1,000,000 prvků. S každým prvkem pole máme za úkol 100× provést "magickou operaci" $x <- e^ln(x)$. Tuto
   úlohu lze dobře paralelizovat.
 
-  ```c
-                      void magic_operation(double * array) {
-                        for(unsigned int i = 0 ; i < 1000000 ; i++) {
-                          for(unsigned int k = 0 ; k < 500 ; k++) {
-                            array[i] = exp(log(array[i]));
-                          }
-                        }
-                      }
-                    ```
+
+  ```cpp
+    void magic_operation(std::vector<double>& array) {
+        for (ptrdiff_t i = 0; i < (ptrdiff_t)array.size(); i++) {
+            for (size_t k = 0; k < 500; k++) {
+                array[i] = exp(log(array[i]));
+            }
+        }
+    }
+  ```
   ],
   true,
   [
@@ -462,15 +463,15 @@ Co bude v proměnné `number` po skončení obou vláken?
 Mějme pole o 1,000,000 prvků. S každým prvkem pole máme za úkol 100× provést "magickou operaci" $x <- e^ln(x)$. Tuto
 úlohu lze dobře paralelizovat.
 
-```c
-      void magic_operation(std::vector<double>& array) {
-          for (ptrdiff_t i = 0; i < (ptrdiff_t)array.size(); i++) {
-              for (size_t k = 0; k < 500; k++) {
-                  array[i] = exp(log(array[i]));
-              }
+```cpp
+  void magic_operation(std::vector<double>& array) {
+      for (ptrdiff_t i = 0; i < (ptrdiff_t)array.size(); i++) {
+          for (size_t k = 0; k < 500; k++) {
+              array[i] = exp(log(array[i]));
           }
       }
-    ```
+  }
+```
 ]
 
 Proč jsme ale nedosáhli $s$-násobného zrychlení (kde $s$ je počet jader procesoru?). Vzpomeňte si na Amdahlův zákon.

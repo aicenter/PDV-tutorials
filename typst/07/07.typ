@@ -1,13 +1,13 @@
 #import "@preview/polylux:0.4.0": *
-#import "../template/main.typ" as metropolis
-#import metropolis: *
+#import "../template/main.typ" as ctu-lab-slides
+#import ctu-lab-slides: *
 
-#show: metropolis.setup
+#show: ctu-lab-slides.setup
 
 #title-slide[
   Vektorové instrukce
 ][
-  B4B36PDV -- Paralelní a distribuované výpočty
+  Cvičení 7
 ]
 
 #slide-items[
@@ -65,20 +65,21 @@ for(int i = 0; i < M; i++) {
 std::cout << "Finished!" << std::endl;
 ```
 
-#v(2em)
+== Možné odpovědi:
 
-- Výpočet končí okamžitě po nalezení prvního řešení.
-- Po nalezení prvního řešení výpočet skončí, až všechna vlákna narazí na 'cancellation point'.
-- Ani jedna z předchozích odpovědí není správná.
++ Výpočet končí okamžitě po nalezení prvního řešení.
++ Po nalezení prvního řešení výpočet skončí, až všechna vlákna narazí na 'cancellation point'.
++ Ani jedna z předchozích odpovědí není správná.
 ]
 
 #slide[
   = Moderní procesor
 
   #align(center)[
+    #v(3em)
     #set text(size: 1.8em)
     #text(fill: rgb("#3f3d3d"))[*Paralelizace:*]
-    #set list(marker: none)
+    #set list(marker: none, spacing: 1em)
 
     - #block(width: 100%, outset: 0.5em, fill: rgb("#c16a6a"))[Pipelining #small[(procesor)]]
     - #block(width: 100%, outset: 0.5em, fill: rgb("#5d9bc4"))[
@@ -87,7 +88,7 @@ std::cout << "Finished!" << std::endl;
           #only("2-")[#strike[(kompilátor)]\ #text(weight: 600, fill: red)[(Vy #emoji.face)]]
         ]
       ]
-    - #block(width: 100%, height: 2em, outset: 0.5em, fill: rgb("#9970a1"))[Vlákna #small[(Vy #emoji.face)]]
+    - #block(width: 100%, height: 1.2em, outset: 0.5em, fill: rgb("#9970a1"))[Vlákna #small[(Vy #emoji.face)]]
   ]
 ]
 
@@ -109,19 +110,31 @@ std::cout << "Finished!" << std::endl;
 
 = Vektorové zpracování dat (pomocí AVX / AVX2)
 
-hfill `#include <immintrin.h>`
-vspace[1em]
+```cpp #include <immintrin.h>```
 
-- `__m256` - datový typ ,,vektor délky 256 bitů``
-  (`float` má 32 bitů, a proto se do takového vektoru vejde 8x)
+/ `__m256`:
+  - datový typ "vektor délky 256 bitů" (`float` má 32 bitů, a proto se do takového vektoru vejde 8x)
 ][
-- `_mm256_add_ps(x,y)`
+/ `_mm256_add_ps(x,y)`:
   - Nad dvěma 256-bitovými vektory `x` a `y`... (`_mm256_`)
   - ...provádím operaci sčítání... (`add`)
   - ...při čemž vektory obsahují elementy typu _packed-single_ (`_ps`).
 ][
-- _packed_ -- vektor ,,zabaluje`` více prvků stejného typu
-- _single_ -- _single-precision number_ aka `float`
+/ `_packed_`:
+  - vektor ,,zabaluje`` více prvků stejného typu
+/ `_single_`:
+  - _single-precision number_ aka `float`
+]
+
+#slide[
+= Vektorové rozšíření
+
+#frame[
+=== Otestujte, jaká vektorová rozšíření podporuje váš procesor.
+
+Použijde program `07_0test_simd_support` (`0test_simd_support.cpp`) a zjistěte jakou velikost integerových a floatových
+vektorů váš procesor podporuje.
+]
 ]
 
 #section-slide[
@@ -158,24 +171,16 @@ for(int i = 0 ; i < 1024 ; i += 8) {
 #slide[
 = Autovektorizace GCC
 
-Vektorizaci kontrolujeme s pomocí parametrů kompilátoru:
+== Parametry kompilátoru GCC
 
-- `-march=native`: zapne kompilaci přímo na konrétní hw, včetně zpřístupnění vektorových instrukcí.
-- `-ftree-vectorize`: zapne autovektorizaci.
-- `-fopt-info-vec-all`: informace o autovektorizaci.
-- `-O2` musíme snížit level optimalizace, abychom mohli kontrolovat autovektorizaci.
-]
-
-#slide[
-= Autovektorizace MSVC
-
-Vektorizaci kontrolujeme s pomocí parametrů kompilátoru *a přímo ve zdrojovém kódu*. Vektorizace je na úrovni `/O2` defaultně
-zapnutá.
-
-- `/Qvec-report:2`: informace o autovektorizaci.
-- `/fp:fast` zpřístupní pokročilou autovektorizaci floatů, která ale může mít vliv na výsledek (float operace na
-  počítačích nejsou komutativní...).
-- `#pragma loop(no_vector)`: Deaktivuje autovektorizaci pro konkrétní cyklus.
+/ `-march=native`:
+  - zapne kompilaci přímo na konrétní hw, včetně zpřístupnění vektorových instrukcí.
+/ `-ftree-vectorize`:
+  - zapne autovektorizaci.
+/ `-fopt-info-vec-all`:
+  - informace o autovektorizaci.
+/ `-O2`:
+  - musíme snížit level optimalizace, abychom mohli kontrolovat autovektorizaci.
 ]
 
 #slide[
@@ -183,53 +188,49 @@ zapnutá.
 
 #frame[
 === Vyzkoušejte si autovektorizaci
-Spusťte `autovec(.exe)` s autovektorizací a následně zkuste autovektorizaci vypnout:
 
-*GCC*: zakomentujte v souboru `CMakeLists.txt` řádek `add_compile_options("-ftree-vectorize")`
+Spusťte `07_1autovectorization` (`1autovectorization.cpp`) s autovektorizací a následně zkuste autovektorizaci vypnout:
+
+*GCC*: zakomentujte v souboru `CMakeLists.txt` řádek s `"-ftree-vectorize"`.
+
+*Clang*: zakomentujte v souboru `CMakeLists.txt` řádek s `"-fvectorize" "-fslp-vectorize"`.
+]
 
 Jak se program zpomalí, pokud vypnete autovektorizaci?
-]
 
 Také se podívejte do logu ze sestavování programu na zprávy o proběhlé autovektorizaci.
 
 ]
 
 #slide-items[
-= Výhody a nevýhody autovektorizace
+  = Výhody a nevýhody autovektorizace
 
-#set list(marker: none)
-
-- #text(fill: rgb("#556B2F"))[+] Je to ,,zadarmo`` (kompilátor se pokusí vektorizaci provést za Vás)
+  #text(fill: rgb("#556B2F"))[+] Je to "zadarmo" (kompilátor se pokusí vektorizaci provést za Vás)
 ][
-  #set list(marker: none)
-
-  - #text(fill: rgb("#B22222"))[-] Ne vždy se to kompilátoru musí povést...
+  #text(fill: rgb("#B22222"))[-] Ne vždy se to kompilátoru musí povést...
 ][
-#set list(marker: none)
+== Co limituje autovektorizaci?
 
--
-  -
-    - Kompilátor vám nemusí ,,rozumět`` (často dokáže vektorizovat jenom smyčky v určitém tvaru)
-    - Kompilátor musí zajistit, že výsledek programu bude identický, jako kdyby nevektorizoval *i za těch nejhorších možných
-      podmínek*
-    - Musí uvažovat, že může dojít k datovým závislostem
-    - Musí zajistit, že dojde ke _stejnému_ zaokrouhlení při floating-point operacích
-][
-```cpp
-  float x;
-  float y1 = x * x * x * x * x * x * x * x;
-  float y2 = x * x;
-  y2 = y2 * y2;
-  y2 = y2 * y2;
-  assert(y1 == y2);
-  ```
+- Kompilátor vám nemusí ,,rozumět`` (často dokáže vektorizovat jenom smyčky v určitém tvaru)
+- Kompilátor musí zajistit, že výsledek programu bude identický, jako kdyby nevektorizoval *i za těch nejhorších možných
+  podmínek*
+- Musí uvažovat, že může dojít k datovým závislostem
+- Musí zajistit, že dojde ke _stejnému_ zaokrouhlení při floating-point operacích
+  ```cpp
+            float x;
+            float y1 = x * x * x * x * x * x * x * x;
+            float y2 = x * x;
+            y2 = y2 * y2;
+            y2 = y2 * y2;
+            assert(y1 == y2);
+        ```
 ]
 
 #section-slide[
   Level 2: Intel SPMD Compiler #h(1em) #emoji.ghost #emoji.ghost
 ]
 
-#slide[
+#slide-items[
   = Intel SPMD Compiler (ISPC)
 
   #slogan[Tušíte co znamená zkratka SPMD?]
@@ -238,13 +239,7 @@ Také se podívejte do logu ze sestavování programu na zprávy o proběhlé au
 
   Napíšete jeden program, který ale pomocí vektorizace poběží na více daty současně. Kompilátor za vás rozhodne, jak má
   vektorizace proběhnout.
-]
-
-#slide-items[
-  = Intel SPMD Compiler (ISPC)
-
-  *Intel SPMD Compiler (ISPC)*
-
+][
   - Nadstavba jazyka C
   - Od základu uvažuje o programu jako o _paralelním_!
 
@@ -258,29 +253,30 @@ Také se podívejte do logu ze sestavování programu na zprávy o proběhlé au
 ]
 
 #slide-items[
-  = Intrinsics
+= Intrinsics
 
-  #set list(marker: none)
+== Intrinsics
 
-  - *Intrinsics*
-    - Funkce a datové typy, které zpřístupňují nativní instrukce procesoru *bez nutnosti programovat v assembleru*
+Funkce a datové typy, které zpřístupňují nativní instrukce procesoru *bez nutnosti programovat v assembleru*
 
-  #important[#h(1fr)Instrukční sada: AVX / AVX2]
+#important[```cpp #include <immintrin.h>```]
+#comment[Instrukční sada: AVX / AVX2]
 ][
-  #set list(marker: none)
-
-  - #link("https://intel.ly/2GOHp7r") (Intel Intrinsics Guide)
-  - Výborná reference! Využívejte, když si nebudete jistí!
+#important[#emoji.warning V GCC je třeba všechny kódy kompilovat s `-march=native` !]
+][
+  #footnote[
+    Intel Intrinsics Guide: #link("https://intel.ly/2GOHp7r") \
+    #small[Výborná reference! Využívejte, když si nebudete jistí!]
+  ]
 ]
 
 #slide[
-= `#include <immintrin.h>`
+= Intrinsics
 
-#important[`#include <immintrin.h>`]
+#frame[
+=== Intrinsics test
 
-#slogan[
-#emoji.warning V GCC je třeba všechny kódy kompilovat s \
-`-march=native` !
+Vyzkoušejte vektory pomocí intrinsics v programu `07_2intrinsics_test` (`2intrinsics_test.cpp`).
 ]
 ]
 
@@ -288,9 +284,10 @@ Také se podívejte do logu ze sestavování programu na zprávy o proběhlé au
 = AVX / AVX2 intrinsics
 
 Datový typ vektor: `__m256...`
-- `__m256` -- vektor obsahující 8 x 32bit `float`
-- `__m256d` -- vektor obsahující 4 x 64bit `double`
-- `__m256i` -- vektor obsahující celočíselné typy
+
+/ `__m256`: vektor obsahující 8 x 32bit `float`
+/ `__m256d`: vektor obsahující 4 x 64bit `double`
+/ `__m256i`: vektor obsahující celočíselné typy
 
 Načtení a zápis 256 bitů (8 x 32bit `float`) z/do adresy `float * x`:
 ```c
@@ -303,8 +300,8 @@ _mm256_storeu_ps(x, data);
 #frame[
 === Doimplementujte načtení a zápis dat do metody `normaldist_vec(...)`
 
-Do těla `for` smyčky v metodě `normaldist_vec(...)` v souboru `normdist.cpp` doimplementujte načtení a zpětný zápis `__m256` vektoru
-z adresy `&data[i]`.
+Do těla `for` smyčky v metodě `normaldist_vec(...)` v souboru `3normal_distribution.cpp` doimplementujte načtení a
+zpětný zápis `__m256` vektoru z adresy `&data[i]`.
 ]
 ]
 
@@ -315,28 +312,23 @@ Načítat a ukládat stejná data je nuda...
 
 #frame[
   === Doimplementujte výpočet hustoty normálního rozdělení
-  
+
   Pro každý prvek načteného vektoru spočtěte hodnotu funkce
   $ f(x)=frac(1, sqrt(2 pi sigma^2)) "exp"( - frac((x- mu)^2, 2 sigma^2) ) $
 ]
 
-`__m256 _mm256_set1_ps(x)`
+/ `__m256 _mm256_set1_ps(x)`:
+  - Nastaví všechny prvky vektoru na `x`
 
-#h(2em)Nastaví všechny prvky vektoru na `x`
+/ `__m256 _mm256_add_ps(x, y)`, `__m256 _mm256_sub_ps(x, y)`:
+/  `__m256 _mm256_mul_ps(x, y)`, `__m256 _mm256_div_ps(x, y)`:
+  - Vypočte součet, rozdíl, součin a podíl vektorů `x` a `y`
 
-`__m256 _mm256_add_ps(x, y)`, `__m256 _mm256_sub_ps(x, y)`
-`__m256 _mm256_mul_ps(x, y)`, `__m256 _mm256_div_ps(x, y)`
-
-#h(2em)Vypočte součet, rozdíl, součin a podíl vektorů `x` a `y`
-
-#v(2em)
-
-#h(2em)Pro aproximaci $"exp"(x)$ (vektorově) použijte `__m256 exp_vec(x)`
+Pro aproximaci $"exp"(x)$ (vektorově) použijte `__m256 exp_vec(x)`
 
 #align(center)[$
-"exp"(x)$ approx $frac((x+3)^2 + 3, (x-3)^2 + 3)
-(2,2)"-Padé aproximátor"
-$]
+    "exp"(x)$ approx $frac((x+3)^2 + 3, (x-3)^2 + 3)
+  (2,2)"-Padé aproximátor" $]
 ]
 
 #slide[
@@ -371,8 +363,10 @@ for(unsigned int i = 0 ; i < half ; i++) {
 
 #frame[
 === Doimplementujte tělo metody `condswap_vec(...)`
-Doimplementujte tělo metody `condswap_vec(...)` v souboru `cond.cpp`, která bude vektorově vykonávat následující kód
-```c
+Doimplementujte tělo metody `conditional_swap_vec(...)` v souboru `4conditional_swap.cpp`, která bude vektorově
+vykonávat následující kód:
+
+```cpp
   size_t half = N / 2;
   for(unsigned int i = 0 ; i < half ; i++) {
       if(data[i] > data[i+half])
@@ -382,8 +376,10 @@ Doimplementujte tělo metody `condswap_vec(...)` v souboru `cond.cpp`, která bu
 Pro implementaci podmínky využijte `_mm256_blendv_ps(x,y,mask)`.
 ]
 
+#footnote[
 Vektorová instrukce pro porovnání vektorů $x < y$ typu _packed-single_:
 `__m256 _mm256_cmp_ps(x, y, _CMP_LT_OQ)`
+]
 ]
 
 #slide-items[
@@ -394,49 +390,34 @@ S primitivními vektorovými instrukcemi jste se setkali už dříve!
 #important[například `x & y` nebo `x ^ y`]
 
 ][
-#v(3em)
-
-#h(1fr)My se podíváme na něco zajímavějšího...
-]
-
-#slide-items[
-= Bitové operace
-
-`_lzcnt_u64(uint64_t x)`
-
-`_tzcnt_u64(uint64_t x)`
-
-#h(2em) Počet _leading_, resp. _trailing zeros_ v čísle `x`
-
-#v(1em)
-
-*Například:*
-
-#h(2em) `_lzcnt_u64(0b00001000 ... 00011100) = 4`
-
-#h(2em) `_tzcnt_u64(0b00001000 ... 00011100) = 2`
-
-][
-
-#frame[
-=== Doimplementujte tělo metody `log2_lzcnt(...)`
-Doimplementujte tělo metody `log2_lzcnt(...)` v souboru `lzcnt.cpp`. Pro `x > 0` má tato metoda provést výpočet
-ekvivalentní `(int)log2(x)`.
-
-Tip: Jaký vztah má pozice nejvyššího jedničkového bitu k hodnotě logaritmu o základu 2?
-]
+  #comment[My se podíváme na něco zajímavějšího...]
 ]
 
 #slide[
 = Bitové operace
 
-`_mm_popcnt_u64(uint64_t x)`
-
-#h(2em) Počet jedničkových bitů v čísle `x`
+/ `_mm_popcnt_u64(uint64_t x)`: 
+  - Počet jedničkových bitů v čísle `x`
 
 #frame[
 === Doimplementujte tělo metody `popcnt_intrinsic(...)`
 Doimplementujte tělo metody `popcnt_intrinsic(...)` v souboru `popcnt.cpp`.
+]
+]
+
+#slide-items[
+= Násobení matice vektorem
+
+$
+  y = A x
+$
+
+Typická operace, pro kterou je vektorizace velmi výhodná...
+
+#frame[
+=== Násobení matice vektorem
+
+Prostudujte `5matrix.cpp`.
 ]
 ]
 

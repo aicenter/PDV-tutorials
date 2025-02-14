@@ -1,13 +1,13 @@
 #import "@preview/polylux:0.4.0": *
-#import "../template/main.typ" as metropolis
-#import metropolis: *
+#import "../template/main.typ" as ctu-lab-slides
+#import ctu-lab-slides: *
 
-#show: metropolis.setup
+#show: ctu-lab-slides.setup
 
 #title-slide[
   Paralelní maticové operace
 ][
-  B4B36PDV – Paralelní a distribuované výpočty
+  Cvičení 8
 ]
 
 #slide[
@@ -25,11 +25,11 @@
   Skalární součin vektorů $u$ a $v$ délky $n$ lze spočítat jako
   $ u times v = sum_(i=0)^(n-1) u[i] dot v[i] $
 
-  #important[
-    Co když je mnoho prvků v obou vektorech nulových?
-  ]
+  Co když je mnoho prvků v obou vektorech nulových?
 ][
-  #emoji.warning Potom je neefektivní jak samotné násobení, tak i vektorová reprezentace.
+  #comment[
+    #emoji.warning Potom je neefektivní jak samotné násobení, tak i vektorová reprezentace.
+  ]
 ]
 
 #slide-items[
@@ -42,9 +42,11 @@
   - na jakých indexech jsou nenulové prvky
   - jaké hodnoty jsou na těchto indexech
 ][
+  #v(1em)
   Např. vektor $v = (0,0,0,0,3,0,1,0,0,0,2)$ reprezentujeme pomocí \
   $v = { (4,3), (6,1), (10,2) }$
 ][
+  #v(1em)
   Jak spočteme skalární součin vektorů $u$ a $v$?
 
   #table(
@@ -81,9 +83,7 @@
   $ A_u = (A_1 times u, A_2 times u, dots, A_m times u) $
   kde $A_i, i in [m]$ jsou jednotlivé řádky matice $A$.
 ][
-  #important[
-    Jak tento výpočet zparalelizovat?
-  ]
+  == Jak tento výpočet zparalelizovat?
 ][
   #image("assets/mmult.svg", width: 50%)
 
@@ -99,7 +99,7 @@
     Co když chceme agregovat výsledky ve složitější datové struktuře?
   ]
 ][
-  #h(1fr)Deklarujeme si vlastní redukci!
+  #comment[ Deklarujeme si vlastní redukci! ]
 ][
 
 ```cpp
@@ -107,16 +107,17 @@
           initializer(expression)
 ```
 ][
-  - name = název vlastní redukce
-  - type = typ, nad kterým je redukce definována (např. std::vector<int>)
-  - expression = funkce, která se má vykonávat nad dvěma částečnými výsledky
+#v(1em)
+/ `name`: název vlastní redukce
+/ `type`: typ, nad kterým je redukce definována (např. std::vector<int>)
+/ `expression`: funkce, která se má vykonávat nad dvěma částečnými výsledky
 ][
 #set list(marker: sym.arrow)
 
 - Částečné výsledky jsou uložené v proměnných `omp_in` a `omp_out`
 - Výsledek redukce uložíme zpět do proměnné `omp_out`
 ][
-- initializer = jaká má být počáteční hodnota lokální kopie redukované proměnné v každém vlákně (lokální proměnná = `omp_priv`)
+/ `initializer`: jaká má být počáteční hodnota lokální kopie redukované proměnné v každém vlákně (lokální proměnná = `omp_priv`)
 ]
 
 #slide-items[
@@ -126,9 +127,11 @@
   void merge_elements(element_t& dest, element_t& in) {
     dest = gcd(dest, in);
   }
-  ...
+
   #pragma omp declare reduction(merge : element_t : merge_elements) initializer(omp_priv = 0)
+
   element_t result;
+
   #pragma omp parallel for reduction(merge : result)
   for(int i = 0; i < size; i++) {
     // do something with result
@@ -167,7 +170,7 @@ Všechny vektory se kterými pracujete jsou řídké!
 
   #image("assets/hanoi.svg", width: 50%)
 
-  #emoji.warning Doména je korektní, pokud $"DISCS" * "TOWERS" * ceil(log_2("RODS")) <= 64$
+  #footnote[#emoji.warning Doména je korektní, pokud $"DISCS" * "TOWERS" * ceil(log_2("RODS")) <= 64$]
 ]
 
 #slide[
@@ -181,7 +184,7 @@ Všechny vektory se kterými pracujete jsou řídké!
   #image("assets/sp.svg", width: 50%)
   #v(1em)
 
-  #emoji.warning Doména je korektní pro rozměry pole $3 times 3$ a $4 times 4$
+  #footnote[#emoji.warning Doména je korektní pro rozměry pole $3 times 3$ a $4 times 4$]
 ]
 
 #slide[
@@ -197,7 +200,9 @@ Všechny vektory se kterými pracujete jsou řídké!
   #image("assets/sat.svg", width: 50%)
   #v(2em)
 
-  #emoji.warning Doména je korektní, pokud $"NUM_VARS" <= 40$
+  #footnote[
+    #emoji.warning Doména je korektní, pokud $"NUM_VARS" <= 40$
+  ]
 ]
 
 #slide[
@@ -212,52 +217,35 @@ Všechny vektory se kterými pracujete jsou řídké!
   #image("assets/maze.svg", width: 90%)
   #v(2em)
 
-  #emoji.warning Doména je korektní, pokud $log_2("WIDTH" * "HEIGHT") >= 64$
+  #footnote[#emoji.warning Doména je korektní, pokud $log_2("WIDTH" * "HEIGHT") >= 64$]
 ]
 
 #slide[
   = Prohledávání do šířky (BFS)
 
-  #align(top)[
-
-    #only("1")[#image("assets/bfs15.svg", width: 100%)]
-    #only("2")[#image("assets/bfs14.svg", width: 100%)]
-    #only("3")[#image("assets/bfs13.svg", width: 100%)]
-    #only("4")[#image("assets/bfs12.svg", width: 100%)]
-    #only("5")[#image("assets/bfs11.svg", width: 100%)]
-    #only("6")[#image("assets/bfs10.svg", width: 100%)]
-    #only("7")[#image("assets/bfs9.svg", width: 100%)]
-    #only("8")[#image("assets/bfs8.svg", width: 100%)]
-    #only("9")[#image("assets/bfs7.svg", width: 100%)]
-    #only("10")[#image("assets/bfs6.svg", width: 100%)]
-    #only("11")[#image("assets/bfs5.svg", width: 100%)]
-    #only("12")[#image("assets/bfs4.svg", width: 100%)]
-    #only("13")[#image("assets/bfs3.svg", width: 100%)]
-    #only("14")[#image("assets/bfs2.svg", width: 100%)]
-    #only("15")[#image("assets/bfs1.svg", width: 100%)]
+    #for i in range(1, 16) {
+      only(str(i))[
+        #image("assets/bfs" + str(16 - i) + ".svg", width: 100%)
+      ]
+    }
     #only("16-")[#image("assets/bfs0.svg", width: 100%)]
     #v(8em)
-    #only("16-")[ Optimální, ale (potenciálně) s exponenciální pamětí! ]
-  ]
+    #only("16-")[
+      #important[Optimální, ale (potenciálně) s exponenciální pamětí!]
+    ]
 ]
 
 #slide-items[
   = Prohledávání do hloubky (DFS)
-
-  #align(top)[
-    #only("1")[#image("assets/dfs6.svg", width: 100%)]
-    #only("2")[#image("assets/dfs5.svg", width: 100%)]
-    #only("3")[#image("assets/dfs4.svg", width: 100%)]
-    #only("4")[#image("assets/dfs3.svg", width: 100%)]
-    #only("5")[#image("assets/dfs2.svg", width: 100%)]
-    #only("6")[#image("assets/dfs3.svg", width: 100%)]
-    #only("7")[#image("assets/dfs1.svg", width: 100%)]
-    #only("8")[#image("assets/dfs0.svg", width: 100%)]
+  #for i in range(1, 8) {
+    only(str(i))[#image("assets/dfs" + str(7 - i) + ".svg", width: 100%)]
+  }
     #v(8em)
-    #only("8")[
-      Malá paměťová náročnost, ale bez garancí!
+    #only("7")[
+      #important[
+        Malá paměťová náročnost, ale bez garancí!
+      ]
     ]
-  ]
 ]
 
 #slide[
@@ -268,9 +256,7 @@ Všechny vektory se kterými pracujete jsou řídké!
     tak malou paměťovou náročnost?
   ]
 
-  #v(2em)
-
-  #h(1fr) Budeme prohledávat do *omezené* hloubky
+  #comment[Budeme prohledávat do *omezené* hloubky]
 ]
 
 #slide-items[
@@ -283,7 +269,9 @@ Všechny vektory se kterými pracujete jsou řídké!
   #only(26)[#image("assets/iddfs0.svg", width: 100%)]
   #v(8em)
   #only(26)[
-    V paměti máme pouze aktuální cestu :-)
+    #important[
+      V paměti máme pouze aktuální cestu :-)
+    ]
   ]
 ]
 
@@ -361,17 +349,14 @@ Obdobně funguje i `std::unique_ptr` pro správu pointeru.
 
 Paměť se uvolní okamžitě po zániku instance `std::unique_ptr`!
 
-#important[
-  Co když to ale nechceme?
-]
-#v(2em)
+== Co když to ale nechceme?
 ][
 - Instanci `std::unique_ptr` uložíme například do vektoru. Dále používáme raw pointer (získaný přes `ptr.get()`).\
   Paměť se ale uvolní po zániku vektoru, raw pointer přestane být validní!
 ][
 - Důsledně budeme spravovat, kdo aktuálně pointer vlastní. Paměť zanikne, když ho nějaká funkce nikomu nepředá (pomocí `std::move`).
 
-#h(1fr) To je celkem dost pracné!
+#comment[To je celkem dost pracné!]
 ][
 - Použijeme `std::shared_ptr` a pointery předáváme jako kdyby to byly raw pointery.
 ]
@@ -423,17 +408,4 @@ Se shared pointery dokonce můžete provádět atomické operace:
     }
   }
   ```
-]
-
-#slide[
-= Sekvenční IDDFS
-
-#frame[
-=== Doimplementujte metodu `iddfs`
-
-Doimplementujte metodu `iddfs`
-Doimplementujte tělo metody `iddfs`, která bude vykonávat sekvenční prohledávání do hloubky s definovanou maximální
-hloubkou (kterou budete iterativně zvyšovat, dokud nenarazíte na cíl). Vyzkoušejte si práci se sdílenými ukazateli a s
-doménovými metodami `is_goal()` a `next_states()`.
-]
 ]

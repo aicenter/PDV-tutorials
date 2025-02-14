@@ -1,3 +1,4 @@
+
 // This theme is inspired by https://github.com/matze/mtheme
 // The Polylux-port was originally performed by https://github.com/Enivex
 
@@ -22,7 +23,7 @@
   context text(fill: text.fill.lighten(40%), content)
   h(1fr)
   toolbox.slide-number
-  h(-50pt)
+  h(-60pt)
 }
 
 #let outline = toolbox.all-sections((sections, _current) => {
@@ -54,7 +55,6 @@
   v(0em)
 
   subtitle
-
 
   divider
 
@@ -102,32 +102,46 @@
 
 /// Element functions
 
-#let slogan(body) = align(center, { v(1em); text(size: 1.3em, body); v(1em, weak: true); })
+#let slogan(body) = align(center, {
+  v(1em)
+  text(size: 1.3em, weight: 500, body)
+  v(2em, weak: true)
+})
 
-#let important(body) = align(center, { v(2em); text(size: 1.125em, body) })
+#let important(body) = align(center, {
+  v(1em)
+  text(size: 1.125em, body)
+  v(2em, weak: true)
+})
 
 #let small(body) = {
   text(body, size: 0.9em)
 }
 
 #let rule = {
-  v(1em)
+  v(1em, weak: true)
   line(length: 100%, stroke: 1pt + rgb("#434343"))
 }
 
 #let frame(body) = {
   let bg = rgb(242, 242, 242)
   let title-bg = rgb(220, 220, 220)
-  let padding = (top: 0.3em, left: .5em, right: .5em, bottom: .5em)
 
-  v(1em, weak: true)
+  v(1.5em, weak: true)
 
   show heading.where(level: 3): it => {
     set text(weight: 500)
-    box(it, outset: padding, fill: title-bg, width: 100%)
+    box(it, outset: (top: 0.3em, left: 0.75em, right: .75em, bottom: .6em), fill: title-bg, width: 100%)
+    v(1.125em, weak: true)
   }
 
-  block(width: 100%, fill: bg, inset: padding, radius: 4pt, body)
+  block(
+    width: 100%,
+    fill: bg,
+    inset: (top: 0em, left: 0.75em, right: .75em, bottom: .5em),
+    radius: 4pt,
+    { body; v(0.5em) },
+  )
 }
 
 #let highlight(highlited, normal, body) = {
@@ -141,8 +155,8 @@
 }
 
 #let see-file(file) = {
-  emoji.eye
-  h(.25em)
+  $=>$
+  h(.5em)
   text(font: "Fira Code", size: 0.8em, file)
 }
 
@@ -169,8 +183,18 @@
 }
 
 #let comment(body) = {
-  v(2em)
+  v(1em, weak: true)
+  set text(style: "italic")
   align(right, small(body))
+  v(1.5em, weak: true)
+}
+
+#let footnote(body) = {
+  v(1fr)
+  rule
+  v(-0.5em)
+  small(body)
+  v(2em)
 }
 
 #let setup(body) = {
@@ -185,21 +209,29 @@
     font: "Fira Sans",
     weight: 400,
     size: 18pt,
-    fill: rgb("#23373b"), // dark teal
+    fill: rgb("#23373b"),
     tracking: 0.2pt,
     spacing: 0.3em,
     top-edge: "ascender",
     bottom-edge: "baseline",
     alternates: true,
   )
+  set par(leading: 0.5em, spacing: 1.125em, linebreaks: "optimized")
   show math.equation: set text(font: "New Computer Modern Math")
-  show raw: set text(font: "Fira Code", ligatures: false)
-  
+  show raw: it => text(font: "Fira Code", ligatures: false, size: 1.125em, it)
+  show raw.where(block: true): it => {
+    v(2em, weak: true)
+    it
+    v(1em, weak: true)
+  }
+
   set raw(syntaxes: "nasm.sublime-syntax")
 
   show strong: set text(weight: 300)
-  set par(leading: 0.5em)
-  set list(spacing: 0.8em)
+  set list(spacing: 0.5em, indent: 0.5em)
+
+  // Special syntax for separating adjacent lists
+  show "%%": v(0pt)
 
   show heading.where(level: 1): _ => none
   show heading.where(level: 2): it => {
@@ -222,7 +254,12 @@
   }
 
   show image: it => {
-    align(center, it)
+    pad(top: 1em, bottom: 1em, align(center, it))
+  }
+
+  show terms: it => {
+    set list(marker: none)
+    it
   }
 
   body

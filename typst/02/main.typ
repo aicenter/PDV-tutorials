@@ -1,8 +1,8 @@
 #import "@preview/polylux:0.4.0": *
-#import "/template/main.typ" as metropolis
-#import metropolis: *
+#import "/template/main.typ" as ctu-lab-slides
+#import ctu-lab-slides: *
 
-#show: metropolis.setup
+#show: ctu-lab-slides.setup
 
 #title-slide[
   Vlákna a přístup ke sdílené paměti
@@ -32,11 +32,11 @@
 #slide[
   = Osnova
 
-  - Opakování z minulého cvičení 
-  \
+  - Opakování z minulého cvičení
+  %%
   - Vlákna v C++ 11
   - Přístup ke sdílené paměti
-  \
+  %%
   - Zadání první domácí úlohy
 ]
 
@@ -133,11 +133,7 @@ C++11 (přes `#include <thread>`) poskytuje multiplatformní přístup k práci 
   }
   ```
 
-#v(1em)
-
-#rule
-
-#small[
+#footnote[
 Lambda funkce (uvozená pomocí `[&]`) má navíc přístup ke všem lokálním proměnným.
 
 Nemusíme si je tak předávat například pointery na lokální proměnné jako argumenty.
@@ -147,7 +143,7 @@ Nemusíme si je tak předávat například pointery na lokální proměnné jako
 #slide-focus[
 = Operace `map`
 
-`Map` aplikuje funkci na každý prvek v poli (in-place).
+`Map` aplikuje funkci na každý prvek v poli.
 
 #v(1em)
 
@@ -197,6 +193,8 @@ Operace `map` je ideální pro paralelizaci!
   - Zjistíme index, který máme zpracovat
   - Inkrementujeme hodnotu `i`
 ][
+#v(1em)
+
 ```cpp
     std::mutex m;
     void dummy_thread() {
@@ -237,9 +235,13 @@ Příklady atomických operací:
 ][
 == Jak na to v C++11:
 
-```cpp #include <atomic>```
+```cpp
+  #include <atomic>
+```
 
-```cpp int x = 0;``` #h(2em)$->$#h(2em) ```cpp std::atomic<int> x { 0 };```
+```cpp   int x = 0;``` #h(2em)$->$#h(2em) ```cpp std::atomic<int> x { 0 };```
+
+#v(1em)
 ][
 #frame[
 === Nahraďte mutex atomickou proměnnou
@@ -317,15 +319,15 @@ Podmínkové proměnné (```cpp #include <condition_variable>```) slouží ke ko
 Umožňují nám čekat na splnění podmínky jiným vláknem (a na signál od něj).
 ][
 == Vytvoření podmínkové proměnné
-  ```cpp std::condition_variable cv;```
+```cpp std::condition_variable cv;```
 ][
 == Čekání na splnění podmínky
-  ```cpp cv.wait(lock, [&] { return value != last_value; });```
+```cpp cv.wait(lock, [&] { return value != last_value; });```
 ][
 == Notifikace o změně stavu
-  ```cpp cv.notify_one();``` 
+```cpp cv.notify_one();```
 
-  ```cpp cv.notify_all();```
+```cpp cv.notify_all();```
 ]
 
 #slide[

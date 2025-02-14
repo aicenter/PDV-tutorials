@@ -1,12 +1,13 @@
 #import "@preview/polylux:0.4.0": *
-#import "../template/main.typ" as metropolis
-#import metropolis: *
+#import "../template/main.typ" as ctu-lab-slides
+#import ctu-lab-slides: *
 
-#show: metropolis.setup
+#show: ctu-lab-slides.setup
 
 #title-slide[
   Konkuretní datové struktury
 ][
+  Cvičení 4
 ]
 
 #slide-items[
@@ -31,10 +32,10 @@
   = Osnova
 
   - Opakování z minulého cvičení
-  \
+  %%
   - Zámková architektura datových struktur
   - Bezzámková architektura datových struktur
-  \
+  %%
   - Zadání třetí domácí úlohy
 ]
 
@@ -48,21 +49,21 @@
 ```cpp
   unsigned int num_threads = omp_get_num_threads();
   unsigned int thread_id = omp_get_thread_num();
+
   std::vector<int> data(100000);
+
   #pragma omp parallel
   {
     int chunk_size = 1 + data.size() / num_threads;
     int begin = thread_id * chunk_size;
-    int end = std::min ( data.size(),
-      (thread_id + 1) * chunk_size );
-    for (unsigned int i = begin; i < end; i++)
-      data[i] ++ ;
+    int end = std::min ( data.size(), (thread_id + 1) * chunk_size );
+    for (unsigned int i = begin; i < end; i++) {
+      data[i]++;
+    }
   }
-  ```
+```
 
-#v(4em)
-
-Napište odpověď
+== Napište odpověď
 ]
 
 #slide[
@@ -71,11 +72,13 @@ Napište odpověď
 ```cpp
   std::vector<int> data(100000);
   int size = data.size();
+
   #pragma omp parallel
   {
     #pragma omp parallel for
-    for (unsigned int i = 0; i < size; i++)
-      data[i] ++ ;
+    for (unsigned int i = 0; i < size; i++) {
+      data[i]++;
+    }
   }
   ```
 
@@ -96,13 +99,15 @@ Napište odpověď
 ```cpp
   int k = 0;
   std::vector<int> data = getRandomVectorOfSize(400);
+
   #pragma omp parallel num_threads(4)
   {
     int begin = omp_get_thread_num() * 100;
     int end = (1 + omp_get_thread_num()) * 100;
-    for (unsigned int i = begin; i < end; i++)
+    for (unsigned int i = begin; i < end; i++) {
       #pragma omp critical
       k += data[i];
+    }
   }
   ```
 
@@ -132,13 +137,13 @@ Napište odpověď
   - Nesmíme zamykat *celou* datovou strukturu!
   - Se zamykáním zámků musíme šetřit
 
-  #v(5em)
-
-  #h(1fr) #emoji.warning #h(5pt) Jinak se datová struktura stane brzdou výpočtu!
+  #comment[ #emoji.warning Jinak se datová struktura stane brzdou výpočtu! ]
 ]
 
 #slide-items[
-  Možný přístup:
+  = Bezzámková architektura
+
+  == Možný přístup
 
   1. Vezmu kód existující jednovláknové datové struktury
   2. Ve chvíli, kdy strukturu dělám nějaké zásahy, zamknu si část struktury pro sebe
@@ -147,16 +152,17 @@ Napište odpověď
     Je to opravddu takto lehké?
   ]
 ][
-  Typický vzor práce s jednovláknovými strukturami:
+  == Typický vzor práce s jednovláknovými strukturami
 
   #align(center)[
     Příprava $->$ "Poškození" dat $-$ #emoji.lightning$->$ Oprava $->$ Hotovo!
   ]
 ][
+  #v(1em)
   Musíme zabránit použití "rozbité" části = vyloučit i čtenáře \
   (a zamykat si části struktury, i když to není potřeba -- např. při čtení)
 ][
-  #h(1fr) *To si ale moc nepomůžeme :-(*
+  #comment[ *To si ale moc nepomůžeme :-(* ]
 ]
 
 #slide-items[
@@ -165,14 +171,13 @@ Napište odpověď
   1. Strčit hlavu do písku a (téměř) nezamykat
   2. Když nastane problém, tak ho (nějak) vyřešit
 
-  #h(1fr) *To se snáz řekne, než udělá...*
+  #comment[ *To se snáz řekne, než udělá...* ]
 ][
   Některé z možných problémů:
 
-  - *Datová struktura se může nacházet v mezistavu:* \
-    Buď musí být použitelná, nebo si musíme být jistí, že problém detekujeme, než poškodíme data
-  - *Nesmíme uvolnit paměť, pokud s ní pracuje jiné vlákno:* \
-    Složitější datové struktury často využívají techniky podobné garbage-collectoru v Javě.
+  == Datová struktura se může nacházet v mezistavu:
+  Buď musí být použitelná, nebo si musíme být jistí, že problém detekujeme, než poškodíme data == Nesmíme uvolnit paměť,
+  pokud s ní pracuje jiné vlákno Složitější datové struktury často využívají techniky podobné garbage-collectoru v Javě.
 ]
 
 #slide[
@@ -180,13 +185,13 @@ Napište odpověď
 
   O takových datových strukturách se těžko přemýšlí...
 
-  #h(1fr) ... a ještě hůř se v nich hledají chyby!
+  #comment[ ... a ještě hůř se v nich hledají chyby! ]
 
-  #v(2em)
+  #footnote[
+    #see-file("http://libcds.sourceforge.net")
 
-  #see-file("http://libcds.sourceforge.net")
-
-  #see-file("C++ Concurrency In Action: Practical Multithreading")
+    #see-file("C++ Concurrency In Action: Practical Multithreading")
+  ]
 ]
 
 #section-slide[Cvičení: konkuretní spojový seznam]
@@ -199,15 +204,15 @@ Napište odpověď
   - My ho budeme chtít mít seřazený vzestupně...
   - Vložení prvku = nalezení správné pozice + vložení nového uzlu
 
-  #v(2em)
-  
   #image("assets/linkedList.svg", width: 100%)
 ][
-  #frame[
-    === Doimplementujte metodu `insert`
+#frame[
+=== Doimplementujte metodu `insert`
 
-    Doimplementujte tělo metody `insert` v souboru `lockBased.h`. Pro synchronizaci vláken použijte `spin_lock` (používá se stejně jako `std::mutex`), který umístíte ke každému uzlu seznamu. Snažte se zámky zamykat pouze na čas modifikace seznamu a pouze tam, kde jsou potřeba!
-  ]
+Doimplementujte tělo metody `insert` v souboru `1ConcurentLunkedList.h`. Pro synchronizaci vláken použijte `SpinMutex` (používá
+se stejně jako `std::mutex`), který umístíte ke každému uzlu seznamu. Snažte se zámky zamykat pouze na čas modifikace
+seznamu a pouze tam, kde jsou potřeba!
+]
 ]
 
 #slide-items[
@@ -219,8 +224,6 @@ Napište odpověď
     #emoji.warning undefined behavior #emoji.warning
   ]
 
-  #v(1em)
-
   Může se nám stát spousta špatných věcí, například: \
   (ty navíc závisí na kompilátoru a platformě)
 
@@ -228,24 +231,25 @@ Napište odpověď
   - Vlákno se nedozví o změně provedené jiným vláknem
   - Vlákno se dozví pouze o části provedených změn
 ][
-  #important[
-    `std::atomic` \
-    Synchronizace přístupů ke stejné proměnné zajištěna
-  ]
+#important[`std::atomic` \ Synchronizace přístupů ke stejné proměnné zajištěna]
 ]
 
 #slide[
+  = Bezzámková architektura datových struktur
+
   Můžeme se zámků zbavit úplně?
 ]
 
 #section-slide[Bezzámková architektura datových struktur]
 
 #slide-items[
-  Navrhnout správně zamykání je náročné
+= Bezzámková architektura datových struktur
 
-  - Špatné použití může vést k deadlocku
-  - Velké množství zámků snižuje potenciál opravdové konkurence
-  - Paměťový overhead (`std::mutex` na Linuxu má 40B!)
+Navrhnout správně zamykání je náročné
+
+- Špatné použití může vést k deadlocku
+- Velké množství zámků snižuje potenciál opravdové konkurence
+- Paměťový overhead (`std::mutex` na Linuxu má 40B!)
 ][
   #important[
     Jak na to?
@@ -256,19 +260,20 @@ Napište odpověď
 ]
 
 #slide-items[
-  = Porovnej a prohoď
+= Porovnej a prohoď
 
-  *Klíčová* operace pro _lock-free_ datové struktury.
+*Klíčová* operace pro _lock-free_ datové struktury.
 
-  Porovnej a prohoň (neboli *compare-and-swap*) je atomická operace s pamětí na objektu `std::atomic<T> X`, definovaná v C++ jako
+Porovnej a prohoň (neboli *compare-and-swap*) je atomická operace s pamětí na objektu `std::atomic<T> X`, definovaná v
+C++ jako
 
-  ```cpp
+```cpp
   bool X.compare_exchange_strong( T& expected, T desired)
   ```
 
-  která ma funkcionalitu ekvivalentní
+která ma funkcionalitu ekvivalentní
 
-  ```cpp
+```cpp
   if ( X == expected ){ X = desired; return true; }
   else{ expected = X; return false; }
   ```
@@ -277,9 +282,14 @@ Napište odpověď
 ]
 
 #slide-items[
-  === Doimplementujte metodu `insert`
+= Implementace
 
-  Doimplementujte tělo metody `insert` v souboru `lockFree.h`. Namísto použití zámků nyní použijte atomickou operaci *compare-and-swap* pro úpravu pointerů ve spojovém seznamu.
+#frame[
+=== Doimplementujte metodu `insert`
+
+Doimplementujte tělo metody `insert` v souboru `2LockFreeLinkedList.h`. Namísto použití zámků nyní použijte atomickou
+operaci *compare-and-swap* pro úpravu pointerů ve spojovém seznamu.
+]
 ][
   #frame[
     === Bonusové úlohy:
@@ -307,17 +317,17 @@ Napište odpověď
 ]
 
 #slide-items[
-  = Konkurentní binární vyhledávací strom
+= Konkurentní binární vyhledávací strom
 
-  Naimplementujte metody v `bst_tree.cpp` a `bst_tree.h` a zajistěte, že
+Naimplementujte metody v `bst_tree.cpp` a `bst_tree.h` a zajistěte, že
 
-  1. každý prvek je vložen právě jednou; a
-  2. žádný vložený prvek se neztratí.
+1. každý prvek je vložen právě jednou; a
+2. žádný vložený prvek se neztratí.
 
-  Zpracování musí být *konkurentní*, nikoli serielní!
+Zpracování musí být *konkurentní*, nikoli serielní!
 
 ][
   Za spravné výsledky a vysoký stupeň konkurence dostanete až *2b*.
 ][
-  Soubory `bst_tree.cpp` a `bst_tree.h` nahrajte do systému BRUTE.
+Soubory `bst_tree.cpp` a `bst_tree.h` nahrajte do systému BRUTE.
 ]

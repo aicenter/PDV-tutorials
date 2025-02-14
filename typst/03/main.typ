@@ -1,8 +1,8 @@
 #import "@preview/polylux:0.4.0": *
-#import "/template/main.typ" as metropolis
-#import metropolis: *
+#import "/template/main.typ" as ctu-lab-slides
+#import ctu-lab-slides: *
 
-#show: metropolis.setup
+#show: ctu-lab-slides.setup
 
 #title-slide[
   Paralení programování pro vícejádrové stroje s použitím OpenMP

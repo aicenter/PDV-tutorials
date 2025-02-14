@@ -1,18 +1,20 @@
 #import "@preview/polylux:0.4.0": *
-#import "../template/main.typ" as metropolis
-#import metropolis: *
+#import "../template/main.typ" as ctu-lab-slides
+#import ctu-lab-slides: *
 
-#show: metropolis.setup
+#show: ctu-lab-slides.setup
 
 #title-slide[
   Dekompoziční techniky
 ][
-  B4B36PDV -- Paralelní a distribuované výpočty
+  Cvičení 5
 ]
 
 #slide-items[
   = Osnova
+
   - Opakování z minulého cvičení
+  \
   - Datová dekompozice se zařezáváním
   - Explorativní dekompozice
   - Rekurzivní dekompozice
@@ -36,8 +38,7 @@ if (a < b){
 }
 ```
 
-#v(2em)
-
+== Možné odpovědi:
 - Kód nelze zkompilovat
 - Do A se vždy uloží B
 - Do A se uloží C, pokud B není rovno C
@@ -57,8 +58,10 @@ void compute_1(){
     if(getMainNode().compare_exchange_strong
       (null_ptr, getNewNode())){
         return;
-    }}
-  std::cout << a->value << std::endl;}
+    }
+  }
+  std::cout << a->value << std::endl;
+}
 
 void compute_2(){
   node * null_ptr = nullptr;
@@ -67,8 +70,10 @@ void compute_2(){
     if(getMainNode().compare_exchange_strong
       (a, getNewNode())){
         return;
-    }}
-  std::cout << a->value << std::endl;}
+    }
+  }
+  std::cout << a->value << std::endl;
+}
 ```
 ]
 
@@ -107,11 +112,13 @@ void compute_2(){
   ]
 ][
 #frame[
-=== Doimplementujte metodu `find_min_parallel`
+=== Doimplementujte metodu `findmin_parallel`
 
-Doimplementujte metodu `find_min_parallel` v souboru `decompose.cpp` pro paralelní nalezení minima funkce $C(n)$ na
-množině $X$ (reprezentované ve vektorem data). Udržujte si dosud nalezené optimim pro zařezávání nepotřebných výpočtů $C(n)$ (tj.
-ve chvíli, kdy daný výpočet prokazatelně vede k suboptimálnímu řešení).
+Doimplementujte metodu `findmin_parallel` v souboru `1early_exit.cpp` pro paralelní nalezení minima funkce $C(n)$ na
+množině $X$ (reprezentované ve vektorem data).
+
+Udržujte si dosud nalezené optimim pro zařezávání nepotřebných výpočtů $C(n)$ (tj. ve chvíli, kdy daný výpočet
+prokazatelně vede k suboptimálnímu řešení).
 ]
 ]
 
@@ -127,24 +134,68 @@ Sekvenčně je to jednoduché:
   while(collatz(i) >= k) i++;
   ```
 
-Jak tento výpočet zparalelizujeme? ][
+Jak tento výpočet zparalelizujeme?][
+  == Čím se tento problém liší od předchozího?
+][
+  Každé vlákno dokáže rozhodout o nalezení výsledku. Jak upravíme kód pro ukončení výpočtu?
+]
+
+#slide-items[
+= OpenMP cancellation
+
+OpenMP nabízí možnost zastavení všech vláken v paralelním bloku pomocí direktivy:
+
+```cpp #pragma omp cancel```
+][
+Pro použití této funkce je nutné nastavit prostředí `OMP_CANCELLATION = true`.
+
+#comment[
+  K zamyšlení: proč není tato funkce automaticky zapnuta?
+]
+]
+#slide-items[
+= Jak na to?
+
+```c
+#pragma omp parallel
+#pragma omp for
+for (...){
+    if (condition){
+      #pragma omp cancel for
+    }
+}
+```
+][
+```c
+#pragma omp parallel
+{
+  while(true){
+   #pragma omp cancellation point parallel
+    if (condition){
+    #pragma omp cancel parallel
+    }
+  }
+}
+```
+
+#footnote[
+#emoji.warning Nutné nastavit v prostředí `OMP_CANCELLATION = true` !
+]
+]
+
+#slide[
+= Problém $3n+1$ (Collatzův problém)
+
 #frame[
 === Doimplementujte metodu `findn_parallel`
 
-Doimplementujte metodu `findn_parallel` v souboru `decompose.cpp` pro paralelní nalezení čísla $n$, pro které platí $C(n) >= k$.
+Doimplementujte metodu `findn_parallel` v souboru `2cancellations.cpp` pro paralelní nalezení čísla $n$, pro které platí $C(n) >= k$.
+
+Použijte OpenMP cancellation.
 ]
 ]
 
 #section-slide[Explorativní dekompozice]
-
-#slide-items[
-  = Explorativní dekompozice
-
-  #emoji.warning #h(5pt) Pokud *explorujeme* prostor možných řešení a testujeme, zda existuje prvek, který splňuje nějakou
-  podmínku, chceme výpočet ukončit okamžitě po nalezení prvního vhodného prvku.
-][
-  #h(1fr) V případě paralelizace výpočtu chceme ukončit _všechna_ vlákna!
-]
 
 #slide[
   = Explorativní dekompozice: Řešení problému SAT
@@ -162,52 +213,17 @@ Doimplementujte metodu `findn_parallel` v souboru `decompose.cpp` pro paralelní
   #image("assets/sat2.svg", width: 80%)
 ]
 
-#slide[
-= Jak na to?
-
-```c
-#pragma omp parallel
-#pragma omp for
-for (...){
-    if (condition){
-      #pragma omp cancel for
-    }
-}
-```
-]
-
-#slide[
-= Jak na to?
-
-```c
-#pragma omp parallel
-{
-  while(true){
-   #pragma omp cancellation point parallel
-    if (condition){
-    #pragma omp cancel parallel
-    }
-  }
-}
-```
-
-#v(2em)
-
-#emoji.warning #h(5pt) Nutné nastavit v prostředí `OMP_CANCELLATION = true` !
-]
-
 #slide-items[
   = Rekurzivní dekompozice
 
   #important[
     Z algoritmizace víte, že pro některé úlohy je vhodná rekurze.
   ]
-
-  #h(1fr)Vzpomeňte si na řazení! (např. quick-sort z přednášky)
-  #image("assets/quicksort.png")
+  #comment[Vzpomeňte si na řazení! (např. quick-sort z přednášky)]
+  #image("assets/quicksort.png", width: 60%)
 
 ][
-  Jak takovýto rekurzivní výpočet zparalelizovat?
+  == Jak takovýto rekurzivní výpočet zparalelizovat?
 
   U rekurzivních úloh často ani nevíme, jaké podúkoly budeme muset řešit...
 ]
@@ -215,13 +231,16 @@ for (...){
 #slide-items[
 = Rekurzivní dekompozice
 
+== Řešení
 #important[
-  Řešení: Budeme paralelní úlohy spouštět dynamicky!
+  Budeme paralelní úlohy spouštět dynamicky!
 ]
 Ve chvíli, kdy potřebujeme zavolat jinou rekurzivní metodu spustíme nový `#pragma omp task`. Ten se zpracuje ve chvíli,
 kdy nějaké vlákno nemá, co dělat. Vzpomeňte si na thread-pool!
 ][
-Otázka: Jak se tento přístup liší od `#pragma omp parallel for schedule(dynamic)`?
+== Otázka
+
+Jak se tento přístup liší od `#pragma omp parallel for schedule(dynamic)`?
 ]
 
 #slide[
@@ -266,12 +285,14 @@ static float parallel_sum(const float *a, size_t n){
 ][
 
 #frame[
-=== Doimplementujte metodu `fibonacci_parallel_worker`
+=== Doimplementujte metodu `fibonacci_par`
 
-Doimplementujte metodu `fibonacci_parallel_worker` v souboru `decompose.cpp`. Rekurzivní volání spouštějte pomocí
-direktivy `#pragma omp task`.
+Doimplementujte metodu `fibonacci_par` v souboru `3tasks.cpp`. Rekurzivní volání spouštějte pomocí direktivy `#pragma omp task`.
 ]
 
-#emoji.warning #h(5pt) Proměnné v `task` jsou privátní (`lastprivate`) pro daný task, pokud neřeknete jinak (pomocí
-parametru OpenMP `shared(x)`). ]
+#footnote[
+#emoji.warning Proměnné v `task` jsou privátní (`lastprivate`) pro daný task, \
+pokud neřeknete jinak (pomocí parametru OpenMP `shared(x)`).
+]
+]
 
