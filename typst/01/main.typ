@@ -3,18 +3,10 @@
 
 #show: metropolis.setup
 
-#slide[
-  #text(size: 1.3em)[
-    *Úvod do B4B36PDV*
-  ]
-
+#title-slide[
+  Úvod do B4B36PDV
+][
   Organizace předmětu a seznámení se s paralelizací
-
-  #metropolis.divider
-
-  #set text(size: .8em)
-  B4B36PDV -- Paralelní a distribuované výpočty \
-  FEL ČVUT
 ]
 
 #slide[
@@ -41,12 +33,14 @@
 #slide[
   = Čím se budeme zabývat?
 
-  #align(center)[
-    #text(size: 1.2em)[
-      #highlight("2", "1,3-", [ Paralelní ]) a #highlight("3-", "-2", [ Distribuované ]) výpočty
-    ]
-    #v(1em)
+  #v(2em)
+
+  #slogan[
+    #highlight("2", "1,3-", [ Paralelní ]) a #highlight("3-", "-2", [ Distribuované ]) výpočty
   ]
+  
+  #v(1em)
+
 
   #grid(columns: (1fr, 1fr), gutter: 1em, align: top, [
     #uncover("2-")[
@@ -55,9 +49,9 @@
 
         - *Jeden* výpočet provádí současně *více* vláken
         - Vlákna typicky sdílí pamět a výpočetní prostředky
-        \
+        #v(0.5em)
         - Cíl: Zrychlit výpočet úlohy
-        \
+        #v(0.5em)
         - (7 týdnů)
       ]
     ]
@@ -67,11 +61,11 @@
         === Distribuované výpočty
 
         - Výpočet provádí současně více oddělených výpočetních uzlů #small[(často i geograficky)]
-        \
+        #v(0.5em)
         - Cíle:
           - Zrychlit výpočet
           - #highlight("4", "-3", [ Robustnost výpočtu ])
-        \
+        #v(0.5em)
         - (6 týdnů)
       ]
     ]
@@ -82,28 +76,12 @@
 #slide[
   = Hodnocení předmětu
 
-  // #block(title: "Paralelní výpočty", [
-  //   - 5 malých programovacích úloh #h(1fr) 10 bodů
-  //   - Semestrální práce #h(1fr) 12 bodů
-  // ])
-
-  // #block(title: "Distribuované výpočty", [
-  //   - 2 malé úlohy #h(1fr) 4 body
-  //   - Semestrální práce #h(1fr) 14 bodů
-  // ])
-
-  // #block(title: "Praktická zkouška", [
-  //   - Praktická část zkoušky (min. 10b) #h(1fr) 20 bodů\
-  //     (Vyřešení zadaného problému za použití paralelizace.)
-  //   - Teoretická část zkoušky (min. 20b) #h(1fr) 40 bodů
-  // ])
-
   #frame[
     === Paralelní výpočty
 
     - 5 malých programovacích úloh #h(1fr) 10 bodů
     - Semestrální práce #h(1fr) 12 bodů
-    #v(0.2em)
+    #v(0em)
     - Praktická zkouška #h(1fr) 20 bodů
   ]
 
@@ -112,7 +90,7 @@
 
     - 2 malé úlohy #h(1fr) 4 body
     - Semestrální práce #h(1fr) 14 bodů
-    #v(0.2em)
+    #v(0em)
     - Praktická zkouška #h(1fr) 20 bodů
   ]
 
@@ -130,15 +108,17 @@
 #slide[
   = Hodnocení předmětu
 
-  #align(center)[
-    #text(size: 1.2em)[
+  #v(1fr)
+
+  #important[
       Vyžadujeme *samostatnou* práci na všech úlohách.
-    ]
   ]
 
   #v(2em)
 
   #emoji.warning *Plagiáty jsou zakázané.* Nepřidělávejte prosím starosti nám, ani sobě.
+
+  #v(2fr)
 ]
 
 #slide[
@@ -208,6 +188,10 @@ Zde `<src dir>` je složka se souborem `CMakeLists.txt`.
 Zde `<build dir>` je složka s vygenerovanými soubory pro sestavení programu.
 
 Nebo použijte IDE s dobrou podporou C++, například CLion (multiplatformní) nebo Visual Studio (Windows).
+
+#v(2em)
+
+Vyzkoušejte na souboru `0hello.cpp`.
 ]
 
 #slide[
@@ -449,14 +433,14 @@ Co bude v proměnné `number` po skončení obou vláken?
   úlohu lze dobře paralelizovat.
 
   ```c
-                  void magic_operation(double * array) {
-                    for(unsigned int i = 0 ; i < 1000000 ; i++) {
-                      for(unsigned int k = 0 ; k < 500 ; k++) {
-                        array[i] = exp(log(array[i]));
+                      void magic_operation(double * array) {
+                        for(unsigned int i = 0 ; i < 1000000 ; i++) {
+                          for(unsigned int k = 0 ; k < 500 ; k++) {
+                            array[i] = exp(log(array[i]));
+                          }
+                        }
                       }
-                    }
-                  }
-                ```
+                    ```
   ],
   true,
   [
@@ -516,10 +500,6 @@ $
 $
 
 ... opakován $N$-krát
-
-#v(3em)
-
-*Úkol:* Doimplementujte dešifrovací pravidlo do metody `decrypt` v souboru `PDVCrypt.cpp`.
 ]
 
 #slide[

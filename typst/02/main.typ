@@ -18,22 +18,21 @@
       "Paralelizace nám může pomoct..."
     ]
   ][
-    #v(2em)
     B4B36PDV:
     #slogan[
       "Ale ne všechny přístupy vedou\
       ke stejně dobrým výsledkům!"
     ]
   ][
-    #v(2em)
-    Dnešní cvičení: #slogan[Vlákna a jejich synchronizace]
+    Dnešní cvičení:
+    #slogan[Vlákna a jejich synchronizace]
   ]
 ]
 
 #slide[
   = Osnova
 
-  - Opakování z minulého cvičení
+  - Opakování z minulého cvičení 
   \
   - Vlákna v C++ 11
   - Přístup ke sdílené paměti
@@ -63,43 +62,40 @@ $
 
 ]
 
-#slide[
+#slide-focus[
 = Jak vypadala paralelizace v OpenMP?
 
 ```cpp
-  void decrypt_openmp(const PDVCrypt &crypt,
-    std::vector<std::pair<std::string, enc_params>> &encrypted,
-    unsigned int numThreads) {
-
-    const unsigned long size = encrypted.size();
-
-    #pragma omp parallel for num_threads(numThreads)
-    for(unsigned long i = 0; i < encrypted.size(); i++) {
-      auto & enc = encrypted[i];
-      crypt.decrypt(enc.first, enc.second);
-    }
-  }
-  ```
+    pdv::benchmark("Decryption", [&] {
+        #pragma omp parallel for num_threads(hardware_concurrency())
+        for (auto& enc : encrypted) {
+            crypt.decrypt(enc.first, enc.second);
+        }
+    });
+```
 ]
 
-#slide[
-= Šifra `PDVCrypt`
+#slide-focus[
+= Parallel for
 
 ```cpp
-  #pragma omp parallel for num_threads(numThreads)
+  #pragma omp parallel for num_threads(hardware_concurrency())
   for(...) {
     ...
   }
   ```
 
-#v(2em)
-#h(1fr) Co se ve skutečnosti stalo?
+#comment[Co se ve skutečnosti stalo?]
 ]
 
 #section-slide[Vlákna v C++ 11]
 
-#slide[
-C++11 (přes `#include <thread>`) poskytuje multiplatformní přístup k práci s vlákny:
+#slide-focus[
+= Vlákna v C++ 11
+
+C++11 (přes `#include <thread>`) poskytuje multiplatformní přístup k práci s vlákny.
+
+#v(1em)
 
 ```cpp
   #include <iostream>
@@ -139,22 +135,53 @@ C++11 (přes `#include <thread>`) poskytuje multiplatformní přístup k práci 
 
 #v(1em)
 
-Lambda funkce (uvozená pomocí `[&]`) má navíc přístup ke všem lokálním proměnným:
-- Nemusíme si je tak předávat například pointery na lokální proměnné jako argumenty
+#rule
+
+#small[
+Lambda funkce (uvozená pomocí `[&]`) má navíc přístup ke všem lokálním proměnným.
+
+Nemusíme si je tak předávat například pointery na lokální proměnné jako argumenty.
+]
+]
+
+#slide-focus[
+= Operace `map`
+
+`Map` aplikuje funkci na každý prvek v poli (in-place).
+
+#v(1em)
+
+```cpp
+    void map_sequential(std::vector<float>& data, MapFn map_fn) {
+        for (float& f : data) {
+            f = map_fn(f);
+        }
+
+        // C ekvivalent:
+        for (size_t i = 0; i < data.size(); i++) {
+            data[i] = map_fn(data[i]);
+        }
+    }
+    ```
+
+#important[
+Operace `map` je ideální pro paralelizaci!
+]
 ]
 
 #slide-items[
+= Soubor `1threads.cpp`
 
-#frame[
-=== Vyřešte úlohu pomocí vláken
+```cpp
+    void map_openmp(std::vector<float>& data, MapFn map_fn);
 
-Doimplementujte tělo metody `decrypt_threads_1` v souboru `decryption.cpp`. Spusťte `numThreads` vláken, kdy každé
-vlákno bude vykonávat funkci `process`.
-]
+    void map_manual(std::vector<float>& data, MapFn map_fn);
+```
 
-#important[
-  Co je na této implementaci špatně?
-]
+][
+  #important[
+    Co je na naší manuální implementaci paralelizace špatně?
+  ]
 ]
 
 #section-slide[Synchronizace vláken při přístupu ke sdílené paměti]
@@ -171,37 +198,28 @@ vlákno bude vykonávat funkci `process`.
   - Inkrementujeme hodnotu `i`
 ][
 ```cpp
-  #include <iostream>
-  #include <thread>
-  #include <mutex>
-
-  std::mutex m;
-  void dummy_thread() {
-    std::cout << "Zde muze byt soucasne vice vlaken." << std::endl;
-    {
-      std::unique_lock<std::mutex> lock(m);
-      std::cout << "Ale zde budu uplne sam..." << std::endl;
+    std::mutex m;
+    void dummy_thread() {
+        std::cout << "Zde muze byt soucasne vice vlaken." << std::endl;
+        {
+            std::unique_lock<std::mutex> lock(m);
+            std::cout << "Ale zde budu uplne sam..." << std::endl;
+        }
+        std::cout << "A tady opet nemusim byt sam...";
     }
-    std::cout << "A tady opet nemusim byt sam...";
-  }
-  ```
+```
 ]
 
-#slide[
+#slide-items[
 = Varianta opravy č.1: Mutex
 
 #frame[
 === Doplňte mutex
 
-Opravte metodu `decrypt_threads_1` za použití mutexu. Metodu `decrypt_threads_1` neupravujte, opravený kód zapište do
-metody `decrypt_threads_2`.
+Doimplementujte metodu `map_manual_locking` za použití mutexu.
 ]
-]
-
-#slide[
-  = Varianta opravy č.1: Mutex
-
-  == #emoji.warning #h(1em) Pozor!
+][
+  == #emoji.warning Pozor!
 
   Použití mutexů skrývá hrozbu _dead-locků_. Kód musíme navrhovat tak, aby bylo garantované, že vlákno někdy mutex získá
   (a provede tak kritickou sekci). Jinak zůstane čekat navěky...
@@ -217,20 +235,16 @@ Příklady atomických operací:
 - Inkrementování proměnné typu `int`
 - Vynásobení proměnné typu `int` konstantou
 ][
-Jak na to v C++11:
+== Jak na to v C++11:
 
 ```cpp #include <atomic>```
 
 ```cpp int x = 0;``` #h(2em)$->$#h(2em) ```cpp std::atomic<int> x { 0 };```
-]
-
-#slide[
-= Varianta opravy č.2: Atomická proměnná
-
+][
 #frame[
 === Nahraďte mutex atomickou proměnnou
 
-Nahraďte mutex v `decrypt_threads_2` atomickou proměnnou. Nový kód zapište do funkce `decrypt_threads_3`.
+Doimplementujte metodu `map_manual_atomic` za použití atomické proměnné.
 ]
 ]
 
@@ -241,27 +255,23 @@ Nahraďte mutex v `decrypt_threads_2` atomickou proměnnou. Nový kód zapište 
     Mutex vs. Atomická proměnná
   ]
 
-  #v(2em)
+  == Mutex je založený na systémovém volání jádra operačního systému
 
-  Mutex je založený na systémovém volání jádra operačního systému
-
-  - To může být ale *drahé*!
+  To může být ale *drahé*!
 ][
-  Atomická proměnná je (většinou) implementovaná na hardwarové úrovni
+  == Atomická proměnná je (většinou) implementovaná na hardwarové úrovni
 
-  - Speciální instrukce pro atomické operace nad některými typy
+  Speciální instrukce pro atomické operace nad některými typy
 ][
-  *#emoji.warning #h(1em) Nelze použít vždy!*
+  == #emoji.warning Nelze použít vždy!
 
-  - Procesory zpravidla podoporují jenom základní typy.
+  Procesory zpravidla podoporují jenom základní typy.
 ]
 
 #slide-items[
   = Varianta opravy č.3: Disjunktní rozsahy
 
   _I atomická proměnná má ale nějakou režii..._
-
-  #v(2em)
 
   #important[
     Nemůžeme se vyhnout použití mutexů \ a atomických proměnných úplně?
@@ -270,7 +280,7 @@ Nahraďte mutex v `decrypt_threads_2` atomickou proměnnou. Nový kód zapište 
 #frame[
 === Doplňte logiku výpočtu rozsahů
 
-Ve funkci `decrypt_threads_4` chybí implementace výpočtu rozsahu `t`-tého vlákna. Doplňte výpočet hodnot proměnných `begin` a `end`.
+Doimplementujte metodu `map_manual_ranges` za použití disjunktních rozsahů.
 ]
 ]
 
@@ -283,39 +293,38 @@ Ve funkci `decrypt_threads_4` chybí implementace výpočtu rozsahu `t`-tého vl
 === Jaký je problém následujícího programu?
 
 ```cpp
-void logger() {
-  bool last_value = true;
-  while(true) {
-    std::unique_lock<std::mutex> lock(m);
-    if(last_value != value) {
-      std::cout << "Value changed to " << value << std::endl;
-      last_value = value;
+  void logger() {
+    bool last_value = true;
+    while(true) {
+      std::unique_lock<std::mutex> lock(m);
+      if(last_value != value) {
+        std::cout << "Value changed to " << value << std::endl;
+        last_value = value;
+      }
     }
   }
-}
 ```
 ]
 ][
-  === Jaký je problém následujícího programu?
-
   Vlákno které čeká na splnění podmínky *vytěžuje procesor* (tzv. _busy waiting_)!
 ]
 
 #slide-items[
 = Podmínkové proměnné
 
-Podmínkové proměnné (```cpp #include <condition_variable>```) slouží ke komunikaci mezi vlákny
+Podmínkové proměnné (```cpp #include <condition_variable>```) slouží ke komunikaci mezi vlákny.
 
-- Umožňují nám čekat na splnění podmínky jiným vláknem (a na signál od něj)
+Umožňují nám čekat na splnění podmínky jiným vláknem (a na signál od něj).
 ][
-- Vytvoření podmínkové proměnné:\
+== Vytvoření podmínkové proměnné
   ```cpp std::condition_variable cv;```
 ][
-- Čekání na splnění podmínky:\
+== Čekání na splnění podmínky
   ```cpp cv.wait(lock, [&] { return value != last_value; });```
 ][
-- Notifikace o změně stavu:\
-  ```cpp cv.notify_one();``` \
+== Notifikace o změně stavu
+  ```cpp cv.notify_one();``` 
+
   ```cpp cv.notify_all();```
 ]
 
@@ -325,7 +334,7 @@ Podmínkové proměnné (```cpp #include <condition_variable>```) slouží ke ko
 #frame[
 === Nahraďte aktivní čekání podmínkovou proměnnou
 
-V souboru `conditional_variable.cpp` v metodách `logger` a `setter` nahraďte aktivní čekání podmínkovou proměnnou.
+V souboru `2conditional_variable.cpp` v metodách `logger` a `setter` nahraďte aktivní čekání podmínkovou proměnnou.
 ]
 ]
 
@@ -334,9 +343,9 @@ V souboru `conditional_variable.cpp` v metodách `logger` a `setter` nahraďte a
 #slide-items[
   = Producent -- konzument
 
-  - Producent vyrábí určitá data a vkládá je do fronty
-  - Konzument je zase z fronty odebírá
-  - Každý pracuje svým tempem
+  + Producent vyrábí určitá data a vkládá je do fronty
+  + Konzument je zase z fronty odebírá
+  + Každý pracuje svým tempem
 
   #v(2em)
 
@@ -350,8 +359,12 @@ V souboru `conditional_variable.cpp` v metodách `logger` a `setter` nahraďte a
 #slide[
 = Producent -- konzument
 
+#frame[
+=== Zadání domácí úlohy
+
 Doimplementujte metody v `ThreadPool.h` a zajistěte, že
 
-1. Výpočet úloh je paralelní a každá úloha (přidaná pomocí metody `process`) je zpracována právě jednou (1 bod)
-2. Thread pool nečeká na přidání nových úloh pomocí busy-waitingu (1 bod)
++ Výpočet úloh je paralelní a každá úloha (přidaná pomocí metody `process`) je zpracována právě jednou (1 bod)
++ Thread pool nečeká na přidání nových úloh pomocí busy-waitingu (1 bod)
+]
 ]

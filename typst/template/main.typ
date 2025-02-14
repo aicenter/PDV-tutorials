@@ -81,10 +81,16 @@
 
 #let slide-center(body) = slide(alignment: center, body)
 
+#let slide-focus(body) = polylux.slide({
+  v(1fr)
+  body
+  v(2fr)
+})
+
 #let slide-items(start: 1, ..items) = slide({
   for (idx, item) in items.pos().enumerate() {
     uncover((beginning: start + idx), item)
-    v(1em)
+    v(1em, weak: true)
   }
 })
 
@@ -96,7 +102,7 @@
 
 /// Element functions
 
-#let slogan(body) = align(center, { text(size: 1.5em, body) })
+#let slogan(body) = align(center, { v(1em); text(size: 1.3em, body); v(1em, weak: true); })
 
 #let important(body) = align(center, { v(2em); text(size: 1.125em, body) })
 
@@ -104,19 +110,24 @@
   text(body, size: 0.9em)
 }
 
+#let rule = {
+  v(1em)
+  line(length: 100%, stroke: 1pt + rgb("#434343"))
+}
+
 #let frame(body) = {
   let bg = rgb(242, 242, 242)
   let title-bg = rgb(220, 220, 220)
   let padding = (top: 0.3em, left: .5em, right: .5em, bottom: .5em)
+
+  v(1em, weak: true)
 
   show heading.where(level: 3): it => {
     set text(weight: 500)
     box(it, outset: padding, fill: title-bg, width: 100%)
   }
 
-  block(width: 100%, fill: bg, inset: padding, radius: 4pt, [
-    #body
-  ])
+  block(width: 100%, fill: bg, inset: padding, radius: 4pt, body)
 }
 
 #let highlight(highlited, normal, body) = {
@@ -157,6 +168,11 @@
   }
 }
 
+#let comment(body) = {
+  v(2em)
+  align(right, small(body))
+}
+
 #let setup(body) = {
   set page(
     paper: "presentation-4-3",
@@ -179,12 +195,19 @@
   show math.equation: set text(font: "New Computer Modern Math")
   show raw: set text(font: "Fira Code", ligatures: false)
   
-  set raw(syntaxes: "nasm.sublime-syntax", theme: "light.tmTheme")
+  set raw(syntaxes: "nasm.sublime-syntax")
 
   show strong: set text(weight: 300)
-  set list(tight: true, spacing: 0.8em)
+  set par(leading: 0.5em)
+  set list(spacing: 0.8em)
 
   show heading.where(level: 1): _ => none
+  show heading.where(level: 2): it => {
+    set text(size: 0.75em, weight: 600)
+    v(1em)
+    it
+    v(0.5em)
+  }
   show "•": text.with(weight: 900)
   show hide: it => {
     set list(marker: none)
