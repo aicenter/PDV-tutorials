@@ -34,15 +34,27 @@
   grid(columns: (ratio * 100%, 1fr), grid.cell(fill: bright)[], grid.cell(fill: brighter)[])
 })
 
+#let divider = line(length: 100%, stroke: .1em + bright)
+
+#let focus(body) = context {
+  set page(header: none, footer: none, fill: text.fill, margin: 2em)
+  set text(fill: page.fill, size: 1.5em)
+  set align(center)
+  body
+}
+
 /// Slide functions
 
-#let title-slide(title, subtitle) = slide({
+#let title-slide(title, subtitle) = polylux.slide({
   set page(header: none, footer: none)
+  set align(horizon)
+
   text(size: 1.25em, weight: 500, title)
 
   v(0em)
 
   subtitle
+
 
   divider
 
@@ -63,9 +75,8 @@
 })
 
 #let slide(alignment: left, body) = polylux.slide({
-  v(1fr)
+  v(0.5em)
   align(alignment, body)
-  v(2fr)
 })
 
 #let slide-center(body) = slide(alignment: center, body)
@@ -92,15 +103,6 @@
 #let small(body) = {
   text(body, size: 0.9em)
 }
-
-#let focus(body) = context {
-  set page(header: none, footer: none, fill: text.fill, margin: 2em)
-  set text(fill: page.fill, size: 1.5em)
-  set align(center)
-  body
-}
-
-#let divider = line(length: 100%, stroke: .1em + bright)
 
 #let frame(body) = {
   let bg = rgb(242, 242, 242)
@@ -146,7 +148,7 @@
     }
   })
 
-  v(2em)
+  v(1em)
 
   if explanation != [] {
     uncover("3-", {
@@ -178,7 +180,6 @@
   show raw: set text(font: "Fira Code", ligatures: false)
   
   set raw(syntaxes: "nasm.sublime-syntax")
-
 
   show strong: set text(weight: 300)
   set list(tight: true, spacing: 0.8em)
