@@ -39,7 +39,7 @@
 #let focus(body) = context {
   set page(header: none, footer: none, fill: text.fill, margin: 2em)
   set text(fill: page.fill, size: 1.5em)
-  set align(center)
+  set align(center + horizon)
   body
 }
 
@@ -88,7 +88,7 @@
   }
 })
 
-#let quiz-link-slide(url) = slide({
+#let quiz-link-slide(url) = polylux.slide({
   show: focus
 
   link(url)
@@ -179,7 +179,7 @@
   show math.equation: set text(font: "New Computer Modern Math")
   show raw: set text(font: "Fira Code", ligatures: false)
   
-  set raw(syntaxes: "nasm.sublime-syntax")
+  set raw(syntaxes: "nasm.sublime-syntax", theme: "light.tmTheme")
 
   show strong: set text(weight: 300)
   set list(tight: true, spacing: 0.8em)
