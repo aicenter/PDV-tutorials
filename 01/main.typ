@@ -35,6 +35,7 @@
   - Max Hollmann
   - Jáchym Herynek
   - David Milec
+  - Adéla Kubíková
 
   == Stránky cvičení:
 
@@ -86,7 +87,7 @@
   #frame[
     === Paralelní výpočty
 
-    - 5 malých programovacích úloh #h(1fr) 10 bodů
+    - 5 malých programovacích úloh #h(1fr) 15 bodů
     - Semestrální práce #h(1fr) 12 bodů
     %%
     - Praktická zkouška #h(1fr) 20 bodů
@@ -95,7 +96,7 @@
   #frame[
     === Distribuované výpočty
 
-    - 2 malé úlohy #h(1fr) 4 body
+    - 2 malé úlohy #h(1fr) 6 body
     - Semestrální práce #h(1fr) 14 bodů
     %%
     - Praktická zkouška #h(1fr) 20 bodů
@@ -168,7 +169,7 @@
 #frame[
 === Vygenerování build scriptů
 
-```bash cmake <src dir>```
+```bash cmake <src dir> -B <build dir> -DCMAKE_BUILD_TYPE=Release```
 ]
 
 Zde `<src dir>` je složka se souborem `CMakeLists.txt`.
