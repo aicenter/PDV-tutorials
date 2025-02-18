@@ -193,6 +193,18 @@ Vyzkoušejte na souboru `0hello.cpp`.
 ]
 
 #slide[
+  #frame[
+    === Podpora C++20
+
+    Vyzkoušejte, že vám funguje kompilace C++20 na souboru `0cpp20.cpp`. 
+
+    Pokud se vám nepodaří sestavit program, zkuste si nainstalovat novější verzi kompilátoru do *7. cvičení*, kde budeme potřebovat některé nové vlastnosti C++20.
+
+    Dnes smažte `0cpp20.cpp` z `CMakeLists.txt` a pokračujte dále.  
+  ]
+]
+
+#slide[
   = Bylo, nebylo...
 
   == Pro připomenutí
@@ -486,39 +498,37 @@ Dokážete říct, co tvoří neparalelizovatelnou část programu? \
 ]
 
 #slide[
-= Šifra `PDVCrypt`
+= Exponenciální kluzavý proůměr
 
 #align(center)[
-  #image("assets/pdvcrypt.svg", width: 70%)
+  #image("assets/ema.svg", width: 80%)
 ]
 
-Jeden krok dešifrování:
-
 $
-  s_i <- [ s_i + p_1 times "secret"( overbrace(s_[ i-2..i+2 ], "EQRBF") ) ] mod abs(Sigma)
-$
-$
-  i <- [ i + p_2 times "secret"( s_[ i-2..i+2 ] ) ] mod abs(s)
+  "EMA"_0 &= "price"_0 \
+  "EMA"_i &= "price"_i * "k" + "EMA"_(i-1) * (1 - "k")
 $
 
-... opakován $N$-krát
+#footnote[  
+  https://en.wikipedia.org/wiki/Exponential_smoothing
+]
 ]
 
 #slide[
-= Šifra `PDVCrypt`
+= Exponenciální kluzavý průměr
 
 #quiz(
   [
   === Je následující tvrzení pravdivé?
 
-  Proces dešifrování řetězce zašifrovaného pomocí `PDVCrypt` lze snadno paralelizovat.
+  Proces výpočtu exponenciálního kluzavého průměru je možné snadno paralelizovat.
   ],
   false,
   [
-    Proč paralelní verze dešifrovacího algoritmu vůbec nefunguje?
+    Co nám dělá s paralelizací problémy?
   ],
   [
-    Uvažujte množinu zašifrovaných řetězců, které máte za úkol dešifrovat. Mohli bychom využít více jader v tomto případě?
+    Uvažujte množinu datových sad. Mohli bychom využít více jader v tomto případě?
   ],
 )
 ]

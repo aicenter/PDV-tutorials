@@ -43,22 +43,17 @@
 #quiz-link-slide("http://goo.gl/a6BEMb")
 
 #slide[
-= Šifra `PDVCrypt`
+= Exponenciální klouzavý průměr
 
-Vzpomeňte si na šifru `PDVCrypt` z minulého cvičení:
 
-#image("assets/pdvcrypt.svg", width: 70%)
-
-Jeden krok dešifrování:
+#align(center)[
+  #image("assets/ema.svg", width: 80%)
+]
 
 $
-  s_i <- [ s_i + p_1 times "secret"( overbrace(s_[ i-2..i+2 ], "EQRBF") ) ] mod abs(Sigma)
+  "EMA"_0 &= "price"_0 \
+  "EMA"_i &= "price"_i * "k" + "EMA"_(i-1) * (1 - "k")
 $
-$
-  i <- [ i + p_2 times "secret"( s_[ i-2..i+2 ] ) ] mod abs(s)
-$
-
-... opakován $N$-krát
 
 ]
 
@@ -66,12 +61,10 @@ $
 = Jak vypadala paralelizace v OpenMP?
 
 ```cpp
-    pdv::benchmark("Decryption", [&] {
-        #pragma omp parallel for num_threads(hardware_concurrency())
-        for (auto& enc : encrypted) {
-            crypt.decrypt(enc.first, enc.second);
-        }
-    });
+  #pragma omp parallel for
+  for (size_t i = 0; i < stock_prices.size(); i++) {
+      ema[i] = exponential_moving_average(stock_prices[i], 0.1);
+  }
 ```
 ]
 
@@ -79,7 +72,7 @@ $
 = Parallel for
 
 ```cpp
-  #pragma omp parallel for num_threads(hardware_concurrency())
+  #pragma omp parallel for
   for(...) {
     ...
   }
