@@ -82,53 +82,7 @@
 ]
 
 #slide[
-  = Hodnocení předmětu
-
-  #frame[
-    === Paralelní výpočty
-
-    - 5 malých programovacích úloh #h(1fr) 15 bodů
-    - Semestrální práce #h(1fr) 12 bodů
-    %%
-    - Praktická zkouška #h(1fr) 20 bodů
-  ]
-
-  #frame[
-    === Distribuované výpočty
-
-    - 2 malé úlohy #h(1fr) 6 body
-    - Semestrální práce #h(1fr) 14 bodů
-    %%
-    - Praktická zkouška #h(1fr) 20 bodů
-  ]
-
-  #frame[
-    === Praktická
-
-    - Praktická část zkoušky (min. 10b) #h(1fr) 20 bodů\
-      #small[(Vyřešení zadaného problému za použití paralelizace.)]
-    - Teoretická část zkoušky (min. 20b) #h(1fr) 40 bodů
-  ]
-
-  V semestru musíte získat *alespoň 20 bodů* #h(1fr) Celkem: 100 bodů
-]
-
-#slide-focus[
-  = Hodnocení předmětu
-
-  #slogan[
-    Vyžadujeme *samostatnou* práci na všech úlohách.
-  ]
-
-  #important[
-    #emoji.warning *Plagiáty jsou zakázané.*
-
-    Nepřidělávejte prosím starosti nám, ani sobě.
-  ]
-]
-
-#slide[
-  = Hodnocení předmětu
+  = Docházka
 
   Docházka na cvičení není povinná.
 
@@ -142,6 +96,20 @@
   #footnote[
     #emoji.warning Pokud se na cvičení rozhodnete nechodit, budeme předpokládat, že probírané látce dokonale rozumíte.
     Případné konzultace v žádném případě nenahrazují cvičení!
+  ]
+]
+
+#slide-focus[
+  = Samostatná práce
+
+  #slogan[
+    Vyžadujeme *samostatnou* práci na všech úlohách.
+  ]
+
+  #important[
+    #emoji.warning *Plagiáty jsou zakázané.*
+
+    Nepřidělávejte prosím starosti nám, ani sobě.
   ]
 ]
 
@@ -182,7 +150,7 @@ Zde `<src dir>` je složka se souborem `CMakeLists.txt`.
 
 Zde `<build dir>` je složka s vygenerovanými soubory pro sestavení programu.
 
-Nebo použijte IDE s dobrou podporou C++, například CLion (multiplatformní) nebo Visual Studio (Windows).
+Nebo použijte IDE s dobrou podporou C++, například CLion (multiplatformní).
 
 #v(2em)
 
@@ -421,8 +389,8 @@ Co bude v proměnné `number` po skončení obou vláken?
     [
       === Je následující tvrzení pravdivé?
 
-      Mějme procesor s $p$ jádry a úlohu, která při využití jednoho jádra trvá $T$ milisekund. Využijeme-li všech $p$ jader
-      pro vyřešení úlohy, vyřešení úlohy zvládneme za $T/p$ milisekund.
+      Mějme procesor s $P$ jádry a úlohu, která při využití jednoho jádra trvá $t$ milisekund. Využijeme-li všech $P$ jader
+      pro vyřešení úlohy, vyřešení úlohy zvládneme za $t/P$ milisekund.
     ],
     false,
     [
@@ -448,7 +416,7 @@ Co bude v proměnné `number` po skončení obou vláken?
 
   ```cpp
     void magic_operation(std::vector<double>& array) {
-        for (ptrdiff_t i = 0; i < (ptrdiff_t)array.size(); i++) {
+        for (size_t i = 0; i < array.size(); i++) {
             for (size_t k = 0; k < 500; k++) {
                 array[i] = exp(log(array[i]));
             }
@@ -478,7 +446,7 @@ Mějme pole o 1,000,000 prvků. S každým prvkem pole máme za úkol 100× prov
 
 ```cpp
   void magic_operation(std::vector<double>& array) {
-      for (ptrdiff_t i = 0; i < (ptrdiff_t)array.size(); i++) {
+      for (size_t i = 0; i < array.size(); i++) {
           for (size_t k = 0; k < 500; k++) {
               array[i] = exp(log(array[i]));
           }
@@ -487,14 +455,14 @@ Mějme pole o 1,000,000 prvků. S každým prvkem pole máme za úkol 100× prov
 ```
 ]
 
-Proč jsme ale nedosáhli $s$-násobného zrychlení (kde $s$ je počet jader procesoru?). Vzpomeňte si na Amdahlův zákon.
+Proč jsme ale nedosáhli $P$-násobného zrychlení (kde $P$ je počet jader procesoru?). Vzpomeňte si na Amdahlův zákon.
 
 $
-  S = frac(1, (1-p) + frac(p, s))
+  S = frac(1, s + frac(1-s, P))
 $
 
 Dokážete říct, co tvoří neparalelizovatelnou část programu? \
-(vyžadující $(1-p)%$ času)
+(vyžadující $s%$ času)
 ]
 
 #slide[
