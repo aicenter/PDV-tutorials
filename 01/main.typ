@@ -410,7 +410,7 @@ Co bude v proměnné `number` po skončení obou vláken?
   [
   === Je následující tvrzení pravdivé?
 
-  Mějme pole o 1,000,000 prvků. S každým prvkem pole máme za úkol 100× provést "magickou operaci" $x <- e^ln(x)$. Tuto
+  Mějme pole o 1,000,000 prvků. S každým prvkem pole máme za úkol 500× provést "magickou operaci" $x <- e^ln(x)$. Tuto
   úlohu lze dobře paralelizovat.
 
 
