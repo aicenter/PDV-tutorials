@@ -260,11 +260,11 @@ Navrhnout správně zamykání je náročné
 ]
 
 #slide-items[
-= Porovnej a prohoď
+= Compare and swap
 
 *Klíčová* operace pro _lock-free_ datové struktury.
 
-Porovnej a prohoň (neboli *compare-and-swap*) je atomická operace s pamětí na objektu `std::atomic<T> X`, definovaná v
+Compare and swap (*porovnej a prohoď*) je atomická operace s pamětí na objektu `std::atomic<T> X`, definovaná v
 C++ jako
 
 ```cpp
