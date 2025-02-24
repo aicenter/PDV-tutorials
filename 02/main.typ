@@ -34,7 +34,7 @@
 
   - Opakování z minulého cvičení
   %%
-  - Vlákna v C++ 11
+  - Vlákna v C++20
   - Přístup ke sdílené paměti
   %%
   - Zadání první domácí úlohy
@@ -81,10 +81,10 @@ $
 #comment[Co se ve skutečnosti stalo?]
 ]
 
-#section-slide[Vlákna v C++ 11]
+#section-slide[Vlákna v C++20]
 
 #slide-focus[
-= Vlákna v C++ 11
+= Vlákna v C++20
 
 C++11 (přes `#include <thread>`) poskytuje multiplatformní přístup k práci s vlákny.
 
@@ -107,6 +107,28 @@ C++11 (přes `#include <thread>`) poskytuje multiplatformní přístup k práci 
   ```
 ]
 
+#slide-focus[
+= Vlákna v C++20
+
+C++20 (přes `#include <thread>`) poskytuje multiplatformní přístup k práci s vlákny.
+
+#v(1em)
+
+```cpp
+  #include <iostream>
+  #include <thread>
+
+  void dummy_thread(int id, int n) {
+    std::cout << "Thread " << id << " prints " << n << "\n";
+  }
+
+  int main() {
+    std::jthread t1(dummy_thread, 1, 2);
+    std::jthread t2(dummy_thread, 2, 42);
+  }
+  ```
+]
+
 #slide[
 = Kompaktnější zápis pomocí lambda funkcí
 
@@ -119,8 +141,8 @@ C++11 (přes `#include <thread>`) poskytuje multiplatformní přístup k práci 
   }
 
   int main() {
-    std::thread t1(dummy_thread, 1, 2);
-    std::thread t2([&](int id, int n) {
+    std::jthread t1(dummy_thread, 1, 2);
+    std::jthread t2([&](int id, int n) {
       std::cout << "Thread " << id << " prints " << n << "\n";
     }, 2, 42);
   }
@@ -226,7 +248,7 @@ Příklady atomických operací:
 - Inkrementování proměnné typu `int`
 - Vynásobení proměnné typu `int` konstantou
 ][
-== Jak na to v C++11:
+== Jak na to v C++20:
 
 ```cpp
   #include <atomic>
