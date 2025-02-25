@@ -84,7 +84,7 @@ $
 #section-slide[Vlákna v C++20]
 
 #slide-focus[
-= Vlákna v C++20
+= Vlákna v C++11
 
 C++11 (přes `#include <thread>`) poskytuje multiplatformní přístup k práci s vlákny.
 
@@ -99,8 +99,8 @@ C++11 (přes `#include <thread>`) poskytuje multiplatformní přístup k práci 
   }
 
   int main() {
-    std::thread t1(dummy_thread, 1, 2);
-    std::thread t2(dummy_thread, 2, 42);
+    auto t1 = std::thread(dummy_thread, 1, 2);
+    auto t2 = std::thread(dummy_thread, 2, 42);
     t1.join();
     t2.join();
   }
@@ -123,8 +123,8 @@ C++20 (přes `#include <thread>`) poskytuje multiplatformní přístup k práci 
   }
 
   int main() {
-    std::jthread t1(dummy_thread, 1, 2);
-    std::jthread t2(dummy_thread, 2, 42);
+    auto t1 = std::jthread(dummy_thread, 1, 2);
+    auto t2 = std::jthread(dummy_thread, 2, 42);
   }
   ```
 ]
@@ -141,8 +141,8 @@ C++20 (přes `#include <thread>`) poskytuje multiplatformní přístup k práci 
   }
 
   int main() {
-    std::jthread t1(dummy_thread, 1, 2);
-    std::jthread t2([&](int id, int n) {
+    auto t1 = std::jthread(dummy_thread, 1, 2);
+    auto t2 = std::jthread([&](auto id, auto n) {
       std::cout << "Thread " << id << " prints " << n << "\n";
     }, 2, 42);
   }
@@ -213,12 +213,12 @@ Operace `map` je ideální pro paralelizaci!
 ```cpp
     std::mutex m;
     void dummy_thread() {
-        std::cout << "Zde muze byt soucasne vice vlaken." << std::endl;
+        std::cout << "Zde muze byt soucasne vice vlaken.\n";
         {
-            std::unique_lock<std::mutex> lock(m);
-            std::cout << "Ale zde budu uplne sam..." << std::endl;
+            auto lock = std::unique_lock(m);
+            std::cout << "Ale zde budu uplne sam...\n";
         }
-        std::cout << "A tady opet nemusim byt sam...";
+        std::cout << "A tady opet nemusim byt sam...\n";
     }
 ```
 ]
@@ -254,7 +254,7 @@ Příklady atomických operací:
   #include <atomic>
 ```
 
-```cpp   int x = 0;``` #h(2em)$->$#h(2em) ```cpp std::atomic<int> x { 0 };```
+```cpp   int x = 0;``` #h(2em)$->$#h(2em) ```cpp std::atomic<int> x = 0;```
 
 #v(1em)
 ][
@@ -313,9 +313,9 @@ Doimplementujte metodu `map_manual_ranges` za použití disjunktních rozsahů.
   void logger() {
     bool last_value = true;
     while(true) {
-      std::unique_lock<std::mutex> lock(m);
+      auto lock = std::unique_lock(m);
       if(last_value != value) {
-        std::cout << "Value changed to " << value << std::endl;
+        std::cout << "Value changed to " << value << "\n";
         last_value = value;
       }
     }
