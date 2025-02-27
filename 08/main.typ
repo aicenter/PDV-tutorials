@@ -190,7 +190,7 @@ Všechny vektory se kterými pracujete jsou řídké!
 #slide[
   = Splňování booleovských formulí ("SAT")
 
-  Pro danou formuli v *konjunktivním normálním tvaru* hledáme ohodnovení, ve kterém bude *splněná*.
+  Pro danou formuli v *konjunktivním normálním tvaru* hledáme ohodnocení, ve kterém bude *splněná*.
   $ (not x or not y) and y $
 
   - Přiřazení ohodnocení jen jedné proměnné v jednom kroku.
