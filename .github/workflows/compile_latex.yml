@@ -1,4 +1,4 @@
-name: Bulid presenations and refresh release
+name: Build presenations and refresh release
 on: [push]
 jobs:
   build:
@@ -6,14 +6,6 @@ jobs:
     steps:
       - name: Set up Git repository
         uses: actions/checkout@v3
-      - uses: typst-community/setup-typst@v4
-      - name: Compile Typst presentations
-        run: |
-          for lab in $(seq -w 01 08); do
-            pushd $lab
-            typst compile --root .. --font-path ../template/fonts main.typ ../$lab.pdf
-            popd
-          done
       - name: Compile latex presentations
         uses: xu-cheng/latex-action@v2
         with:
