@@ -1,18 +1,8 @@
 # PDV
 
-The repository with the tutorial sources now lives at https://github.com/aicenter/PDV-tutorials
-
-**Notice**: Parallel and distributed labs are not using different format.
-
-## What should I do after cloning this repository?
-From the root of the repository, load the git aliases to the build scripts:
-`git config --local include.path ../.gitconfig`
-
-Note: `..` is required, as it is relative from the .git folder in the project.
+The repository with the tutorial sources for the distributed part now lives at https://github.com/aicenter/PDV-tutorials. Slides for the parallel part live in the main repo.
 
 ## Requirements
-For Typst slides:
-  - [Typst](https://github.com/typst/typst)
 
 For beamer slides:
  - texlive for compiling tex files: `sudo apt-get install texlive texlive-latex-extra texlive-luatex texlive-fonts-extra texlive-lang-czechslovak`
@@ -25,10 +15,6 @@ For editing graphics:
 ## Editing
 
 You can edit the Beamer slides in Overleaf at https://www.overleaf.com/project/62055881c2d6c95f912de323
-
-For typst slides it is recommended to use VS Code with [Tinymist Typst extension](https://marketplace.visualstudio.com/items?itemName=myriad-dreamin.tinymist) with close to instant preview.
-
-You can also use online app similar to overleaf [https://typst.app/](https://typst.app/) and upload the directory there. However sync with git is a paid feature.
 
 ## Usage
 ### Compiling slides
